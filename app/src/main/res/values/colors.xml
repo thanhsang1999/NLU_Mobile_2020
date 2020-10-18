@@ -3,4 +3,12 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+
+    <color name="bluePrimary">#3498db</color>
+    <color name="blueSecond">#2980b9</color>
+    <color name="blackPrimary">#3498db</color>
+    <color name="whitePrimary">#fff</color>
+<!--    <color name="blueSecond">#2980b9</color>-->
+<!--    <color name="bluePrimary">#3498db</color>-->
+<!--    <color name="blueSecond">#2980b9</color>-->
 </resources>

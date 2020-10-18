@@ -1,41 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-
-    >
-    <com.synnapps.carouselview.CarouselView
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
-        app:pageColor="#000000"
-        app:fillColor="#FFFFFF"
-        app:radius="6dp"
-        app:strokeColor="#FFF252"
-        app:strokeWidth="2dp"
-        android:id="@+id/carousel">
-
-    </com.synnapps.carouselview.CarouselView>
-    <LinearLayout
-        android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:background="@drawable/backgroundwellcome"
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
+    <Button
+            android:text="@string/skip"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Button 1" />
-
-        <Button
             android:id="@+id/button"
-            android:layout_width="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="60dp"
+            android:layout_marginStart="60dp"
+            android:background="@drawable/button"
+            android:textColor="@color/whitePrimary"
+            android:width="0dp"
+            app:layout_constraintVertical_bias="0.906"/>
+
+    <Button
+            android:text="Login"
+            android:background="@drawable/button"
+            android:textColor="@color/whitePrimary"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Button 2" />
-    </LinearLayout>
-</LinearLayout>
+            android:id="@+id/button2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/button"
+            app:layout_constraintHorizontal_bias="0.668"
+            app:layout_constraintVertical_bias="0.905"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

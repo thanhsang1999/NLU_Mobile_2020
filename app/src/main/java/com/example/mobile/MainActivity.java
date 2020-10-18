@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        CarouselView carouselView = findViewById(R.id.carousel);
+       /* CarouselView carouselView = findViewById(R.id.carousel);
         carouselView.setPageCount(image.length);
         carouselView.setImageListener(new ImageListener() {
             @Override
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(int position) {
                 Toast.makeText(MainActivity.this, titles[position], Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 
 
