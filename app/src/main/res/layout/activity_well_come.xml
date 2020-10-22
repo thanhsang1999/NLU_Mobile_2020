@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+    >
+
+    <com.synnapps.carouselview.CarouselView
+        android:id="@+id/carousel"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7"
+        app:fillColor="#FFFFFF"
+        app:pageColor="#000000"
+        app:radius="6dp"
+        app:strokeColor="#FFF252"
+        app:strokeWidth="2dp">
+
+    </com.synnapps.carouselview.CarouselView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_weight="2">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wellcome"
+            android:textStyle="bold"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewDescription"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_weight="1">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center" >
+
+            <Button
+                android:text="@string/skip"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginLeft="60dp"
+                android:layout_marginStart="60dp"
+                android:background="@drawable/button"
+                android:textColor="@color/whitePrimary"
+                android:width="0dp"
+                app:layout_constraintVertical_bias="0.906"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center" >
+
+            <Button
+                android:text="Login"
+                android:background="@drawable/button"
+                android:textColor="@color/whitePrimary"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/button2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/button"
+                app:layout_constraintHorizontal_bias="0.668"
+                app:layout_constraintVertical_bias="0.905"/>
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+</LinearLayout>
