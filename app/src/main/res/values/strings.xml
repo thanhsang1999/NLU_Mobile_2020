@@ -23,6 +23,7 @@
     <string name="icon_user_description">icon user</string>
     <string name="icon_password_description">Icon password</string>
     <string name="sign_up">Sign up</string>
+    <string name="forgot">Forgot</string>
 
 
 </resources>

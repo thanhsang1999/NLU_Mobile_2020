@@ -21,5 +21,13 @@ public class LogInActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        TextView textViewForgot=findViewById(R.id.textViewForgot);
+        textViewForgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LogInActivity.this, ForgotActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
