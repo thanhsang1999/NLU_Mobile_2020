@@ -15,11 +15,12 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="7"
-        app:fillColor="#FFFFFF"
-        app:pageColor="#000000"
+        app:fillColor="#2980B9"
+        app:pageColor="#EEEEEE"
         app:radius="6dp"
-        app:strokeColor="#FFF252"
-        app:strokeWidth="2dp">
+
+
+        >
 
     </com.synnapps.carouselview.CarouselView>
     <LinearLayout

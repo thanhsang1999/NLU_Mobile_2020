@@ -12,13 +12,17 @@
     <string name="wellcome_2">Chia sẻ dữ lieu cho nhau một cách thuận tiện.</string>
     <string name="wellcome_3">Dễ dàng quản lý và thân thiện với người dùng.</string>
 
-<!--    LogIn Activity-->
+    <!--    LogIn Activity-->
     <string name="login_tiltle">Login</string>
     <string name="login_sub_tiltle">Please sign in continute.</string>
     <string name="username_tiltle">USERNAME</string>
-    <string name="username_hint">Username hint</string>
-
-
+    <string name="password_hint">Password</string>>
+    <string name="username_hint">Username</string>>
+    <string name="password_title">PASSWORD</string>
+    <string name="dont_account">Don\'t have an account?</string>
+    <string name="icon_user_description">icon user</string>
+    <string name="icon_password_description">Icon password</string>
+    <string name="sign_up">Sign up</string>
 
 
 </resources>
