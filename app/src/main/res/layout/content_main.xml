@@ -19,11 +19,4 @@
             app:defaultNavHost="true"
             app:navGraph="@navigation/mobile_navigation"
     />
-    <TextView
-            android:text="@string/title_activity_home"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/textView2"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="181dp"
-            android:layout_marginLeft="99dp" android:layout_marginStart="99dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
