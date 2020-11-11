@@ -16,14 +16,27 @@
     <string name="login_tiltle">Login</string>
     <string name="login_sub_tiltle">Please sign in continute.</string>
     <string name="username_tiltle">USERNAME</string>
-    <string name="password_hint">Password</string>>
-    <string name="username_hint">Username</string>>
+    <string name="password_hint">Password</string>
+    <string name="username_hint">Username</string>
     <string name="password_title">PASSWORD</string>
     <string name="dont_account">Don\'t have an account?</string>
+
     <string name="icon_user_description">icon user</string>
     <string name="icon_password_description">Icon password</string>
     <string name="sign_up">Sign up</string>
     <string name="forgot">Forgot</string>
+    <!--    Signup Activity-->
+    <string name="signup_title">Create Account</string>
+    <string name="email_title">Email</string>
+    <string name="email_hint">Email</string>
+    <string name="fullname_title">Full Name</string>
+    <string name="fullname_hint">Full Name</string>
+    <string name="confirm_password_hint">Confirm Password</string>
+    <string name="confirm_password_title">Confirm Password</string>
+    <string name="have_account">Already have a account?</string>
+    <string name="sign_in" >Sign in</string>
+
+
 
 
 </resources>
