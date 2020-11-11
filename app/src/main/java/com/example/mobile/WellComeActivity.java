@@ -55,7 +55,7 @@ public class WellComeActivity extends AppCompatActivity {
         buttonSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(WellComeActivity.this,HomeActivity.class);
+                Intent intent = new Intent(WellComeActivity.this, HomeActivity.class);
                 startActivity(intent);
             }
         });
