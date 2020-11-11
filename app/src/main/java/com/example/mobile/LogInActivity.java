@@ -6,16 +6,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class LogInActivity extends AppCompatActivity {
     ConnectionDatabase connectionDatabase;
+    EditText editTextUserName;
+    EditText editTextPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+        editTextUserName=findViewById(R.id.editTextUserName);
+        editTextPassword=findViewById(R.id.editTextPassword);
         TextView textViewSignUp=findViewById(R.id.textViewSignUp);
         textViewSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,10 +42,26 @@ public class LogInActivity extends AppCompatActivity {
         btn_log_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LogInActivity.this.connectionDatabase.insert_accounts(null);
+
                 String msg="Error";
+
+                String password = editTextPassword.getText().toString();
+
+                if(password.isEmpty()){
+                    msg="Password is invalid";
+                    Toast.makeText(LogInActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    return;
+
+                }
+                String username= editTextUserName.getText().toString();
+                if(username.isEmpty()){
+                    msg="Username is invalid";
+                    Toast.makeText(LogInActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    return;
+
+                }
                 try {
-                    if(LogInActivity.this.connectionDatabase.login("1", "1")){
+                    if(LogInActivity.this.connectionDatabase.login(username, password)){
                         msg="OK";
                     }
                 }
