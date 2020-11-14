@@ -21,12 +21,14 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 
 public class LogInActivity extends AppCompatActivity {
-    ConnectionDatabaseLocalMobile connectionDatabaseLocalMobile;
+
+    ConnectionWebService connectionWebService;
     EditText editTextUserName;
     EditText editTextPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
         editTextUserName=findViewById(R.id.editTextUserName);
@@ -47,59 +49,40 @@ public class LogInActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        connectionDatabaseLocalMobile = new ConnectionDatabaseLocalMobile(this);
+        connectionWebService = new ConnectionWebService(this);
         Button btn_log_in=findViewById(R.id.btn_log_in);
         btn_log_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getdata();
-//                String msg="Error";
-//
-//                String password = editTextPassword.getText().toString();
-//
-//                if(password.isEmpty()){
-//                    msg="Password is invalid";
-//                    Toast.makeText(LogInActivity.this, msg, Toast.LENGTH_SHORT).show();
-//                    return;
-//
-//                }
-//                String username= editTextUserName.getText().toString();
-//                if(username.isEmpty()){
-//                    msg="Username is invalid";
-//                    Toast.makeText(LogInActivity.this, msg, Toast.LENGTH_SHORT).show();
-//                    return;
-//
-//                }
-//                try {
-//                    if(LogInActivity.this.connectionDatabaseLocalMobile.login(username, password)){
-//                        msg="OK";
-//                    }
-//                }
-//                catch (Exception e){
-//
-//                }
-//                Toast.makeText(LogInActivity.this, msg, Toast.LENGTH_SHORT).show();
+
+                String msg="Error";
+
+                String password = editTextPassword.getText().toString();
+
+                if(password.isEmpty()){
+                    msg="Password is invalid";
+                    Toast.makeText(LogInActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    return;
+
+                }
+                String username= editTextUserName.getText().toString();
+                if(username.isEmpty()){
+                    msg="Username is invalid";
+                    Toast.makeText(LogInActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    return;
+
+                }
+                try {
+                    LogInActivity.this.connectionWebService.login(username, password);
+                }
+                catch (Exception e){
+
+                }
+
             }
         });
 
 
     }
-    private void getdata(){
-        String url="http://192.168.1.17/mobile/login.php";
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url,null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                Toast.makeText(LogInActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(LogInActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        requestQueue.add(jsonArrayRequest);
-
-    }
 }

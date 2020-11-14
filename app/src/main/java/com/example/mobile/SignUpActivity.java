@@ -16,11 +16,11 @@ public class SignUpActivity extends AppCompatActivity {
     EditText editTextPassword;
     EditText editTextEmail;
     EditText editTextConfirmPassword;
-    ConnectionDatabaseLocalMobile connectionDatabaseLocalMobile;
+    ConnectionWebService connectionWebService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        connectionDatabaseLocalMobile = new ConnectionDatabaseLocalMobile(this);
+        connectionWebService = new ConnectionWebService(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         TextView textViewSignIn=findViewById(R.id.textViewSignIn);
@@ -42,6 +42,7 @@ public class SignUpActivity extends AppCompatActivity {
         btn_sign_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                
                 String msg="";
                 String password = editTextPassword.getText().toString();
                 String confirm= editTextConfirmPassword.getText().toString();
@@ -76,14 +77,13 @@ public class SignUpActivity extends AppCompatActivity {
                 ;
                 msg="Error";
                 try {
-                    if(SignUpActivity.this.connectionDatabaseLocalMobile.insert_accounts(account)){
-                        msg="OK";
-                    }
+                    SignUpActivity.this.connectionWebService.insert_accounts(account);
+
                 }
                 catch (Exception e){
 
                 }
-                Toast.makeText(SignUpActivity.this, msg, Toast.LENGTH_SHORT).show();
+
 
 
             }
