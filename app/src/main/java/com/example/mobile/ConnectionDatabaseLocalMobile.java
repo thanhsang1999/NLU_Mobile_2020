@@ -7,10 +7,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-public class ConnectionDatabase {
+public class ConnectionDatabaseLocalMobile {
     private Activity activity;
     private SQLiteDatabase sqLiteDatabase;
-    public ConnectionDatabase(Activity activity) {
+    public ConnectionDatabaseLocalMobile(Activity activity) {
         this.activity=activity;
 
 

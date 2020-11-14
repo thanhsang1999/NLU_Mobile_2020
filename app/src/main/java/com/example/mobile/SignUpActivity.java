@@ -16,11 +16,11 @@ public class SignUpActivity extends AppCompatActivity {
     EditText editTextPassword;
     EditText editTextEmail;
     EditText editTextConfirmPassword;
-    ConnectionDatabase connectionDatabase;
+    ConnectionDatabaseLocalMobile connectionDatabaseLocalMobile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        connectionDatabase = new ConnectionDatabase(this);
+        connectionDatabaseLocalMobile = new ConnectionDatabaseLocalMobile(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         TextView textViewSignIn=findViewById(R.id.textViewSignIn);
@@ -76,7 +76,7 @@ public class SignUpActivity extends AppCompatActivity {
                 ;
                 msg="Error";
                 try {
-                    if(SignUpActivity.this.connectionDatabase.insert_accounts(account)){
+                    if(SignUpActivity.this.connectionDatabaseLocalMobile.insert_accounts(account)){
                         msg="OK";
                     }
                 }

@@ -4,14 +4,24 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+
 public class LogInActivity extends AppCompatActivity {
-    ConnectionDatabase connectionDatabase;
+    ConnectionDatabaseLocalMobile connectionDatabaseLocalMobile;
     EditText editTextUserName;
     EditText editTextPassword;
 
@@ -37,41 +47,59 @@ public class LogInActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        connectionDatabase = new ConnectionDatabase(this);
+        connectionDatabaseLocalMobile = new ConnectionDatabaseLocalMobile(this);
         Button btn_log_in=findViewById(R.id.btn_log_in);
         btn_log_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String msg="Error";
-
-                String password = editTextPassword.getText().toString();
-
-                if(password.isEmpty()){
-                    msg="Password is invalid";
-                    Toast.makeText(LogInActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    return;
-
-                }
-                String username= editTextUserName.getText().toString();
-                if(username.isEmpty()){
-                    msg="Username is invalid";
-                    Toast.makeText(LogInActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    return;
-
-                }
-                try {
-                    if(LogInActivity.this.connectionDatabase.login(username, password)){
-                        msg="OK";
-                    }
-                }
-                catch (Exception e){
-
-                }
-                Toast.makeText(LogInActivity.this, msg, Toast.LENGTH_SHORT).show();
+                getdata();
+//                String msg="Error";
+//
+//                String password = editTextPassword.getText().toString();
+//
+//                if(password.isEmpty()){
+//                    msg="Password is invalid";
+//                    Toast.makeText(LogInActivity.this, msg, Toast.LENGTH_SHORT).show();
+//                    return;
+//
+//                }
+//                String username= editTextUserName.getText().toString();
+//                if(username.isEmpty()){
+//                    msg="Username is invalid";
+//                    Toast.makeText(LogInActivity.this, msg, Toast.LENGTH_SHORT).show();
+//                    return;
+//
+//                }
+//                try {
+//                    if(LogInActivity.this.connectionDatabaseLocalMobile.login(username, password)){
+//                        msg="OK";
+//                    }
+//                }
+//                catch (Exception e){
+//
+//                }
+//                Toast.makeText(LogInActivity.this, msg, Toast.LENGTH_SHORT).show();
             }
         });
 
+
+    }
+    private void getdata(){
+        String url="http://192.168.1.17/mobile/login.php";
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url,null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                Toast.makeText(LogInActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(LogInActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(jsonArrayRequest);
 
     }
 }
