@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,12 +18,15 @@ public class SignUpActivity extends AppCompatActivity {
     EditText editTextEmail;
     EditText editTextConfirmPassword;
     ConnectionWebService connectionWebService;
+    private ProgressBar spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         connectionWebService = new ConnectionWebService(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        spinner = (ProgressBar)findViewById(R.id.progressBar);
+        spinner.setVisibility(View.GONE);
         TextView textViewSignIn=findViewById(R.id.textViewSignIn);
         textViewSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,5 +92,12 @@ public class SignUpActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+    public void loading(View view){
+        spinner.setVisibility(View.VISIBLE);
+    }
+    public void loading_complete(View view){
+        spinner.setVisibility(View.INVISIBLE);
     }
 }

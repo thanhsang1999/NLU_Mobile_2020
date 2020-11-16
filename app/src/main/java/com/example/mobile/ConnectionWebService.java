@@ -2,6 +2,7 @@ package com.example.mobile;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
 import android.widget.Toast;
@@ -49,6 +50,7 @@ public class ConnectionWebService {
                         JSONArray jsonArray = new JSONArray(response.toString());
                         if (jsonArray.length() != 1) {
                             String msg = "Tài khoản không hợp lệ.";
+                            logInActivity.loading_complete(null);
                             Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
                             Log.e("Error", msg);
                             return;
@@ -62,6 +64,9 @@ public class ConnectionWebService {
                             logInActivity.loading_complete(null);
                             Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
                             Log.e("Success", msg);
+                            Intent intent = new Intent(activity, HomeActivity.class);
+
+                            activity.startActivity(intent);
 
                         }
                     } catch (JSONException e) {
@@ -74,7 +79,7 @@ public class ConnectionWebService {
                 @Override
                 public void onErrorResponse(VolleyError error) {
 
-                    String msg="Kết nối mạng bị lỗi.";
+                    String msg = "Kết nối mạng bị lỗi.";
                     Log.e("Error", error.toString());
                     logInActivity.loading_complete(null);
                     Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
@@ -100,52 +105,69 @@ public class ConnectionWebService {
     }
 
     public void insert_accounts(final Account account) {
-        String url = Config.getURL() + "signup.php";
+        if (activity instanceof SignUpActivity) {
+            final SignUpActivity signUpActivity = (SignUpActivity) activity;
+            signUpActivity.loading(null);
+            String url = Config.getURL() + "signup.php";
 
 
-        final RequestQueue requestQueue = Volley.newRequestQueue(activity);
+            final RequestQueue requestQueue = Volley.newRequestQueue(activity);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                String msg = "";
-                if (response.toString().trim().equals("OK")) {
-                    msg = "Đăng ký thành công";
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    String msg = "";
+                    if (response.toString().trim().equals("OK")) {
+                        msg = "Đăng ký thành công";
+                        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+                        Log.e("Succuss", msg);
+
+                        signUpActivity.loading_complete(null);
+                        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(activity, HomeActivity.class);
+
+                        activity.startActivity(intent);
+
+                    } else if (response.toString().trim().equals("Error")) {
+                        msg = "Đăng ký không thành công";
+                        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+                        Log.e("Error", msg);
+
+                        Log.e("Error", msg.toString());
+                        signUpActivity.loading_complete(null);
+                        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+
+                    }
+
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    String msg = "Kết nối mạng bị lỗi.";
+                    Log.e("Error", error.toString());
+                    signUpActivity.loading_complete(null);
                     Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
-                    Log.e("Succuss", msg);
 
-                } else if (response.toString().trim().equals("Error")) {
-                    msg = "Đăng ký không thành công";
-                    Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
-                    Log.e("Error", msg);
+                }
+            }) {
 
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("username", account.getUsername());
+                    params.put("password", account.getPassword());
+                    params.put("fullname", account.getFullname());
+                    params.put("email", account.getEmail());
+
+                    return params;
                 }
 
 
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(activity, error.toString(), Toast.LENGTH_SHORT).show();
-                Log.e("Error", error.toString());
-
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("username", account.getUsername());
-                params.put("password", account.getPassword());
-                params.put("fullname", account.getFullname());
-                params.put("email", account.getEmail());
-
-                return params;
-            }
-
-
-        };
-        requestQueue.add(stringRequest);
+            };
+            requestQueue.add(stringRequest);
+        }
 
     }
 
