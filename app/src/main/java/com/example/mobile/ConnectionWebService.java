@@ -30,71 +30,77 @@ public class ConnectionWebService {
         this.activity = activity;
     }
 
-    public void login(final String username, final String password){
-        String url=Config.getURL()+"login.php";
+    public void login(final String username, final String password) {
+        if (activity instanceof LogInActivity) {
+            final LogInActivity logInActivity = (LogInActivity) activity;
+            logInActivity.loading(null);
+            String url = Config.getURL() + "login.php";
 
 
+            RequestQueue requestQueue = Volley.newRequestQueue(activity);
 
-        RequestQueue requestQueue = Volley.newRequestQueue(activity);
-
-        StringRequest jsonArrayRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
+            StringRequest jsonArrayRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
 
 
-                try {
+                    try {
 //                    Log.e("Error", response.toString());
-                    JSONArray jsonArray = new JSONArray(response.toString());
-                    if(jsonArray.length()!=1){
-                        String msg="Tài khoản không hợp lệ.";
-                        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
-                        Log.e("Error", msg);
-                        return ;
-                    }
-                    for(int i=0; i<jsonArray.length();i++){
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        Account account= new Account(jsonObject.getString("Username"),
-                                jsonObject.getString("Fullname"),jsonObject.getString("Email"),jsonObject.getString("Password")
-                                );
-                        String msg="Đăng nhập thành công.";
-                        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
-                        Log.e("Success", msg);
+                        JSONArray jsonArray = new JSONArray(response.toString());
+                        if (jsonArray.length() != 1) {
+                            String msg = "Tài khoản không hợp lệ.";
+                            Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+                            Log.e("Error", msg);
+                            return;
+                        }
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            Account account = new Account(jsonObject.getString("Username"),
+                                    jsonObject.getString("Fullname"), jsonObject.getString("Email"), jsonObject.getString("Password")
+                            );
+                            String msg = "Đăng nhập thành công.";
+                            logInActivity.loading_complete(null);
+                            Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+                            Log.e("Success", msg);
 
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    String msg="Kết nối mạng bị lỗi.";
+                    Log.e("Error", error.toString());
+                    logInActivity.loading_complete(null);
+                    Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+
+                }
+            }) {
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("username", username);
+                    params.put("password", password);
+
+                    return params;
                 }
 
 
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(activity, error.toString(), Toast.LENGTH_SHORT).show();
-                Log.e("Error", error.toString());
-
-            }
-        }){
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("username", username);
-                params.put("password", password);
-
-                return params;
-            }
-
-
-        };
-        requestQueue.add(jsonArrayRequest);
-
+            };
+            requestQueue.add(jsonArrayRequest);
+        }
 
 
     }
-    public void insert_accounts(final Account account){
-        String url=Config.getURL()+"signup.php";
 
+    public void insert_accounts(final Account account) {
+        String url = Config.getURL() + "signup.php";
 
 
         final RequestQueue requestQueue = Volley.newRequestQueue(activity);
@@ -102,15 +108,14 @@ public class ConnectionWebService {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                String msg="";
-                if(response.toString().trim().equals("OK")){
-                    msg="Đăng ký thành công";
+                String msg = "";
+                if (response.toString().trim().equals("OK")) {
+                    msg = "Đăng ký thành công";
                     Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
                     Log.e("Succuss", msg);
 
-                }
-                else   if(response.toString().trim().equals("Error")){
-                    msg="Đăng ký không thành công";
+                } else if (response.toString().trim().equals("Error")) {
+                    msg = "Đăng ký không thành công";
                     Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
                     Log.e("Error", msg);
 
@@ -125,7 +130,7 @@ public class ConnectionWebService {
                 Log.e("Error", error.toString());
 
             }
-        }){
+        }) {
 
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
@@ -143,11 +148,12 @@ public class ConnectionWebService {
         requestQueue.add(stringRequest);
 
     }
-    private void getdata(String url){
+
+    private void getdata(String url) {
 
         RequestQueue requestQueue = Volley.newRequestQueue(activity);
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url,null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 Toast.makeText(activity, response.toString(), Toast.LENGTH_SHORT).show();

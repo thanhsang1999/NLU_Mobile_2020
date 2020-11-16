@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ public class LogInActivity extends AppCompatActivity {
     ConnectionWebService connectionWebService;
     EditText editTextUserName;
     EditText editTextPassword;
+    private ProgressBar spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,8 @@ public class LogInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_log_in);
         editTextUserName=findViewById(R.id.editTextUserName);
         editTextPassword=findViewById(R.id.editTextPassword);
+        spinner = (ProgressBar)findViewById(R.id.progressBar);
+        spinner.setVisibility(View.GONE);
         TextView textViewSignUp=findViewById(R.id.textViewSignUp);
         textViewSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +58,7 @@ public class LogInActivity extends AppCompatActivity {
         btn_log_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
 
                 String msg="Error";
 
@@ -83,6 +88,12 @@ public class LogInActivity extends AppCompatActivity {
         });
 
 
+    }
+    public void loading(View view){
+        spinner.setVisibility(View.VISIBLE);
+    }
+    public void loading_complete(View view){
+        spinner.setVisibility(View.INVISIBLE);
     }
 
 }
