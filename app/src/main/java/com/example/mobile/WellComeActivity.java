@@ -54,7 +54,9 @@ public class WellComeActivity extends AppCompatActivity {
         btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(WellComeActivity.this, HomeActivity.class);
 
+                startActivity(intent);
             }
         });
         Button btnLogIn = findViewById(R.id.btn_log_in);
