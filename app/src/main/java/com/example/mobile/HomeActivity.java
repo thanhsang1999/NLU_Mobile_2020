@@ -19,7 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 public class HomeActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-
+    View navFooter1,navFooter2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +46,24 @@ public class HomeActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        navFooter1 = findViewById(R.id.footer_item_1);
+        navFooter1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer.closeDrawers();
+                Toast.makeText(HomeActivity.this, "test 1", Toast.LENGTH_SHORT).show();
+            }
+        });
+        navFooter2 = findViewById(R.id.footer_item_2);
+        navFooter2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Do footer action
+                drawer.closeDrawers();
+                Toast.makeText(HomeActivity.this, "test 2", Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
     @Override
