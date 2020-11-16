@@ -18,10 +18,12 @@ public class WellComeActivity extends AppCompatActivity {
 //    String [] titles={getString(R.string.wellcome),getString(R.string.wellcome_1),getString(R.string.wellcome_2),getString(R.string.wellcome_3)};
     int [] titleImages ={R.string.wellcome_1,R.string.wellcome_2,R.string.wellcome_3};
     TextView textViewDescription;
+    Button buttonSkip;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_well_come);
+        init();
         CarouselView carouselView = findViewById(R.id.carousel);
         carouselView.setPageCount(image.length);
         textViewDescription= findViewById(R.id.textViewDescription);
@@ -50,12 +52,10 @@ public class WellComeActivity extends AppCompatActivity {
 
             }
         });
-        Button btnSkip = findViewById(R.id.btn_skip);
-        btnSkip.setOnClickListener(new View.OnClickListener() {
+        buttonSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(WellComeActivity.this, HomeActivity.class);
-
                 startActivity(intent);
             }
         });
@@ -70,5 +70,9 @@ public class WellComeActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void init() {
+        buttonSkip = findViewById(R.id.btn_skip);
     }
 }

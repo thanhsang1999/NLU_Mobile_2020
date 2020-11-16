@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <item android:title="Notebook">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                        android:id="@+id/nav_home"
+                        android:icon="@drawable/ic_main"
+                        android:title="Chính" />
+                <item
+                        android:id="@+id/nav_gallery"
+                        android:icon="@drawable/ic_important"
+                        android:title="Quang Trọng" />
+                <item
+                        android:id="@+id/nav_slideshow"
+                        android:icon="@drawable/ic_all"
+                        android:title="Tất Cả" />
+                <item
+                        android:id="@+id/nav_slideshow2"
+                        android:icon="@drawable/ic_recive"
+                        android:title="Được Nhận" />
+                <item
+                        android:id="@+id/footer_spacer_1"
+                        android:checkable="false"
+                        android:enabled="false"
+                        android:orderInCategory="200"
+                        android:title="" />
+                <item
+                        android:id="@+id/footer_spacer_2"
+                        android:checkable="false"
+                        android:enabled="false"
+                        android:orderInCategory="200"
+                        android:title="" />
+            </group>
+        </menu>
+    </item>
+</menu>
