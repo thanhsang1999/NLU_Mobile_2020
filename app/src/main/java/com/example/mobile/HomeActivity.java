@@ -1,5 +1,6 @@
 package com.example.mobile;
 
+<<<<<<< HEAD
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
@@ -20,10 +21,19 @@ public class HomeActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     View navFooter1,navFooter2;
+=======
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+
+public class HomeActivity extends AppCompatActivity {
+
+>>>>>>> c19cbc3057d77590e03bc3011761ffa324200e1a
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+<<<<<<< HEAD
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -79,5 +89,7 @@ public class HomeActivity extends AppCompatActivity {
         Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show();
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+=======
+>>>>>>> c19cbc3057d77590e03bc3011761ffa324200e1a
     }
 }

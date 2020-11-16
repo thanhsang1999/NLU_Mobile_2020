@@ -56,6 +56,10 @@ public class WellComeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(WellComeActivity.this, HomeActivity.class);
+<<<<<<< HEAD
+=======
+
+>>>>>>> c19cbc3057d77590e03bc3011761ffa324200e1a
                 startActivity(intent);
             }
         });

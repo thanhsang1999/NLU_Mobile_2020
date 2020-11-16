@@ -4,18 +4,35 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+
 public class LogInActivity extends AppCompatActivity {
-    ConnectionDatabase connectionDatabase;
+
+    ConnectionWebService connectionWebService;
+    EditText editTextUserName;
+    EditText editTextPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+        editTextUserName=findViewById(R.id.editTextUserName);
+        editTextPassword=findViewById(R.id.editTextPassword);
         TextView textViewSignUp=findViewById(R.id.textViewSignUp);
         textViewSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,25 +49,40 @@ public class LogInActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        connectionDatabase = new ConnectionDatabase(this);
+        connectionWebService = new ConnectionWebService(this);
         Button btn_log_in=findViewById(R.id.btn_log_in);
         btn_log_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LogInActivity.this.connectionDatabase.insert_accounts(null);
+
                 String msg="Error";
+
+                String password = editTextPassword.getText().toString();
+
+                if(password.isEmpty()){
+                    msg="Password is invalid";
+                    Toast.makeText(LogInActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    return;
+
+                }
+                String username= editTextUserName.getText().toString();
+                if(username.isEmpty()){
+                    msg="Username is invalid";
+                    Toast.makeText(LogInActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    return;
+
+                }
                 try {
-                    if(LogInActivity.this.connectionDatabase.login("1", "1")){
-                        msg="OK";
-                    }
+                    LogInActivity.this.connectionWebService.login(username, password);
                 }
                 catch (Exception e){
 
                 }
-                Toast.makeText(LogInActivity.this, msg, Toast.LENGTH_SHORT).show();
+
             }
         });
 
 
     }
+
 }

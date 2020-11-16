@@ -5,11 +5,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
-public class ConnectionDatabase {
+public class ConnectionDatabaseLocalMobile {
     private Activity activity;
     private SQLiteDatabase sqLiteDatabase;
-    public ConnectionDatabase(Activity activity) {
+    public ConnectionDatabaseLocalMobile(Activity activity) {
         this.activity=activity;
 
 
@@ -52,16 +53,17 @@ public class ConnectionDatabase {
         String columnName[]={"username","password"};
 
         Cursor cursor= this.sqLiteDatabase.query("tblaccounts",
-                columnName,null, null, null, null, null
+                columnName,"username = ? and password =? ", new String[]{username, password}, null, null, null
                 );
         if(cursor!=null){
             cursor.moveToFirst();
 
         }
+        Log.e("Error", cursor.getCount()+"");
         return cursor.getCount()==1;
     }
     public boolean insert_accounts(Account account){
-        account = new Account("1","1","1","1");
+
         prepare();
         ContentValues values = new ContentValues();
         values.put("username",account.getUsername());
