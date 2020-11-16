@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,12 +20,15 @@ public class SignUpActivity extends AppCompatActivity {
     EditText editTextConfirmPassword;
     ConnectionWebService connectionWebService;
     private ProgressBar spinner;
+    ImageView backArrow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         connectionWebService = new ConnectionWebService(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        as();
         spinner = (ProgressBar)findViewById(R.id.progressBar);
         spinner.setVisibility(View.GONE);
         TextView textViewSignIn=findViewById(R.id.textViewSignIn);
@@ -35,12 +39,15 @@ public class SignUpActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
-        editTextFullName=findViewById(R.id.editTextFullName);
-        editTextEmail=findViewById(R.id.editTextEmail);
-        editTextUserName=findViewById(R.id.editTextUserName);
-        editTextPassword=findViewById(R.id.editTextPassword);
-        editTextConfirmPassword=findViewById(R.id.editTextConfirmPassword);
+
+
 
         Button btn_sign_up=findViewById(R.id.btn_sign_up);
         btn_sign_up.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +101,15 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
     }
+    public void as(){
+        backArrow=(ImageView) findViewById(R.id.backArrow);
+        editTextFullName=findViewById(R.id.editTextFullName);
+        editTextEmail=findViewById(R.id.editTextEmail);
+        editTextUserName=findViewById(R.id.editTextUserName);
+        editTextPassword=findViewById(R.id.editTextPassword);
+        editTextConfirmPassword=findViewById(R.id.editTextConfirmPassword);
+    }
+
     public void loading(View view){
         spinner.setVisibility(View.VISIBLE);
     }
