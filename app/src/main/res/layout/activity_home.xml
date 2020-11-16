@@ -99,6 +99,7 @@
             app:itemTextAppearance="@style/NavigationDrawerStyle"
             app:menu="@menu/activity_main_drawer">
         <LinearLayout
+                android:layout_marginLeft="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
@@ -106,17 +107,21 @@
                 android:orientation="vertical">
             <TextView
                     android:drawableLeft="@drawable/ic_trash"
+                    android:drawablePadding="20dp"
                     android:id="@+id/footer_item_1"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:layout_gravity="bottom"
+                    android:gravity="center_vertical"
+                    android:textAppearance="@style/NavigationDrawerStyle"
                     android:text="Đã Xóa" />
             <TextView
                     android:drawableLeft="@drawable/ic_setting"
+                    android:drawablePadding="20dp"
                     android:id="@+id/footer_item_2"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
+                    android:textAppearance="@style/NavigationDrawerStyle"
                     android:text="Cài Đặt" />
         </LinearLayout>
     </com.google.android.material.navigation.NavigationView>
