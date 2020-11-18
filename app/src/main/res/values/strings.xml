@@ -44,12 +44,19 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
+    <!-- Home Fragment -->
 
     <string name="menu_home">Home</string>
+    <string name="tab_note_title">NoteBooks</string>
+    <string name="show_all">Show All</string>
+    <string name="create_note">Create Notebook</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login">Login</string>
+    <string name="back_description">Back Desciption</string>
+
 
 
 </resources>
