@@ -74,6 +74,7 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:padding="5dp"
+
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textViewTitleFullName"
 
@@ -169,8 +170,8 @@
 
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:contentDescription="@string/icon_password_description"
-                app:srcCompat="@drawable/ic_password"
+                android:contentDescription="@string/icon_email_description"
+                app:srcCompat="@drawable/ic_email"
                 tools:ignore="VectorDrawableCompat" />
 
             <EditText
@@ -401,6 +402,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="0dp"
         android:layout_marginBottom="0dp"
+        android:visibility="invisible"
         app:layout_constraintTop_toBottomOf="@id/guidelineHorizontal"
         app:layout_constraintLeft_toRightOf="@id/guidelineVertival" />
 
