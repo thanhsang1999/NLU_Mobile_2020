@@ -44,79 +44,21 @@
 
     </LinearLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
 
-        android:layout_marginTop="10dp"
+    <GridView
+        android:id="@+id/gridView"
+        android:numColumns="3"
+
+        android:columnWidth="70dp"
+        android:stretchMode="columnWidth"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearlayout_header"
-        app:layout_constraintVertical_bias="1.0"
-        tools:layout_editor_absoluteX="99dp">
 
-        <GridLayout
-            android:id="@+id/grid_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:alignmentMode="alignMargins"
-            android:columnCount="3"
-            android:useDefaultMargins="true">
+        android:layout_width="match_parent"
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:cardElevation="0dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-
-                    android:drawablePadding="5dp"
-                    android:text="@string/create_note"
-                    android:textAlignment="center"
-                    android:textSize="16sp"
-                    app:drawableTopCompat="@drawable/ic_add_note" />
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:cardElevation="0dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-
-                    android:drawablePadding="5dp"
-                    android:text="@string/create_note"
-                    android:textAlignment="center"
-                    android:textSize="16sp"
-                    app:drawableTopCompat="@drawable/ic_green" />
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:cardElevation="0dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-
-                    android:drawablePadding="5dp"
-                    android:text="@string/create_note"
-                    android:textAlignment="center"
-                    android:textSize="16sp"
-                    app:drawableTopCompat="@drawable/ic_blue" />
-            </androidx.cardview.widget.CardView>
+        android:layout_height="0dp" />
 
 
-        </GridLayout>
 
-    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
