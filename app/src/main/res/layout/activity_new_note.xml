@@ -6,7 +6,7 @@
         android:background="@color/whitePrimary"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".NewNoteActivity" android:focusableInTouchMode="true">
+        tools:context=".NewNoteActivity" android:focusableInTouchMode="true" android:id="@+id/mainLayout">
 
     <com.google.android.material.appbar.AppBarLayout
             android:layout_height="wrap_content"
@@ -28,9 +28,10 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintVertical_bias="1.0"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout2">
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout2" android:id="@+id/contentLayout">
         <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
+                app:hintTextColor="@color/bluePrimary"
                 android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
                 android:id="@+id/textInputLayout" android:layout_marginLeft="16dp" android:layout_marginStart="16dp"
@@ -42,7 +43,9 @@
                     android:hint="Tiêu Đề" android:focusable="true"
                     android:textCursorDrawable="@drawable/ic_cursor"
                     android:id="@+id/editTextTitle" android:background="@null"/>
+
         </com.google.android.material.textfield.TextInputLayout>
+
         <EditText
                 android:layout_width="0dp"
                 android:layout_height="0dp"
