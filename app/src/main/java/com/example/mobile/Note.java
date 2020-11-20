@@ -3,6 +3,7 @@ package com.example.mobile;
 import java.util.Date;
 
 public class Note {
+    
     int level;
     String name;
     String content;
