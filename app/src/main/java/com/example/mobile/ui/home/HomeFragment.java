@@ -4,15 +4,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
+
 import android.widget.GridView;
-import android.widget.TextView;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
+
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
+
 
 import com.example.mobile.HomeItemAdapter;
 import com.example.mobile.Note;
@@ -37,7 +37,8 @@ public class HomeFragment extends Fragment {
         notes.add(new Note(2,"Two", "....................", new Date(), new Date()));
 
 
-        gridView.setAdapter(new HomeItemAdapter(this.getActivity(), notes));
+        gridView.setAdapter(new HomeItemAdapter(this, notes));
+
 
 //        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
 //            @Override
