@@ -27,14 +27,14 @@ public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
-            ViewGroup container, Bundle savedInstanceState) {
+                             ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new
                 ViewModelProvider(this.requireActivity()).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         final GridView gridView = root.findViewById(R.id.gridView);
-        List<Note> notes= new ArrayList<>();
-        notes.add(new Note(1,"One", "....................", new Date(), new Date()));
-        notes.add(new Note(2,"Two", "....................", new Date(), new Date()));
+        List<Note> notes = new ArrayList<>();
+        notes.add(new Note(1, "One", "....................", new Date(), new Date()));
+        notes.add(new Note(2, "Two", "....................", new Date(), new Date()));
 
 
         gridView.setAdapter(new HomeItemAdapter(this, notes));
