@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    <color name="bluePrimary">#3498db</color>
+    <color name="blueSecond">#2980b9</color>
+    <color name="black">#000</color>
+    <color name="blackPrimary">#2c3e50</color>
+    <color name="blackSecond">#34495e</color>
+    <color name="whitePrimary">#fff</color>
+    <color name="graySearch">#E4E4E5</color>
+<!--    <color name="blueSecond">#2980b9</color>-->
+<!--    <color name="bluePrimary">#3498db</color>-->
+<!--    <color name="blueSecond">#2980b9</color>-->
+</resources>
