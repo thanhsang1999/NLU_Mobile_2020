@@ -106,7 +106,7 @@
             android:id="@+id/textViewTitleUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/fullname_title"
+            android:text="@string/username_tiltle"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="@id/layoutFieldFullName"
             app:layout_constraintTop_toBottomOf="@id/layoutFieldFullName" />
