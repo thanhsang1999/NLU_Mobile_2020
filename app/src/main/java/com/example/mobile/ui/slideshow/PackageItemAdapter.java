@@ -1,10 +1,13 @@
 package com.example.mobile.ui.slideshow;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
@@ -75,9 +78,15 @@ public class PackageItemAdapter extends BaseAdapter {
                 viewHolder.textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        MyModal myModal = new MyModal();
-                        
-                        myModal.show(fragment.getParentFragmentManager(), "bottom");
+//                        MyModal myModal = new MyModal();
+//                        CreatePackageDialogFragment myModal = new CreatePackageDialogFragment();
+                        final Dialog dialog = new Dialog(fragment.getActivity());
+                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        dialog.setContentView(R.layout.create_packed);
+
+                        dialog.show();
+//                        myModal.getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
                     }
                 });
