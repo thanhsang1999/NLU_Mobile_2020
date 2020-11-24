@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.mobile.model.Account;
+
 public class ConnectionDatabaseLocalMobile {
     private Activity activity;
     private SQLiteDatabase sqLiteDatabase;

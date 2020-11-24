@@ -6,8 +6,6 @@ import android.os.Bundle;
 
 import android.widget.ProgressBar;
 
-import com.example.mobile.ui.home.MyModal;
-
 public class TestActivity extends AppCompatActivity {
     private ProgressBar spinner;
     @Override

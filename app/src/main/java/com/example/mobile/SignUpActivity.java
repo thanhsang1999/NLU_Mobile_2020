@@ -12,6 +12,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mobile.model.Account;
+
 public class SignUpActivity extends AppCompatActivity {
     EditText editTextFullName;
     EditText editTextUserName;

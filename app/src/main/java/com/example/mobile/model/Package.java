@@ -1,20 +1,20 @@
-package com.example.mobile;
+package com.example.mobile.model;
 
 import java.util.Date;
 
-public class Note {
+public class Package {
     
     int level;
     String name;
     String content;
     Date dateCreate;
     Date lastEdit;
-    public Note(int level, String name){
+    public Package(int level, String name){
         this.level = level;
         this.name=name;
 
     }
-    public Note(int level, String name, String content, Date dateCreate, Date lastEdit) {
+    public Package(int level, String name, String content, Date dateCreate, Date lastEdit) {
         this.level = level;
         this.name = name;
         this.content = content;

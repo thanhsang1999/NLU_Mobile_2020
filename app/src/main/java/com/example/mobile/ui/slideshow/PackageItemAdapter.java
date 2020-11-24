@@ -1,7 +1,6 @@
-package com.example.mobile;
+package com.example.mobile.ui.slideshow;
 
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,22 +10,21 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.mobile.ui.home.MyModal;
+import com.example.mobile.model.Package;
+import com.example.mobile.R;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-public class HomeItemAdapter extends BaseAdapter {
+public class PackageItemAdapter extends BaseAdapter {
 
-    private List<Note> _items;
+    private List<Package> _items;
     Activity activity;
     Fragment fragment;
-    public HomeItemAdapter(Fragment fragment, List<Note> notes){
+    public PackageItemAdapter(Fragment fragment, List<Package> aPackages){
         this._items = new ArrayList<>();
-        this._items.add(new Note(0, "Create Note"));
-        this._items.addAll(notes);
+        this._items.add(new Package(0, "Create Note"));
+        this._items.addAll(aPackages);
         this.fragment = fragment;
         this.activity=fragment.getActivity();
 
@@ -49,7 +47,7 @@ public class HomeItemAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // 1
-        final Note book = _items.get(position);
+        final Package book = _items.get(position);
         ViewHolder viewHolder = null;
 
         // 2
