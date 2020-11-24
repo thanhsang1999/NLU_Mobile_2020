@@ -1,18 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="500dp"
+    android:layout_height="match_parent"
     android:orientation="vertical"
+
     android:background="@android:color/transparent"
-    android:gravity="center">
+    android:alpha="1"
+    android:id="@+id/contentPanel"
+    >
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+    <LinearLayout
+
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="40sp"
-        android:background="@color/bluePrimary"
+        android:background="@android:color/transparent"
+        android:gravity="center|top"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/package_image"
+                app:srcCompat="@drawable/ic_blue"
+                tools:ignore="VectorDrawableCompat" />
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="start|bottom"
+                android:id="@+id/picker"
+
+                android:contentDescription="@string/picker_description"
+                app:srcCompat="@drawable/ic_picker"
+                tools:ignore="VectorDrawableCompat" />
 
 
-        android:text="Wellcome" />
-</LinearLayout>
+        </FrameLayout>
+
+        <EditText
+            android:id="@+id/titlePackage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:autofillHints="no"
+            android:background="@android:color/transparent"
+
+            android:gravity="center"
+            android:hint="@string/packer_hint"
+            android:inputType="text"
+            android:labelFor="@+id/image"
+            android:textSize="40sp" />
+
+        <Button
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/button"
+            android:backgroundTint="@color/btnSave"
+            android:text="@string/btn_save"
+            android:textColor="@color/whitePrimary"
+            tools:targetApi="lollipop" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        android:layout_marginTop="50dp"
+        android:id="@+id/color_pick"
+        android:visibility="invisible"
+
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="4"
+            android:layout_gravity="center"
+            android:rowCount="3"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/package_image"
+                app:srcCompat="@drawable/ic_picker"
+                tools:ignore="VectorDrawableCompat" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/package_image"
+                app:srcCompat="@drawable/ic_picker"
+                tools:ignore="VectorDrawableCompat" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/package_image"
+                app:srcCompat="@drawable/ic_picker"
+                tools:ignore="VectorDrawableCompat" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+
+                android:layout_gravity="center"
+                android:contentDescription="@string/package_image"
+                app:srcCompat="@drawable/ic_picker"
+                tools:ignore="VectorDrawableCompat" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/package_image"
+                app:srcCompat="@drawable/ic_picker"
+                tools:ignore="VectorDrawableCompat" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/package_image"
+                app:srcCompat="@drawable/ic_picker"
+                tools:ignore="VectorDrawableCompat" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/package_image"
+                app:srcCompat="@drawable/ic_picker"
+                tools:ignore="VectorDrawableCompat" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/package_image"
+                app:srcCompat="@drawable/ic_picker"
+                tools:ignore="VectorDrawableCompat" />
+
+
+        </GridLayout>
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

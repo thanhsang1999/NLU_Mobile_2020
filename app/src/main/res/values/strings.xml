@@ -63,6 +63,14 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="login">Login</string>
     <string name="back_description">Back Desciption</string>
+    <string name="text_package_demo">Book 1</string>
+    <string name="string_text_package_demo">Book 1</string>
+    <string name="package_image">Package Image</string>
+    <string name="picker">Picker</string>
+    <string name="btn_save">Save</string>
+
+    <string name="picker_description">picker_description</string>
+    <string name="packer_hint"></string>
 
 
 </resources>
