@@ -65,6 +65,7 @@ public class ConnectionWebService {
                             Intent intent = new Intent(activity, HomeActivity.class);
 
                             activity.startActivity(intent);
+                            activity.finish();
 
                         }
                     } catch (JSONException e) {
@@ -125,6 +126,7 @@ public class ConnectionWebService {
                         Intent intent = new Intent(activity, HomeActivity.class);
 
                         activity.startActivity(intent);
+                        activity.finish();
 
                     } else if (response.toString().trim().equals("Error")) {
                         msg = "Đăng ký không thành công";

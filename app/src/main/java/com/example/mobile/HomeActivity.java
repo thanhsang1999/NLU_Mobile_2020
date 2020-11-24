@@ -7,6 +7,9 @@ import android.view.Menu;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -64,7 +67,37 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         NavigationBottom();
+
+
+
+        navigationBackPressed();
+
+
+
     }
+    private void navigationBackPressed(){
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                // Create YesNoDialogFragment
+                DialogFragment dialogFragment = new ExitConfirmDialogFragment();
+
+
+                // Arguments:
+                Bundle args = new Bundle();
+                args.putString(ExitConfirmDialogFragment.ARG_TITLE, "????");
+                args.putString(ExitConfirmDialogFragment.ARG_MESSAGE, "Do you want?");
+                dialogFragment.setArguments(args);
+
+                FragmentManager fragmentManager = HomeActivity.this.getSupportFragmentManager();
+
+                // Show:
+                dialogFragment.show(fragmentManager, "Dialog");
+            }
+        };
+        this.getOnBackPressedDispatcher().addCallback(this, callback);
+    }
+
 
     private void init() {
         toolbar = findViewById(R.id.toolbar);
