@@ -53,7 +53,7 @@ public class LogInActivity extends AppCompatActivity {
         textViewForgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LogInActivity.this, ForgotActivity.class);
+                Intent intent = new Intent(LogInActivity.this, ForgotPass1Activity.class);
                 startActivity(intent);
             }
         });
