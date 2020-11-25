@@ -4,30 +4,30 @@ import java.util.Date;
 
 public class Package {
     
-    int level;
+    String color;
     String name;
-    String content;
+
     Date dateCreate;
     Date lastEdit;
-    public Package(int level, String name){
-        this.level = level;
+    public Package(String color, String name){
+        this.color = color;
         this.name=name;
 
     }
-    public Package(int level, String name, String content, Date dateCreate, Date lastEdit) {
-        this.level = level;
+    public Package(String color, String name, Date dateCreate, Date lastEdit) {
+        this.color = color;
         this.name = name;
-        this.content = content;
+
         this.dateCreate = dateCreate;
         this.lastEdit = lastEdit;
     }
 
-    public int getLevel() {
-        return level;
+    public String getColor() {
+        return color;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public String getName() {
@@ -38,13 +38,7 @@ public class Package {
         this.name = name;
     }
 
-    public String getContent() {
-        return content;
-    }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
 
     public Date getDateCreate() {
         return dateCreate;

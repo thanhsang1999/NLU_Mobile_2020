@@ -30,8 +30,8 @@ public class SlideshowFragment extends Fragment {
 
         final GridView gridView = root.findViewById(R.id.gridView);
         List<Package> aPackages = new ArrayList<>();
-        aPackages.add(new Package(1, "One", "....................", new Date(), new Date()));
-        aPackages.add(new Package(2, "Two", "....................", new Date(), new Date()));
+        aPackages.add(new Package("color_blue", "One", new Date(), new Date()));
+        aPackages.add(new Package("color_green", "Two", new Date(), new Date()));
 
 
         gridView.setAdapter(new PackageItemAdapter(this, aPackages));

@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ import androidx.fragment.app.Fragment;
 import com.example.mobile.model.Package;
 import com.example.mobile.R;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -38,7 +40,7 @@ public class PackageItemAdapter extends BaseAdapter {
     Fragment fragment;
     public PackageItemAdapter(Fragment fragment, List<Package> aPackages){
         this._items = new ArrayList<>();
-        this._items.add(new Package(0, "Create Note"));
+        this._items.add(new Package("create_package", "Create Note"));
         this._items.addAll(aPackages);
         this.fragment = fragment;
         this.activity=fragment.getActivity();
@@ -84,8 +86,8 @@ public class PackageItemAdapter extends BaseAdapter {
 
 
 
-        switch (book.getLevel()){
-            case 0:
+        switch (book.getColor()){
+            case "create_package":
                 top = this.activity.getResources().getDrawable(R.drawable.ic_add_note);
                 viewHolder.textView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -97,6 +99,7 @@ public class PackageItemAdapter extends BaseAdapter {
                         final Dialog dialog = new Dialog(fragment.getActivity(), R.style.CustomDialogTheme);
                         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         dialog.setContentView(R.layout.create_packed);
+
 
 
 //                        View beneathView = fragment.getActivity().getWindow().getDecorView();
@@ -129,19 +132,145 @@ public class PackageItemAdapter extends BaseAdapter {
                             }
                         });
 
+                        ImageView drawablePackage= dialog.findViewById(R.id.drawable_package);
+                        EditText titlePackage= dialog.findViewById(R.id.titlePackage);
+
+
+                        dialog.findViewById(R.id.color_blue).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                drawablePackage.
+                                setImageDrawable(fragment.getResources().getDrawable(R.drawable.ic_package_blue));
+                                drawablePackage.setContentDescription("color_blue");
+                            }
+                        });
+                        dialog.findViewById(R.id.color_green).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                drawablePackage.
+                                setImageDrawable(fragment.getResources().getDrawable(R.drawable.ic_package_green));
+                                drawablePackage.setContentDescription("color_green");
+                            }
+                        });
+                        dialog.findViewById(R.id.color_blue_deep).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                drawablePackage.
+                                setImageDrawable(fragment.getResources().getDrawable(R.drawable.ic_package_blue_deep));
+                                drawablePackage.setContentDescription("color_blue_deep");
+                            }
+                        });
+                        dialog.findViewById(R.id.color_blue_green).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                drawablePackage.
+                                setImageDrawable(fragment.getResources().getDrawable(R.drawable.ic_package_blue_green));
+                                drawablePackage.setContentDescription("color_blue_green");
+                            }
+                        });
+
+                        dialog.findViewById(R.id.color_orange).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                drawablePackage.
+                                setImageDrawable(fragment.getResources().getDrawable(R.drawable.ic_package_orange));
+                                drawablePackage.setContentDescription("color_orange");
+                            }
+                        });
+
+                        dialog.findViewById(R.id.color_yellow).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                drawablePackage.
+                                setImageDrawable(fragment.getResources().getDrawable(R.drawable.ic_package_yellow));
+                                drawablePackage.setContentDescription("color_yellow");
+                            }
+                        });
+
+                        dialog.findViewById(R.id.color_red).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                drawablePackage.
+                                setImageDrawable(fragment.getResources().getDrawable(R.drawable.ic_package_red));
+                                drawablePackage.setContentDescription("color_green");
+                            }
+                        });
+
+                        dialog.findViewById(R.id.color_red_2).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                drawablePackage.
+                                setImageDrawable(fragment.getResources().getDrawable(R.drawable.ic_package_red_2));
+                                drawablePackage.setContentDescription("color_red_2");
+                            }
+                        });
+                        dialog.findViewById(R.id.color_red_origin).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                drawablePackage.
+                                setImageDrawable(fragment.getResources().getDrawable(R.drawable.ic_package_red_origin));
+                                drawablePackage.setContentDescription("color_red_origin");
+                            }
+                        });
+                        dialog.findViewById(R.id.color_purple).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                drawablePackage.
+                                setImageDrawable(fragment.getResources().getDrawable(R.drawable.ic_package_purple));
+                                drawablePackage.setContentDescription("color_purple");
+                            }
+                        });
+
+                        dialog.findViewById(R.id.color_purple_2).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                drawablePackage.
+                                setImageDrawable(fragment.getResources().getDrawable(R.drawable.ic_package_purple_2));
+                                drawablePackage.setContentDescription("color_purple_2");
+                            }
+                        });
+                        dialog.findViewById(R.id.color_purple_3).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                drawablePackage.
+                                setImageDrawable(fragment.getResources().getDrawable(R.drawable.ic_package_purple_3));
+                                drawablePackage.setContentDescription("color_purple_3");
+                            }
+                        });
+
+                        dialog.findViewById(R.id.btn_save).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                _items.add(new Package(drawablePackage.getContentDescription().toString(), titlePackage.getText().toString(), new Date(), new Date()));
+                                notifyDataSetChanged();
+                                dialog.cancel();
+                            }
+                        });
+
+
+
+
 
 
                     }
                 });
                 break;
-            case 1:
-                top = this.activity.getResources().getDrawable(R.drawable.ic_green);
+            case "color_green":
+                top = this.activity.getResources().getDrawable(R.drawable.ic_package_green);
                 break;
-            case 2:
-                top = this.activity.getResources().getDrawable(R.drawable.ic_blue);
+            case "color_blue_deep":
+                top = this.activity.getResources().getDrawable(R.drawable.ic_package_blue_deep);
+                break;
+             case "color_blue_green":
+                top = this.activity.getResources().getDrawable(R.drawable.ic_package_blue_green);
+                break;
+            case "color_blue":
+                top = this.activity.getResources().getDrawable(R.drawable.ic_package_blue);
                 break;
 
+
             default:
+                top = this.activity.getResources().getDrawable(R.drawable.ic_package_purple_3);
                 break;
         }
         viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(null, top , null, null);
