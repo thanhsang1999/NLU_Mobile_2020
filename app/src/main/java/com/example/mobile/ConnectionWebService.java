@@ -102,6 +102,47 @@ public class ConnectionWebService {
 
 
     }
+    public void alive() {
+        if (activity instanceof LogoActivity) {
+
+            String url = Config.getURL() + "alive.php";
+
+
+            RequestQueue requestQueue = Volley.newRequestQueue(activity);
+
+            StringRequest jsonArrayRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    if(response.toString().equals("alive")){
+                        Log.e("Connection", "OK");
+                        Intent intent = new Intent(activity, WellComeActivity.class);
+                        activity.startActivity(intent);
+                        activity.finish();
+                    }
+
+
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    String msg = "Kết nối mạng bị lỗi.";
+                    Log.e("Error", error.toString());
+
+                    Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(activity, HomeActivity.class);
+                    activity.startActivity(intent);
+                    activity.finish();
+
+                }
+            });
+            requestQueue.add(jsonArrayRequest);
+        }
+
+
+    }
 
     public void insert_accounts(final Account account) {
         if (activity instanceof SignUpActivity) {

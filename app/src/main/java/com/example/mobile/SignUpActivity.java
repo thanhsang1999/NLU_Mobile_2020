@@ -44,7 +44,7 @@ public class SignUpActivity extends AppCompatActivity {
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                Intent intent = new Intent(SignUpActivity.this, WellComeActivity.class);
+                Intent intent = new Intent(SignUpActivity.this, LogoActivity.class);
                 startActivity(intent);
                 finish();
             }
