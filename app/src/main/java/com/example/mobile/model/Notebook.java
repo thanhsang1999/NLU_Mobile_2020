@@ -11,6 +11,9 @@ public class Notebook {
     private Date dateCreate;
     private Date dateEdit;
 
+    public Notebook() {
+    }
+
     public Notebook(int id, String title, String content, int idPackage, Date dateCreate, Date dateEdit) {
         this.id = id;
         this.title = title;
