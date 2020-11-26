@@ -1,10 +1,6 @@
 package com.example.mobile;
 
 
-import android.app.ActionBar;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,10 +8,15 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 
 public class NewNoteActivity extends AppCompatActivity {
     EditText editTextTitle,editTextContent;
@@ -31,7 +32,19 @@ public class NewNoteActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         init();
+
         editTextContent.requestFocus();
+//        Cursor cursor = HomeActivity.sqLite.GetData("SELECT * FROM note");
+//        while (cursor.moveToNext()){
+//
+//        }
+        try {
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date date = dateFormat.parse("22/11/1999");
+            Toast.makeText(this, ""+date, Toast.LENGTH_SHORT).show();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
 
     }
@@ -41,6 +54,9 @@ public class NewNoteActivity extends AppCompatActivity {
         editTextContent = findViewById(R.id.editTextContent);
         Mainlayout = findViewById(R.id.mainLayout);
         contentLayout = findViewById(R.id.contentLayout);
+        HomeActivity.sqLite.QueryData("DROP TABLE IF EXISTS note");
+        HomeActivity.sqLite.QueryData("CREATE TABLE IF NOT EXISTS notebook (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,title TEXT,content TEXT,package integer DEFAULT 1,date_create TEXT,date_edit TEXT);");
+//        HomeActivity.sqLite.QueryData("INSERT INTO note VALUES (null,'hôm nay','Lorem Ipsum is simply','1','26/11/2020','26/11/2020');");
     }
 
     @Override

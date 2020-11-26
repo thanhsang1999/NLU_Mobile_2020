@@ -33,6 +33,7 @@ public class HomeActivity extends AppCompatActivity {
     Toolbar toolbar;
     FloatingActionButton fab;
     NavController navController;
+    static DBConnSQLite sqLite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +108,7 @@ public class HomeActivity extends AppCompatActivity {
         navFooter2 = findViewById(R.id.footer_item_2);
         navFooter1 = findViewById(R.id.footer_item_1);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        sqLite = new DBConnSQLite(this,R.string.app_name+".db",null,1);
     }
 
     private void NavigationBottom() {
