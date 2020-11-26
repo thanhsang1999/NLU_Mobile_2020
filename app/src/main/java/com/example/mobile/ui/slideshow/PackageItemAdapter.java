@@ -25,6 +25,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 
+import com.example.mobile.ConnectionDatabaseLocalMobile;
 import com.example.mobile.model.Package;
 import com.example.mobile.R;
 import java.util.ArrayList;
@@ -38,9 +39,11 @@ public class PackageItemAdapter extends BaseAdapter {
     private List<Package> _items;
     Activity activity;
     Fragment fragment;
+    ConnectionDatabaseLocalMobile c;
     public PackageItemAdapter(Fragment fragment, List<Package> aPackages){
+        c= new ConnectionDatabaseLocalMobile(fragment.getActivity());
         this._items = new ArrayList<>();
-        this._items.add(new Package("create_package", "Create Note"));
+        this._items.add(new Package("create_package", "Create Note", new Date(), new Date()));
         this._items.addAll(aPackages);
         this.fragment = fragment;
         this.activity=fragment.getActivity();
@@ -192,7 +195,7 @@ public class PackageItemAdapter extends BaseAdapter {
                             public void onClick(View v) {
                                 drawablePackage.
                                 setImageDrawable(fragment.getResources().getDrawable(R.drawable.ic_package_red));
-                                drawablePackage.setContentDescription("color_green");
+                                drawablePackage.setContentDescription("color_red");
                             }
                         });
 
@@ -241,7 +244,9 @@ public class PackageItemAdapter extends BaseAdapter {
                         dialog.findViewById(R.id.btn_save).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                _items.add(new Package(drawablePackage.getContentDescription().toString(), titlePackage.getText().toString(), new Date(), new Date()));
+                                Package p= new Package( drawablePackage.getContentDescription().toString(), titlePackage.getText().toString(), new Date(), new Date());
+                                _items.add(p);
+                                c.insert_package(p);
                                 notifyDataSetChanged();
                                 dialog.cancel();
                             }
@@ -267,10 +272,37 @@ public class PackageItemAdapter extends BaseAdapter {
             case "color_blue":
                 top = this.activity.getResources().getDrawable(R.drawable.ic_package_blue);
                 break;
+            case "color_red":
+                top = this.activity.getResources().getDrawable(R.drawable.ic_package_red);
+                break;
+            case "color_red_origin":
+                top = this.activity.getResources().getDrawable(R.drawable.ic_package_red_origin);
+                break;
+            case "color_red_2":
+                top = this.activity.getResources().getDrawable(R.drawable.ic_package_red_2);
+                break;
+            case "color_orange":
+                top = this.activity.getResources().getDrawable(R.drawable.ic_package_orange);
+                break;
+            case "color_yellow":
+                top = this.activity.getResources().getDrawable(R.drawable.ic_package_yellow);
+                break;
+            case "color_purple":
+                top = this.activity.getResources().getDrawable(R.drawable.ic_package_purple);
+                break;
+            case "color_purple_2":
+                top = this.activity.getResources().getDrawable(R.drawable.ic_package_purple_2);
+                break;
+            case "color_purple_3":
+                top = this.activity.getResources().getDrawable(R.drawable.ic_package_purple_3);
+                break;
+
+
+
 
 
             default:
-                top = this.activity.getResources().getDrawable(R.drawable.ic_package_purple_3);
+                top = this.activity.getResources().getDrawable(R.drawable.ic_package_blue_green);
                 break;
         }
         viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(null, top , null, null);

@@ -33,7 +33,7 @@
                 android:layout_gravity="center"
 
                 android:id="@+id/drawable_package"
-                android:contentDescription="@string/package_image"
+                android:contentDescription="@string/package_color_default"
                 app:srcCompat="@drawable/ic_blue"
                 tools:ignore="VectorDrawableCompat" />
 

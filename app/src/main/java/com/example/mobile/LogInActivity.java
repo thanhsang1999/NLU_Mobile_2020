@@ -39,7 +39,7 @@ public class LogInActivity extends AppCompatActivity {
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                Intent intent = new Intent(LogInActivity.this, WellComeActivity.class);
+                Intent intent = new Intent(LogInActivity.this, LogoActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -105,7 +105,7 @@ public class LogInActivity extends AppCompatActivity {
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LogInActivity.this, WellComeActivity.class);
+                Intent intent = new Intent(LogInActivity.this, LogoActivity.class);
                 startActivity(intent);
                 finish();
             }
