@@ -3,23 +3,27 @@ package com.example.mobile.model;
 import java.util.Date;
 
 public class Package {
-    
+    int id;
     String color;
     String name;
+    DateStringConverter dateCreate;
+    DateStringConverter lastEdit;
 
-    Date dateCreate;
-    Date lastEdit;
-    public Package(String color, String name){
-        this.color = color;
-        this.name=name;
-
-    }
     public Package(String color, String name, Date dateCreate, Date lastEdit) {
         this.color = color;
         this.name = name;
 
-        this.dateCreate = dateCreate;
-        this.lastEdit = lastEdit;
+
+        this.dateCreate = new DateStringConverter(dateCreate);
+        this.lastEdit = new DateStringConverter(lastEdit);
+    }
+    public Package(int id,String color, String name, String dateCreate, String lastEdit) {
+        this.color = color;
+        this.name = name;
+        this.id=id;
+
+        this.dateCreate = new DateStringConverter(dateCreate);
+        this.lastEdit = new DateStringConverter(lastEdit);
     }
 
     public String getColor() {
@@ -39,20 +43,19 @@ public class Package {
     }
 
 
-
-    public Date getDateCreate() {
+    public DateStringConverter getDateCreate() {
         return dateCreate;
     }
 
-    public void setDateCreate(Date dateCreate) {
+    public void setDateCreate(DateStringConverter dateCreate) {
         this.dateCreate = dateCreate;
     }
 
-    public Date getLastEdit() {
+    public DateStringConverter getLastEdit() {
         return lastEdit;
     }
 
-    public void setLastEdit(Date lastEdit) {
+    public void setLastEdit(DateStringConverter lastEdit) {
         this.lastEdit = lastEdit;
     }
 }

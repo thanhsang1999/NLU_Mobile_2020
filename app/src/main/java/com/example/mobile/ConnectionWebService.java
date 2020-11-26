@@ -24,8 +24,10 @@ import java.util.Map;
 
 public class ConnectionWebService {
     private Activity activity;
+    private ConnectionDatabaseLocalMobile connectionDatabaseLocalMobile;
 
     public ConnectionWebService(Activity activity) {
+        connectionDatabaseLocalMobile= new ConnectionDatabaseLocalMobile(activity);
         this.activity = activity;
     }
 
@@ -62,10 +64,16 @@ public class ConnectionWebService {
                             logInActivity.loading_complete(null);
                             Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
                             Log.e("Success", msg);
+                            connectionDatabaseLocalMobile.earse();
+                            connectionDatabaseLocalMobile.insert_accounts(account);
                             Intent intent = new Intent(activity, HomeActivity.class);
 
                             activity.startActivity(intent);
                             activity.finish();
+
+
+
+
 
                         }
                     } catch (JSONException e) {
@@ -135,6 +143,7 @@ public class ConnectionWebService {
                     Intent intent = new Intent(activity, HomeActivity.class);
                     activity.startActivity(intent);
                     activity.finish();
+
 
                 }
             });
@@ -230,4 +239,5 @@ public class ConnectionWebService {
         requestQueue.add(jsonArrayRequest);
 
     }
+
 }

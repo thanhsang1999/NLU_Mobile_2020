@@ -10,16 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.mobile.ConnectionDatabaseLocalMobile;
 import com.example.mobile.model.Package;
 import com.example.mobile.R;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class SlideshowFragment extends Fragment {
 
     private SlideshowViewModel slideshowViewModel;
+    private ConnectionDatabaseLocalMobile c;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
@@ -29,10 +29,8 @@ public class SlideshowFragment extends Fragment {
 
 
         final GridView gridView = root.findViewById(R.id.gridView);
-        List<Package> aPackages = new ArrayList<>();
-        aPackages.add(new Package("color_blue", "One", new Date(), new Date()));
-        aPackages.add(new Package("color_green", "Two", new Date(), new Date()));
-
+        c= new ConnectionDatabaseLocalMobile(this.getActivity());
+        List<Package> aPackages = c.getPackages();
 
         gridView.setAdapter(new PackageItemAdapter(this, aPackages));
 

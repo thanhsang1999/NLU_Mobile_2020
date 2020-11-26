@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Nodo</string>
+    <string name="app_name">Mobile</string>
     <string name="action_settings">Settings</string>
 
     <string name="next">Next</string>
@@ -71,6 +71,9 @@
 
     <string name="picker_description">picker_description</string>
     <string name="packer_hint"></string>
+    <string name="package_color_default">color_blue_green</string>
+
+
 
 
 </resources>
