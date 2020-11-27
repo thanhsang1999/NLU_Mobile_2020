@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="horizontal"
+              android:padding="10dp"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <ImageView
+            android:layout_marginTop="15dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp" app:srcCompat="@drawable/ic_check"
+            tools:ignore="VectorDrawableCompat" android:id="@+id/imageViewChecked"/>
+    <LinearLayout
+            android:background="#F9F9F9"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_weight="1">
+        <LinearLayout
+                android:layout_marginBottom="10dp"
+                android:weightSum="100"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <ImageView
+                    android:layout_weight="5"
+                    android:layout_marginRight="15dp"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent" app:srcCompat="@drawable/ic_color_blue"
+                    android:id="@+id/imageViewColorPackage" tools:ignore="VectorDrawableCompat"/>
+            <TextView
+                    android:textStyle="bold"
+                    android:layout_weight="75"
+                    android:text="Trip Diary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/textViewTitle"/>
+            <TextView
+                    android:layout_weight="20"
+                    android:text="18/06/2012"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/textViewDateEdit"/>
+        </LinearLayout>
+        <TextView
+                android:text="One of nicest place was golden gate it was massive and cool it totally took over …"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/textViewContent"/>
+    </LinearLayout>
+</LinearLayout>

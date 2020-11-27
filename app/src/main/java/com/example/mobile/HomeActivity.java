@@ -4,16 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import com.example.mobile.ui.newnote.NewNoteFragment;
+import com.example.mobile.model.DBConnSQLite;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import androidx.navigation.NavController;
@@ -31,9 +27,9 @@ public class HomeActivity extends AppCompatActivity {
     DrawerLayout drawer;
     NavigationView navigationView;
     Toolbar toolbar;
-    FloatingActionButton fab;
+    public static FloatingActionButton fab;
     NavController navController;
-    static DBConnSQLite sqLite;
+    public static DBConnSQLite sqLite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +104,7 @@ public class HomeActivity extends AppCompatActivity {
         navFooter2 = findViewById(R.id.footer_item_2);
         navFooter1 = findViewById(R.id.footer_item_1);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        sqLite = new DBConnSQLite(this,"mobile.db",null,1);
+        sqLite = new DBConnSQLite(this,R.string.app_name + ".db",null,1);
     }
 
     private void NavigationBottom() {

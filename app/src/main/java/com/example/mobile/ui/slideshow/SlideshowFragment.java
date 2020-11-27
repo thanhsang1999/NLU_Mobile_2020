@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mobile.ConnectionDatabaseLocalMobile;
+import com.example.mobile.HomeActivity;
 import com.example.mobile.model.Package;
 import com.example.mobile.R;
 
@@ -33,7 +34,11 @@ public class SlideshowFragment extends Fragment {
         List<Package> aPackages = c.getPackages();
 
         gridView.setAdapter(new PackageItemAdapter(this, aPackages));
-
+        init();
         return root;
+    }
+
+    private void init() {
+        HomeActivity.fab.hide();
     }
 }

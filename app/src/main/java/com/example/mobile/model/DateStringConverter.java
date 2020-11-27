@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class DateStringConverter  {
     private final String regex ="^\\D{4}-\\D{2}-\\D{2} \\D{2}:\\D{2}:\\D{2}.\\D{3}$";
-    private static String paterm ="yyyy-MM-dd HH:mm:ss";
+    private final String paterm ="yyyy-MM-dd HH:mm:ss";
     public Date date;
     public DateStringConverter() {
         this.date=new Date();
@@ -36,19 +36,6 @@ public class DateStringConverter  {
 
         return this.date;
     }
-    public static Date StringToDate(String str){
-        Date tmpDate = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat(paterm);
-        try {
-            tmpDate = formatter.parse(str);
-        } catch (ParseException e) {
-            Log.e("Error", e.getMessage());
-        }
-        return tmpDate;
-    }
-    public static String DateToString(Date date){
-        SimpleDateFormat formatter = new SimpleDateFormat(paterm);
-        return formatter.format(date);
-    }
+
 
 }

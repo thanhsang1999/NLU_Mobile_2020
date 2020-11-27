@@ -33,19 +33,19 @@ public class NewNoteActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         init();
-        Cursor cursor = HomeActivity.sqLite.GetData("SELECT * FROM notebook");
-        ArrayList<Notebook> notebooks = new ArrayList<Notebook>();
-        while (cursor.moveToNext()){
-            Notebook notebook = new Notebook();
-            notebook.setId(cursor.getInt(0));
-            notebook.setTitle(cursor.getString(1));
-            notebook.setContent(cursor.getString(2));
-            notebook.setIdPackage(cursor.getInt(3));
-            notebook.setDateCreate(DateStringConverter.StringToDate(cursor.getString(4)));
-            notebook.setDateEdit(DateStringConverter.StringToDate(cursor.getString(5)));
-            editTextContent.setText(notebook.getTitle()+"\n");
-            notebooks.add(notebook);
-        }
+//        Cursor cursor = HomeActivity.sqLite.GetData("SELECT * FROM notebook");
+//        ArrayList<Notebook> notebooks = new ArrayList<Notebook>();
+//        while (cursor.moveToNext()){
+//            Notebook notebook = new Notebook();
+//            notebook.setId(cursor.getInt(0));
+//            notebook.setTitle(cursor.getString(1));
+//            notebook.setContent(cursor.getString(2));
+//            notebook.setIdPackage(cursor.getInt(3));
+//            notebook.setDateCreate(DateStringConverter.StringToDate(cursor.getString(4)));
+//            notebook.setDateEdit(DateStringConverter.StringToDate(cursor.getString(5)));
+//            editTextContent.setText(notebook.getTitle()+"\n");
+//            notebooks.add(notebook);
+//        }
 
 //        DateStringConverter date = new DateStringConverter("1999-06-22 12:20:21");
 
