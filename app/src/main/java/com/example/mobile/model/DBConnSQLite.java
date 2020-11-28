@@ -56,4 +56,26 @@ public class DBConnSQLite extends SQLiteOpenHelper {
         }
         return notebooks;
     }
+    public Notebook GetLastNotebooks(){
+        String query = "SELECT * FROM notebook ORDER BY id DESC LIMIT 1";
+        Cursor cursor = GetData(query);
+        cursor.moveToNext();
+        Notebook notebook = new Notebook();
+        notebook.setId(cursor.getInt(0));
+        notebook.setTitle(cursor.getString(1));
+        notebook.setContent(cursor.getString(2));
+        notebook.setIdPackage(cursor.getInt(3));
+        notebook.setDateCreate(Tool.StringToDate(cursor.getString(4)));
+        notebook.setDateEdit(Tool.StringToDate(cursor.getString(5)));
+
+        return notebook;
+    }
+    /**
+     * true => has data
+     * false => not data
+     * */
+    public boolean checkDBExists(String sql) {
+        Cursor cursor = GetData(sql);
+        return cursor.moveToNext();
+    }
 }

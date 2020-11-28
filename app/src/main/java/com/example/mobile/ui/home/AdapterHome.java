@@ -14,15 +14,16 @@ import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Tool;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.mobile.R.*;
 
 public class AdapterHome extends BaseAdapter {
     Context context;
     int layout;
-    ArrayList<Notebook> notebooks;
+    List<Notebook> notebooks;
 
-    public AdapterHome(Context context, int layout, ArrayList<Notebook> notebooks) {
+    public AdapterHome(Context context, int layout, List<Notebook> notebooks) {
         this.context = context;
         this.layout = layout;
         this.notebooks = notebooks;

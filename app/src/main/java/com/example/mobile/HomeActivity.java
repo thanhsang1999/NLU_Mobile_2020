@@ -10,6 +10,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import com.example.mobile.model.DBConnSQLite;
+import com.example.mobile.model.DateStringConverter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import androidx.navigation.NavController;
@@ -35,6 +36,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        initDB();
         init();
 
         setSupportActionBar(toolbar);
@@ -104,7 +106,15 @@ public class HomeActivity extends AppCompatActivity {
         navFooter2 = findViewById(R.id.footer_item_2);
         navFooter1 = findViewById(R.id.footer_item_1);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+    }
+    private void initDB() {
         sqLite = new DBConnSQLite(this,R.string.app_name + ".db",null,1);
+        sqLite.QueryData("CREATE TABLE IF NOT EXISTS notebook (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,title TEXT,content TEXT,package integer DEFAULT 1,date_create TEXT,date_edit TEXT);");
+        sqLite.QueryData("CREATE TABLE IF NOT EXISTS tblpackage (id INTEGER PRIMARY KEY AUTOINCREMENT,color TEXT,title TEXT,create_date TEXT,last_edit TEXT);");
+        if (!sqLite.checkDBExists("SELECT title FROM tblpackage WHERE id='1'")){
+            DateStringConverter date = new DateStringConverter();
+            sqLite.QueryData("INSERT INTO tblpackage VALUES (null,'color_blue','Default','"+date.getText()+"','"+date.getText()+"')");
+        }
     }
 
     private void NavigationBottom() {

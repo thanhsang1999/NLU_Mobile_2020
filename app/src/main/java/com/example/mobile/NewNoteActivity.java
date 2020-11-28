@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import com.example.mobile.model.DateStringConverter;
 import com.example.mobile.model.Notebook;
+import com.example.mobile.ui.home.HomeFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,7 +59,6 @@ public class NewNoteActivity extends AppCompatActivity {
         Mainlayout = findViewById(R.id.mainLayout);
         contentLayout = findViewById(R.id.contentLayout);
         editTextContent.requestFocus();
-        HomeActivity.sqLite.QueryData("CREATE TABLE IF NOT EXISTS notebook (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,title TEXT,content TEXT,package integer DEFAULT 1,date_create TEXT,date_edit TEXT);");
 
     }
 
@@ -72,6 +72,8 @@ public class NewNoteActivity extends AppCompatActivity {
                 String dateCreate = new DateStringConverter().getText();
                 if (!textContent.equals("")){
                     HomeActivity.sqLite.QueryData("INSERT INTO notebook VALUES (null,'"+title+"','"+textContent+"','"+idPackage+"','"+dateCreate+"','"+dateCreate+"');");
+//                    HomeFragment.notebooks.add(HomeActivity.sqLite.GetLastNotebooks());
+//                    HomeFragment.adapterHome.notifyDataSetChanged();
                 }
                 finish();
                 return true;
