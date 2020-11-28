@@ -4,8 +4,13 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Bitmap;
 
+import android.graphics.BitmapShader;
+import android.graphics.BlurMaskFilter;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
@@ -21,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 
@@ -114,9 +118,13 @@ public class PackageItemAdapter extends BaseAdapter {
 
 
                         Bitmap map=takeScreenShot(fragment.getActivity());
-                        Bitmap fast=fastblur(map, 100);
+
+
+                        Bitmap fast= fastblur(map,100);
+
                         final Drawable draw=new BitmapDrawable(fragment.getActivity().getResources(),fast);
                         dialog.getWindow().setBackgroundDrawable(draw);
+
 
                         dialog.show();
 
@@ -312,6 +320,23 @@ public class PackageItemAdapter extends BaseAdapter {
     private class  ViewHolder{
         private TextView textView;
     }
+
+    private Bitmap blur(Bitmap originalBitmap) {
+        BlurMaskFilter blurFilter = new BlurMaskFilter(20, BlurMaskFilter.Blur.NORMAL);
+        Paint shadowPaint = new Paint();
+        shadowPaint.setMaskFilter(blurFilter);
+        Bitmap bitmapResult = Bitmap.createBitmap(originalBitmap.getWidth(), originalBitmap.getHeight(), Bitmap.Config. ARGB_8888);
+        Paint paint = new Paint();
+        paint.setDither(true);
+        paint.setAntiAlias(true);
+        paint.setFilterBitmap(true);
+        paint.setShader(new BitmapShader(originalBitmap, Shader.TileMode.REPEAT,Shader.TileMode.REPEAT));
+        paint.setMaskFilter(blurFilter);
+        Canvas canvasResult = new Canvas(bitmapResult);
+        canvasResult.drawBitmap(bitmapResult, 0, 0, paint);
+        return bitmapResult;
+    }
+
     public static Bitmap takeScreenShot(Activity activity) {
         View view = activity.getWindow().getDecorView();
 

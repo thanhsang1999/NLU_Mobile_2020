@@ -153,7 +153,7 @@ public class ConnectionDatabaseLocalMobile {
                         Package p = new Package(cursor.getInt(cursor.getColumnIndex("id")), cursor.getString(cursor.getColumnIndex("title")),
                                 cursor.getString(cursor.getColumnIndex("title")), cursor.getString(cursor.getColumnIndex("create_date")), cursor.getString(cursor.getColumnIndex("last_edit")));
                         aPackages.add(p);
-                        Log.e("Count", "" + aPackages.size());
+
 
                     } catch (Exception e) {
                         Log.e("Error Get Package", e.getMessage());
