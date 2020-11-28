@@ -107,10 +107,13 @@ public class PackageItemAdapter extends BaseAdapter {
                         new Thread(()->{
                             Bitmap takeScreenShot=takeScreenShot(fragment.getActivity());
 
-                            Bitmap fast= blur(takeScreenShot,10000000);
+                            Bitmap fast= blur(takeScreenShot,100000000);
                             final Drawable draw=new BitmapDrawable(fragment.getActivity().getResources(),fast);
-                            dialog.getWindow().setBackgroundDrawable(draw);
-                        }).run();
+                            fragment.getActivity().runOnUiThread(()->{
+
+                                dialog.getWindow().setBackgroundDrawable(draw);
+                            });
+                        }).start();
 
 
 
@@ -306,6 +309,8 @@ public class PackageItemAdapter extends BaseAdapter {
     }
 
     private Bitmap blur(Bitmap originalBitmap, int radius) {
+
+
         BlurMaskFilter blurFilter = new BlurMaskFilter(radius, BlurMaskFilter.Blur.NORMAL);
 
         Bitmap bitmapResult = Bitmap.createBitmap(originalBitmap.getWidth(), originalBitmap.getHeight(), originalBitmap.getConfig());
@@ -317,6 +322,14 @@ public class PackageItemAdapter extends BaseAdapter {
         Canvas canvasResult = new Canvas(bitmapResult);
         canvasResult.drawRect(0,0,originalBitmap.getWidth(),originalBitmap.getHeight(),paint);
 
+        Paint paint2 = new Paint();
+        paint2.setStyle(Paint.Style.FILL);
+
+        paint2.setMaskFilter(blurFilter);
+        paint2.setColor(Color.WHITE);
+        paint2.setAlpha(150);
+
+        canvasResult.drawRect(0,0,originalBitmap.getWidth(),originalBitmap.getHeight(),paint2);
 
         return bitmapResult;
     }
