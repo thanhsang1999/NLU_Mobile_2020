@@ -76,39 +76,40 @@
             android:textSize="20sp"
             tools:targetApi="lollipop" />
     </LinearLayout>
+
     <LinearLayout
+        android:id="@+id/color_pick"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="10dp"
         android:orientation="vertical"
-        android:layout_marginTop="50dp"
-        android:id="@+id/color_pick"
         android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
 
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
         <GridLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:columnCount="4"
             android:layout_gravity="center"
-            android:rowCount="3"
+            android:columnCount="4"
             android:padding="20dp"
-            >
+            android:rowCount="3">
 
             <ImageView
+                android:id="@+id/color_purple"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
-                android:id="@+id/color_purple"
                 android:contentDescription="@string/package_image"
                 app:srcCompat="@drawable/ic_color_purple"
                 tools:ignore="VectorDrawableCompat" />
 
             <ImageView
+                android:id="@+id/color_green"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/color_green"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:contentDescription="@string/package_image"
@@ -116,9 +117,9 @@
                 tools:ignore="VectorDrawableCompat" />
 
             <ImageView
+                android:id="@+id/color_red"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/color_red"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:contentDescription="@string/package_image"
@@ -126,10 +127,10 @@
                 tools:ignore="VectorDrawableCompat" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
                 android:id="@+id/color_blue_green"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:contentDescription="@string/package_image"
@@ -137,85 +138,84 @@
                 tools:ignore="VectorDrawableCompat" />
 
             <ImageView
+                android:id="@+id/color_yellow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
-                android:id="@+id/color_yellow"
                 android:contentDescription="@string/package_image"
                 app:srcCompat="@drawable/ic_color_yellow"
                 tools:ignore="VectorDrawableCompat" />
 
             <ImageView
+                android:id="@+id/color_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
-                android:id="@+id/color_blue"
                 android:contentDescription="@string/package_image"
                 app:srcCompat="@drawable/ic_color_blue"
                 tools:ignore="VectorDrawableCompat" />
 
             <ImageView
+                android:id="@+id/color_purple_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
-                android:id="@+id/color_purple_2"
                 android:contentDescription="@string/package_image"
                 app:srcCompat="@drawable/ic_color_purple_2"
                 tools:ignore="VectorDrawableCompat" />
 
             <ImageView
+                android:id="@+id/color_red_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
-                android:id="@+id/color_red_2"
                 android:contentDescription="@string/package_image"
                 app:srcCompat="@drawable/ic_color_red_2"
                 tools:ignore="VectorDrawableCompat" />
 
             <ImageView
+                android:id="@+id/color_orange"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
-                android:id="@+id/color_orange"
                 android:contentDescription="@string/package_image"
                 app:srcCompat="@drawable/ic_color_orange"
                 tools:ignore="VectorDrawableCompat" />
 
             <ImageView
+                android:id="@+id/color_blue_deep"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
-                android:id="@+id/color_blue_deep"
                 android:contentDescription="@string/package_image"
                 app:srcCompat="@drawable/ic_color_blue_deep"
                 tools:ignore="VectorDrawableCompat" />
 
             <ImageView
+                android:id="@+id/color_red_origin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
-                android:id="@+id/color_red_origin"
                 android:contentDescription="@string/package_image"
                 app:srcCompat="@drawable/ic_color_red_origin"
                 tools:ignore="VectorDrawableCompat" />
 
             <ImageView
+                android:id="@+id/color_purple_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
-                android:id="@+id/color_purple_3"
                 android:contentDescription="@string/package_image"
                 app:srcCompat="@drawable/ic_color_purple_3"
                 tools:ignore="VectorDrawableCompat" />
-
 
 
         </GridLayout>
