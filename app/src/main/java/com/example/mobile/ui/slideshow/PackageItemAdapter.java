@@ -121,8 +121,8 @@ public class PackageItemAdapter extends BaseAdapter {
                         Bitmap takeScreenShot=takeScreenShot(fragment.getActivity());
 
 
-//                        Bitmap fast= fastblur(takeScreenShot,20);
-                        Bitmap fast= blur(takeScreenShot,10000);
+                        Bitmap fast= fastblur(takeScreenShot,5);
+//                        Bitmap fast= blur(takeScreenShot,10000000);
 
                         final Drawable draw=new BitmapDrawable(fragment.getActivity().getResources(),fast);
                         dialog.getWindow().setBackgroundDrawable(draw);
@@ -332,6 +332,7 @@ public class PackageItemAdapter extends BaseAdapter {
         paint.setMaskFilter(blurFilter);
         Canvas canvasResult = new Canvas(bitmapResult);
         canvasResult.drawRect(0,0,originalBitmap.getWidth(),originalBitmap.getHeight(),paint);
+
 
         return bitmapResult;
     }
