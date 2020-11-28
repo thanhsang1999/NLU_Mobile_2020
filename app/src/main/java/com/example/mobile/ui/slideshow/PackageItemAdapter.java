@@ -4,8 +4,14 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Bitmap;
 
+import android.graphics.BitmapShader;
+import android.graphics.BlurMaskFilter;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
@@ -21,7 +27,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 
@@ -113,11 +118,14 @@ public class PackageItemAdapter extends BaseAdapter {
 //                        dialog.getWindow().setBackgroundDrawable(blurDrawable);
 
 
-                        Bitmap map=takeScreenShot(fragment.getActivity());
-                        Bitmap fast=fastblur(map, 100);
+                        Bitmap takeScreenShot=takeScreenShot(fragment.getActivity());
+
+
+//                        Bitmap fast= fastblur(takeScreenShot,20);
+                        Bitmap fast= blur(takeScreenShot,10000);
+
                         final Drawable draw=new BitmapDrawable(fragment.getActivity().getResources(),fast);
                         dialog.getWindow().setBackgroundDrawable(draw);
-
                         dialog.show();
 
 
@@ -312,6 +320,22 @@ public class PackageItemAdapter extends BaseAdapter {
     private class  ViewHolder{
         private TextView textView;
     }
+
+    private Bitmap blur(Bitmap originalBitmap, int radius) {
+        BlurMaskFilter blurFilter = new BlurMaskFilter(radius, BlurMaskFilter.Blur.NORMAL);
+
+        Bitmap bitmapResult = Bitmap.createBitmap(originalBitmap.getWidth(), originalBitmap.getHeight(), originalBitmap.getConfig());
+        bitmapResult.eraseColor(Color.WHITE);
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        paint.setShader(new BitmapShader(originalBitmap, Shader.TileMode.REPEAT,Shader.TileMode.REPEAT));
+        paint.setMaskFilter(blurFilter);
+        Canvas canvasResult = new Canvas(bitmapResult);
+        canvasResult.drawRect(0,0,originalBitmap.getWidth(),originalBitmap.getHeight(),paint);
+
+        return bitmapResult;
+    }
+
     public static Bitmap takeScreenShot(Activity activity) {
         View view = activity.getWindow().getDecorView();
 
@@ -322,7 +346,8 @@ public class PackageItemAdapter extends BaseAdapter {
         Bitmap b1 = view.getDrawingCache();
         Rect frame = new Rect();
         activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
-        int statusBarHeight = frame.top;
+//        int statusBarHeight = frame.top;
+        int statusBarHeight = 0;
 
         Display display = activity.getWindowManager().getDefaultDisplay();
         Point size = new Point();
