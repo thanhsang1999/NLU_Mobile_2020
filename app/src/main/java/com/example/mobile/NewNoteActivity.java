@@ -72,8 +72,8 @@ public class NewNoteActivity extends AppCompatActivity {
                 String dateCreate = new DateStringConverter().getText();
                 if (!textContent.equals("")){
                     HomeActivity.sqLite.QueryData("INSERT INTO notebook VALUES (null,'"+title+"','"+textContent+"','"+idPackage+"','"+dateCreate+"','"+dateCreate+"');");
-//                    HomeFragment.notebooks.add(HomeActivity.sqLite.GetLastNotebooks());
-//                    HomeFragment.adapterHome.notifyDataSetChanged();
+                    HomeFragment.notebooks.add(HomeActivity.sqLite.GetLastNotebooks());
+                    HomeFragment.adapterHome.notifyDataSetChanged();
                 }
                 finish();
                 return true;

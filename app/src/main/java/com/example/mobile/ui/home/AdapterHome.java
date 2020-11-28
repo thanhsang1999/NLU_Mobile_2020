@@ -61,11 +61,13 @@ public class AdapterHome extends BaseAdapter {
             holder.textViewTitle = convertView.findViewById(id.textViewTitle);
             holder.textViewContent = convertView.findViewById(id.textViewContent);
             holder.textViewDateEdit = convertView.findViewById(id.textViewDateEdit);
+            convertView.setTag(holder);
         }else {
             holder = (ViewHolder) convertView.getTag();
         }
         String stringColorPackage = HomeActivity.sqLite.getColorPackage(notebook.getIdPackage());
         holder.imageViewColorPackage.setImageResource(Tool.getDrawableByName(context,"ic_"+stringColorPackage));
+
         holder.textViewTitle.setText(notebook.getTitle());
         holder.textViewContent.setText(notebook.getContent());
         holder.textViewDateEdit.setText(notebook.getDateEdit().toString());
