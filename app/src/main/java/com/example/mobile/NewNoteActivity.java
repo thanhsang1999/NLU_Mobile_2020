@@ -1,24 +1,18 @@
 package com.example.mobile;
 
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import com.example.mobile.model.DateStringConverter;
-import com.example.mobile.model.Notebook;
 import com.example.mobile.ui.home.HomeFragment;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 public class NewNoteActivity extends AppCompatActivity {
     EditText editTextTitle,editTextContent;

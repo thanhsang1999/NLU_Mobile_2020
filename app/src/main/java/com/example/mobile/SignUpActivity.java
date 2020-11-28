@@ -120,7 +120,7 @@ public class SignUpActivity extends AppCompatActivity {
                 ;
                 msg = "Error";
                 try {
-                    SignUpActivity.this.connectionWebService.insert_accounts(account);
+                    SignUpActivity.this.connectionWebService.insert_account(account);
 
                 } catch (Exception e) {
 

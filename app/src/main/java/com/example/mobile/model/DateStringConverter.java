@@ -9,6 +9,7 @@ import java.util.Date;
 
 public class DateStringConverter  {
     private final String regex ="^\\D{4}-\\D{2}-\\D{2} \\D{2}:\\D{2}:\\D{2}.\\D{3}$";
+
     private final String paterm ="yyyy-MM-dd HH:mm:ss";
     public Date date;
     public DateStringConverter() {
@@ -27,6 +28,7 @@ public class DateStringConverter  {
         }
 
     }
+
     public String getText(){
         SimpleDateFormat formatter = new SimpleDateFormat(paterm);
         String strDate = formatter.format(date);

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-
+    android:layout_margin="10dp"
     app:cardElevation="0dp">
 
     <TextView
@@ -14,7 +14,7 @@
         android:layout_gravity="center"
         android:id="@+id/textView"
 
-        android:drawablePadding="5dp"
+
         android:text="@string/create_note"
         android:textAlignment="center"
         android:textSize="16sp"

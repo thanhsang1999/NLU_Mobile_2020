@@ -11,7 +11,6 @@ import com.example.mobile.model.Account;
 import com.example.mobile.model.Package;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ConnectionDatabaseLocalMobile {
@@ -66,12 +65,18 @@ public class ConnectionDatabaseLocalMobile {
         sqLiteDatabase.execSQL(sql3);
 
 
+
     }
 
     public void earse() {
         prepare();
         String sql = "DELETE  FROM tblaccounts;";
+        String sql2 = "DELETE  FROM tblpackage";
+        String sql3 = "DELETE  FROM notebook";
         sqLiteDatabase.execSQL(sql);
+        sqLiteDatabase.execSQL(sql2);
+        sqLiteDatabase.execSQL(sql3);
+
 
 
     }
@@ -90,12 +95,12 @@ public class ConnectionDatabaseLocalMobile {
                 if (cursor.getCount() == 1)
                     try {
 
-                        Account account = new Account(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
+                        Account account = new Account(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
 
                         Log.e("Account", account.getUsername());
                         return account;
                     } catch (Exception e) {
-
+                        Log.e("Exception", e.getMessage().toString());
                     }
 
 
@@ -107,7 +112,7 @@ public class ConnectionDatabaseLocalMobile {
         return null;
     }
 
-    public boolean insert_accounts(Account account) {
+    public boolean insert_account(Account account) {
 
         prepare();
         ContentValues values = new ContentValues();
@@ -128,8 +133,13 @@ public class ConnectionDatabaseLocalMobile {
         values.put("last_edit", p.getLastEdit().getText());
         values.put("create_date", p.getDateCreate().getText());
         boolean rs = this.sqLiteDatabase.insert("tblpackage", null, values) != -1;
+        p.setId(1);
         Log.e("Package", p.getColor());
         Log.e("Insert Package", "" + rs);
+        new Thread(()->{
+            ConnectionWebService connectionWebService= new ConnectionWebService(this.activity);
+            connectionWebService.insert_package(p, getAccount());
+        }).start();
         return rs;
     }
 

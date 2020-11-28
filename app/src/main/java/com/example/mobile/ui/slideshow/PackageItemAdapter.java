@@ -15,7 +15,6 @@ import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,6 +96,7 @@ public class PackageItemAdapter extends BaseAdapter {
         switch (book.getColor()){
             case "create_package":
                 top = this.activity.getResources().getDrawable(R.drawable.ic_add_note);
+                viewHolder.textView.setCompoundDrawablePadding(5);
                 viewHolder.textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -104,13 +104,14 @@ public class PackageItemAdapter extends BaseAdapter {
                         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         dialog.setContentView(R.layout.create_packed);
                         dialog.show();
+                        Bitmap takeScreenShot= Blur.takeScreenShot(fragment.getActivity());
                         new Thread(()->{
-                            Bitmap takeScreenShot=takeScreenShot(fragment.getActivity());
 
-                            Bitmap fast= blur(takeScreenShot,100000000);
-                            final Drawable draw=new BitmapDrawable(fragment.getActivity().getResources(),fast);
+//                            Bitmap bitmap= Blur.canvasBlur(takeScreenShot,100000000);
+//                            Bitmap bitmap= Blur.fastBlur(takeScreenShot, 1, 10);
+                            Bitmap bitmap= Blur.rsBlur(fragment.getActivity(),takeScreenShot,15, 1);
+                            final Drawable draw=new BitmapDrawable(fragment.getActivity().getResources(),bitmap);
                             fragment.getActivity().runOnUiThread(()->{
-
                                 dialog.getWindow().setBackgroundDrawable(draw);
                             });
                         }).start();
@@ -301,6 +302,7 @@ public class PackageItemAdapter extends BaseAdapter {
                 break;
         }
         viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(null, top , null, null);
+        viewHolder.textView.setCompoundDrawablePadding(0);
         viewHolder.textView.setText(book.getName());
         return convertView;
     }
@@ -308,54 +310,7 @@ public class PackageItemAdapter extends BaseAdapter {
         private TextView textView;
     }
 
-    private Bitmap blur(Bitmap originalBitmap, int radius) {
 
 
-        BlurMaskFilter blurFilter = new BlurMaskFilter(radius, BlurMaskFilter.Blur.NORMAL);
-
-        Bitmap bitmapResult = Bitmap.createBitmap(originalBitmap.getWidth(), originalBitmap.getHeight(), originalBitmap.getConfig());
-        bitmapResult.eraseColor(Color.WHITE);
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.FILL);
-        paint.setShader(new BitmapShader(originalBitmap, Shader.TileMode.REPEAT,Shader.TileMode.REPEAT));
-        paint.setMaskFilter(blurFilter);
-        Canvas canvasResult = new Canvas(bitmapResult);
-        canvasResult.drawRect(0,0,originalBitmap.getWidth(),originalBitmap.getHeight(),paint);
-
-        Paint paint2 = new Paint();
-        paint2.setStyle(Paint.Style.FILL);
-
-        paint2.setMaskFilter(blurFilter);
-        paint2.setColor(Color.WHITE);
-        paint2.setAlpha(150);
-
-        canvasResult.drawRect(0,0,originalBitmap.getWidth(),originalBitmap.getHeight(),paint2);
-
-        return bitmapResult;
-    }
-
-    public static Bitmap takeScreenShot(Activity activity) {
-        View view = activity.getWindow().getDecorView();
-
-        view.setDrawingCacheEnabled(true);
-        view.buildDrawingCache();
-
-
-        Bitmap b1 = view.getDrawingCache();
-        Rect frame = new Rect();
-        activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
-//        int statusBarHeight = frame.top;
-        int statusBarHeight = 0;
-
-        Display display = activity.getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-        int height = size.y;
-
-        Bitmap b = Bitmap.createBitmap(b1, 0, statusBarHeight, width, height - statusBarHeight);
-        view.destroyDrawingCache();
-        return b;
-    }
 
 }

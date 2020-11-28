@@ -58,4 +58,12 @@ public class Package {
     public void setLastEdit(DateStringConverter lastEdit) {
         this.lastEdit = lastEdit;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int i) {
+        this.id=i;
+    }
 }
