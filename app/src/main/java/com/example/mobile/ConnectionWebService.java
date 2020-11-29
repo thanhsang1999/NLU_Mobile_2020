@@ -1,14 +1,11 @@
 package com.example.mobile;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -16,6 +13,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.mobile.model.Account;
+import com.example.mobile.model.Package;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,8 +25,10 @@ import java.util.Map;
 
 public class ConnectionWebService {
     private Activity activity;
+    private ConnectionDatabaseLocalMobile connectionDatabaseLocalMobile;
 
     public ConnectionWebService(Activity activity) {
+        connectionDatabaseLocalMobile= new ConnectionDatabaseLocalMobile(activity);
         this.activity = activity;
     }
 
@@ -64,9 +65,16 @@ public class ConnectionWebService {
                             logInActivity.loading_complete(null);
                             Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
                             Log.e("Success", msg);
+                            connectionDatabaseLocalMobile.earse();
+                            connectionDatabaseLocalMobile.insert_account(account);
                             Intent intent = new Intent(activity, HomeActivity.class);
 
                             activity.startActivity(intent);
+                            activity.finish();
+
+
+
+
 
                         }
                     } catch (JSONException e) {
@@ -103,9 +111,52 @@ public class ConnectionWebService {
 
 
     }
+    public void alive() {
+        if (activity instanceof LogoActivity) {
 
-    public void insert_accounts(final Account account) {
+            String url = Config.getURL() + "alive.php";
+
+
+            RequestQueue requestQueue = Volley.newRequestQueue(activity);
+
+            StringRequest jsonArrayRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    if(response.toString().equals("alive")){
+                        Log.e("Connection", "OK");
+                        Intent intent = new Intent(activity, WellComeActivity.class);
+                        activity.startActivity(intent);
+                        activity.finish();
+                    }
+
+
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    String msg = "Kết nối mạng bị lỗi.";
+                    Log.e("Error", error.toString());
+
+                    Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(activity, HomeActivity.class);
+                    activity.startActivity(intent);
+                    activity.finish();
+
+
+                }
+            });
+            requestQueue.add(jsonArrayRequest);
+        }
+
+
+    }
+
+    public void insert_account(final Account account) {
         if (activity instanceof SignUpActivity) {
+
             final SignUpActivity signUpActivity = (SignUpActivity) activity;
             signUpActivity.loading(null);
             String url = Config.getURL() + "signup.php";
@@ -120,20 +171,27 @@ public class ConnectionWebService {
                     if (response.toString().trim().equals("OK")) {
                         msg = "Đăng ký thành công";
                         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
-                        Log.e("Succuss", msg);
+                        Log.e("Success", msg);
 
                         signUpActivity.loading_complete(null);
                         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+                        connectionDatabaseLocalMobile.earse();
+                        connectionDatabaseLocalMobile.insert_account(account);
                         Intent intent = new Intent(activity, HomeActivity.class);
 
                         activity.startActivity(intent);
+                        activity.finish();
 
                     } else if (response.toString().trim().equals("Error")) {
                         msg = "Đăng ký không thành công";
                         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
-                        Log.e("Error", msg);
-
                         Log.e("Error", msg.toString());
+                        signUpActivity.loading_complete(null);
+                        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+
+                    } else{
+                        msg = "Database bị lỗi.";
+                        Log.e("Error", response.toString());
                         signUpActivity.loading_complete(null);
                         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
 
@@ -170,6 +228,80 @@ public class ConnectionWebService {
         }
 
     }
+    public void insert_package(Package p, Account account){
+
+        if(account==null)return;
+        String url = Config.getURL() + "addpackage.php";
+
+
+
+        final RequestQueue requestQueue = Volley.newRequestQueue(activity);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                String msg = "";
+                if (response.toString().trim().equals("OK")) {
+                    msg = "Gửi package lên webservice thành công";
+                    Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+                    Log.e("Success", msg);
+
+
+                    Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(activity, HomeActivity.class);
+
+
+                } else if (response.toString().trim().equals("Error")) {
+                    msg = "Gửi package lên webservice không thành công";
+                    Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+
+
+                    Log.e("Error", msg.toString());
+
+                    Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+
+                } else{
+                    msg = "Database bị lỗi";
+
+
+
+                    Log.e("Error", msg.toString());
+                    Log.e("PHP Return", response.toString());
+
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                String msg = "Kết nối mạng bị lỗi.";
+                Log.e("Error", error.toString());
+
+                Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+
+                params.put("id", p.getId()+"");
+                params.put("color", p.getColor()+"");
+                params.put("title", p.getName());
+                Log.e("Date", p.getLastEdit().getText());
+                params.put("last_edit", p.getLastEdit().getText());
+                params.put("username", account.getUsername());
+                return params;
+            }
+
+
+        };
+        requestQueue.add(stringRequest);
+
+    }
 
     private void getdata(String url) {
 
@@ -189,4 +321,5 @@ public class ConnectionWebService {
         requestQueue.add(jsonArrayRequest);
 
     }
+
 }

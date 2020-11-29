@@ -41,7 +41,7 @@ INSERT INTO `tblaccount` VALUES ('2', '2', '2', '2');
 DROP TRIGGER IF EXISTS `trigger_insert_tblaccount`;
 delimiter ;;
 CREATE TRIGGER `trigger_insert_tblaccount` BEFORE INSERT ON `tblaccount` FOR EACH ROW BEGIN
-	 IF (EXISTS (SELECT * FROM tblaccount where new.username = username )) THEN		
+	  IF (EXISTS (SELECT * FROM tblaccount where new.username = username ) or EXISTS (SELECT * FROM tblaccount where new.email = email )) 	
 					SIGNAL SQLSTATE '45001' SET MESSAGE_TEXT = 'Not insert, username is exists';				
 		end if;
 END

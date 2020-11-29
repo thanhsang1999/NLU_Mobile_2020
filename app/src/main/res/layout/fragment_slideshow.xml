@@ -5,19 +5,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/whitePrimary"
     tools:context=".ui.slideshow.SlideshowFragment" >
 
-    <TextView
-            android:id="@+id/text_slideshow"
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/linearlayout_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" android:layout_gravity="center_horizontal"/>
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:text="@string/tab_note_title"
+            android:textSize="16sp"
+            app:drawableLeftCompat="@drawable/ic_note" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+
+                android:text="@string/show_all"
+                android:textColor="@color/bluePrimary"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <GridView
+        android:id="@+id/gridView"
+        android:numColumns="3"
+        android:columnWidth="70dp"
+        android:stretchMode="columnWidth"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearlayout_header"
+
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

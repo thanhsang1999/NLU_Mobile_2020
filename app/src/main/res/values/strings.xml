@@ -15,10 +15,10 @@
     <!--    LogIn Activity-->
     <string name="login_tiltle">Login</string>
     <string name="login_sub_tiltle">Please sign in continute.</string>
-    <string name="username_tiltle">USERNAME</string>
+    <string name="username_tiltle">Username</string>
     <string name="password_hint">Password</string>
     <string name="username_hint">Username</string>
-    <string name="password_title">PASSWORD</string>
+    <string name="password_title">Password</string>
     <string name="dont_account">Don\'t have an account?</string>
 
     <string name="icon_user_description">icon user</string>
@@ -63,6 +63,17 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="login">Login</string>
     <string name="back_description">Back Desciption</string>
+    <string name="text_package_demo">Book 1</string>
+    <string name="string_text_package_demo">Book 1</string>
+    <string name="package_image">Package Image</string>
+    <string name="picker">Picker</string>
+    <string name="btn_save">Save</string>
+
+    <string name="picker_description">picker_description</string>
+    <string name="packer_hint"></string>
+    <string name="package_color_default">color_blue_green</string>
+
+
 
 
 </resources>

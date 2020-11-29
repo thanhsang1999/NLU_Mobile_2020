@@ -4,13 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
-import androidx.fragment.app.Fragment;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import com.example.mobile.ui.newnote.NewNoteFragment;
+import com.example.mobile.model.DBConnSQLite;
+import com.example.mobile.model.DateStringConverter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import androidx.navigation.NavController;
@@ -28,13 +28,15 @@ public class HomeActivity extends AppCompatActivity {
     DrawerLayout drawer;
     NavigationView navigationView;
     Toolbar toolbar;
-    FloatingActionButton fab;
+    public static FloatingActionButton fab;
     NavController navController;
+    public static DBConnSQLite sqLite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        initDB();
         init();
 
         setSupportActionBar(toolbar);
@@ -64,7 +66,37 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         NavigationBottom();
+
+
+
+        navigationBackPressed();
+
+
+
     }
+    private void navigationBackPressed(){
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                // Create YesNoDialogFragment
+                DialogFragment dialogFragment = new ExitConfirmDialogFragment();
+
+
+                // Arguments:
+                Bundle args = new Bundle();
+                args.putString(ExitConfirmDialogFragment.ARG_TITLE, "????");
+                args.putString(ExitConfirmDialogFragment.ARG_MESSAGE, "Do you want?");
+                dialogFragment.setArguments(args);
+
+                FragmentManager fragmentManager = HomeActivity.this.getSupportFragmentManager();
+
+                // Show:
+                dialogFragment.show(fragmentManager, "Dialog");
+            }
+        };
+        this.getOnBackPressedDispatcher().addCallback(this, callback);
+    }
+
 
     private void init() {
         toolbar = findViewById(R.id.toolbar);
@@ -74,6 +106,15 @@ public class HomeActivity extends AppCompatActivity {
         navFooter2 = findViewById(R.id.footer_item_2);
         navFooter1 = findViewById(R.id.footer_item_1);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+    }
+    private void initDB() {
+        sqLite = new DBConnSQLite(this,R.string.app_name + ".db",null,1);
+        sqLite.QueryData("CREATE TABLE IF NOT EXISTS notebook (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,title TEXT,content TEXT,package integer DEFAULT 1,date_create TEXT,date_edit TEXT);");
+        sqLite.QueryData("CREATE TABLE IF NOT EXISTS tblpackage (id INTEGER PRIMARY KEY AUTOINCREMENT,color TEXT,title TEXT,create_date TEXT,last_edit TEXT);");
+        if (!sqLite.checkDBExists("SELECT title FROM tblpackage WHERE id='1'")){
+            DateStringConverter date = new DateStringConverter();
+            sqLite.QueryData("INSERT INTO tblpackage VALUES (null,'color_blue','Default','"+date.getText()+"','"+date.getText()+"')");
+        }
     }
 
     private void NavigationBottom() {

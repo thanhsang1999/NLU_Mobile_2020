@@ -1,4 +1,4 @@
-package com.example.mobile;
+package com.example.mobile.model;
 
 public class Account {
     private String username;
