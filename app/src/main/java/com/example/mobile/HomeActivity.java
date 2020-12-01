@@ -2,6 +2,7 @@ package com.example.mobile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Toast;
@@ -20,6 +21,8 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import java.util.Date;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -108,13 +111,13 @@ public class HomeActivity extends AppCompatActivity {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
     }
     private void initDB() {
+
         sqLite = new DBConnSQLite(this,R.string.app_name + ".db",null,1);
-        sqLite.QueryData("CREATE TABLE IF NOT EXISTS notebook (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,title TEXT,content TEXT,package integer DEFAULT 1,date_create TEXT,date_edit TEXT);");
-        sqLite.QueryData("CREATE TABLE IF NOT EXISTS tblpackage (id INTEGER PRIMARY KEY AUTOINCREMENT,color TEXT,title TEXT,create_date TEXT,last_edit TEXT);");
-        if (!sqLite.checkDBExists("SELECT title FROM tblpackage WHERE id='1'")){
-            DateStringConverter date = new DateStringConverter();
-            sqLite.QueryData("INSERT INTO tblpackage VALUES (null,'color_blue','Default','"+date.getText()+"','"+date.getText()+"')");
-        }
+        sqLite.CreateTableNotebook();
+        Date date = new Date();
+        sqLite.CreateDefaultPackage(date);
+        Log.e("bug","thoi de vay di");
+       // HomeActivity.sqLite
     }
 
     private void NavigationBottom() {

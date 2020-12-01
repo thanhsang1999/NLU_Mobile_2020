@@ -11,12 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import com.example.mobile.model.DBConnSQLite;
 import com.example.mobile.model.DateStringConverter;
 import com.example.mobile.ui.home.HomeFragment;
 
 public class NewNoteActivity extends AppCompatActivity {
     EditText editTextTitle,editTextContent;
     ConstraintLayout Mainlayout,contentLayout;
+    DBConnSQLite sqLite;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,23 +30,6 @@ public class NewNoteActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         init();
-//        Cursor cursor = HomeActivity.sqLite.GetData("SELECT * FROM notebook");
-//        ArrayList<Notebook> notebooks = new ArrayList<Notebook>();
-//        while (cursor.moveToNext()){
-//            Notebook notebook = new Notebook();
-//            notebook.setId(cursor.getInt(0));
-//            notebook.setTitle(cursor.getString(1));
-//            notebook.setContent(cursor.getString(2));
-//            notebook.setIdPackage(cursor.getInt(3));
-//            notebook.setDateCreate(DateStringConverter.StringToDate(cursor.getString(4)));
-//            notebook.setDateEdit(DateStringConverter.StringToDate(cursor.getString(5)));
-//            editTextContent.setText(notebook.getTitle()+"\n");
-//            notebooks.add(notebook);
-//        }
-
-//        DateStringConverter date = new DateStringConverter("1999-06-22 12:20:21");
-
-
     }
 
     private void init() {
@@ -53,7 +38,7 @@ public class NewNoteActivity extends AppCompatActivity {
         Mainlayout = findViewById(R.id.mainLayout);
         contentLayout = findViewById(R.id.contentLayout);
         editTextContent.requestFocus();
-
+        sqLite  = new DBConnSQLite(this);
     }
 
     @Override
@@ -65,7 +50,7 @@ public class NewNoteActivity extends AppCompatActivity {
                 int idPackage = 1;
                 String dateCreate = new DateStringConverter().getText();
                 if (!textContent.equals("")){
-                    HomeActivity.sqLite.QueryData("INSERT INTO notebook VALUES (null,'"+title+"','"+textContent+"','"+idPackage+"','"+dateCreate+"','"+dateCreate+"');");
+                   sqLite.QueryData("INSERT INTO notebook VALUES (null,'"+title+"','"+textContent+"','"+idPackage+"','"+dateCreate+"','"+dateCreate+"');");
                     HomeFragment.notebooks.add(HomeActivity.sqLite.GetLastNotebooks());
                     HomeFragment.adapterHome.notifyDataSetChanged();
                 }

@@ -23,7 +23,7 @@ public class ConnectionDatabaseLocalMobile {
 
     }
 
-    private void prepare() {
+    public void prepare() {
         if (sqLiteDatabase == null || !sqLiteDatabase.isOpen()) {
             sqLiteDatabase = activity.openOrCreateDatabase(R.string.app_name + ".db", activity.MODE_PRIVATE, null);
         }
@@ -60,9 +60,13 @@ public class ConnectionDatabaseLocalMobile {
                 "\tlast_edit TEXT\n" +
                 ");\n";
 
+        String sql4 = "CREATE TABLE IF NOT EXISTS notebook (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,title TEXT,content TEXT,package integer DEFAULT 1,date_create TEXT,date_edit TEXT);";
+
+
         sqLiteDatabase.execSQL(sql);
         sqLiteDatabase.execSQL(sql2);
         sqLiteDatabase.execSQL(sql3);
+        sqLiteDatabase.execSQL(sql4);
 
 
 
