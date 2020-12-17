@@ -60,8 +60,7 @@ public class DBConnSQLite extends SQLiteOpenHelper {
             notebook.setTitle(cursor.getString(1));
             notebook.setContent(cursor.getString(2));
             notebook.setIdPackage(cursor.getInt(3));
-            notebook.setDateCreate(Tool.StringToDate(cursor.getString(4)));
-            notebook.setDateEdit(Tool.StringToDate(cursor.getString(5)));
+            notebook.setDateEdit(Tool.StringToDate(cursor.getString(4)));
             notebooks.add(notebook);
         }
         return notebooks;
@@ -75,8 +74,7 @@ public class DBConnSQLite extends SQLiteOpenHelper {
         notebook.setTitle(cursor.getString(1));
         notebook.setContent(cursor.getString(2));
         notebook.setIdPackage(cursor.getInt(3));
-        notebook.setDateCreate(Tool.StringToDate(cursor.getString(4)));
-        notebook.setDateEdit(Tool.StringToDate(cursor.getString(5)));
+        notebook.setDateEdit(Tool.StringToDate(cursor.getString(4)));
 
         return notebook;
     }
@@ -89,13 +87,13 @@ public class DBConnSQLite extends SQLiteOpenHelper {
         return cursor.moveToNext();
     }
     public void CreateTables(){
-        String sql = "CREATE TABLE IF NOT EXISTS notebook (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,title TEXT,content TEXT,package integer DEFAULT 1,date_create TEXT,date_edit TEXT);";
+        String sql = "CREATE TABLE IF NOT EXISTS notebook (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,title TEXT,content TEXT,package integer DEFAULT 1,date_edit TEXT);";
         QueryData(sql);
         String sql1 = "CREATE TABLE IF NOT EXISTS tblpackage (id INTEGER PRIMARY KEY AUTOINCREMENT,color TEXT,title TEXT,last_edit TEXT);";
         QueryData(sql1);
     }
     public void CreateTableNotebook(){
-        String sql = "CREATE TABLE IF NOT EXISTS notebook (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,title TEXT,content TEXT,package integer DEFAULT 1,date_create TEXT,date_edit TEXT);";
+        String sql = "CREATE TABLE IF NOT EXISTS notebook (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,title TEXT,content TEXT,package integer DEFAULT 1,date_edit TEXT);";
         QueryData(sql);
     }
     public boolean CreateDefaultPackage(Date dateEdit){

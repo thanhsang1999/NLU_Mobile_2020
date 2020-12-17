@@ -26,7 +26,8 @@ import java.util.Map;
 public class ConnectionWebService {
     private Activity activity;
     private ConnectionDatabaseLocalMobile connectionDatabaseLocalMobile;
-
+    private String addressHome = "https://mobilenlu2020.000webhostapp.com";
+    private String urlQuery = "/home/query.php";
     public ConnectionWebService(Activity activity) {
         connectionDatabaseLocalMobile= new ConnectionDatabaseLocalMobile(activity);
         this.activity = activity;
@@ -320,6 +321,31 @@ public class ConnectionWebService {
         });
         requestQueue.add(jsonArrayRequest);
 
+    }
+    public boolean QuerySQL(String string){
+        RequestQueue requestQueue = Volley.newRequestQueue(activity);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, addressHome+urlQuery, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response.equals("success")){
+                }else {
+                    Toast.makeText(activity, ""+response, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<>();
+                map.put("query",string);
+                return map;
+            }
+        };
+        requestQueue.add(stringRequest);
+        return false;
     }
 
 }

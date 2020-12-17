@@ -19,6 +19,7 @@ public class NewNoteActivity extends AppCompatActivity {
     EditText editTextTitle,editTextContent;
     ConstraintLayout Mainlayout,contentLayout;
     DBConnSQLite sqLite;
+    ConnectionWebService connectionWebService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +40,7 @@ public class NewNoteActivity extends AppCompatActivity {
         contentLayout = findViewById(R.id.contentLayout);
         editTextContent.requestFocus();
         sqLite  = new DBConnSQLite(this);
+        connectionWebService = new ConnectionWebService(this);
     }
 
     @Override
@@ -48,12 +50,13 @@ public class NewNoteActivity extends AppCompatActivity {
                 String title = editTextTitle.getText().toString();
                 String textContent = editTextContent.getText().toString();
                 int idPackage = 1;
-                String dateCreate = new DateStringConverter().getText();
+                String dateEdit = new DateStringConverter().getText();
                 if (!textContent.equals("")){
-                   sqLite.QueryData("INSERT INTO notebook VALUES (null,'"+title+"','"+textContent+"','"+idPackage+"','"+dateCreate+"','"+dateCreate+"');");
+                   sqLite.QueryData("INSERT INTO notebook VALUES (null,'"+title+"','"+textContent+"','"+idPackage+"','"+dateEdit+"');");
                     HomeFragment.notebooks.add(HomeActivity.sqLite.GetLastNotebooks());
-                    HomeFragment.adapterHome.notifyDataSetChanged();
+                    HomeFragment.adapterHomeRecyclerView.notifyDataSetChanged();
                 }
+//                connectionWebService.QuerySQL();
                 finish();
                 return true;
             case R.id.menuChangeColor:

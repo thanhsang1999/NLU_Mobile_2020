@@ -7,6 +7,7 @@ import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Tool {
@@ -25,7 +26,21 @@ public class Tool {
         SimpleDateFormat formatter = new SimpleDateFormat(paterm);
         return formatter.format(date);
     }
+    public static String DateToStringPrint(Date date){
+        String patermTmp ="dd/MM/yyyy";
+        SimpleDateFormat formatter = new SimpleDateFormat(patermTmp);
+        return formatter.format(date);
+    }
     public static int getDrawableByName(Context context, String name){
         return context.getResources().getIdentifier(name, "drawable", context.getPackageName());
+    }
+    /**true if has notebook checked ----------- false if notebooks not exists*/
+    public static boolean FindCheckedInArrayList(ArrayList<Notebook> notebooks){
+        for (Notebook item:notebooks) {
+            if (item.getChecked()){
+                return true;
+            }
+        }
+        return false;
     }
 }

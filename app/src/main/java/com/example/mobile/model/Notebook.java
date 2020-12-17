@@ -8,19 +8,28 @@ public class Notebook {
     private String title;
     private String content;
     private int idPackage;
-    private Date dateCreate;
     private Date dateEdit;
+    private Boolean checked;
 
     public Notebook() {
+        this.checked=false;
     }
 
-    public Notebook(int id, String title, String content, int idPackage, Date dateCreate, Date dateEdit) {
+    public Notebook(int id, String title, String content, int idPackage, Date dateEdit, Boolean checked) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.idPackage = idPackage;
-        this.dateCreate = dateCreate;
         this.dateEdit = dateEdit;
+        this.checked = checked;
+    }
+    public Notebook(int id, String title, String content, int idPackage, Date dateEdit) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.idPackage = idPackage;
+        this.dateEdit = dateEdit;
+        this.checked = false;
     }
 
     public int getId() {
@@ -55,19 +64,19 @@ public class Notebook {
         this.idPackage = idPackage;
     }
 
-    public Date getDateCreate() {
-        return dateCreate;
-    }
-
-    public void setDateCreate(Date dateCreate) {
-        this.dateCreate = dateCreate;
-    }
-
     public Date getDateEdit() {
         return dateEdit;
     }
 
     public void setDateEdit(Date dateEdit) {
         this.dateEdit = dateEdit;
+    }
+
+    public Boolean getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Boolean checked) {
+        this.checked = checked;
     }
 }

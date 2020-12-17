@@ -6,11 +6,13 @@
                                                    android:layout_height="match_parent"
                                                    android:background="@color/whitePrimary"
                                                    tools:context=".ui.home.HomeFragment">
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
+            android:dividerHeight="10sp"
+            android:divider="@null"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:id="@+id/listViewHome"/>
+            android:id="@+id/recyclerViewHome" android:layout_marginTop="16dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

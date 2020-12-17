@@ -4,45 +4,42 @@
               android:orientation="horizontal"
               android:padding="10dp"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="wrap_content" android:background="@drawable/background_list_item_linear"
+              android:id="@+id/linearLayoutMain">
     <ImageView
-            android:layout_marginTop="15dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp" app:srcCompat="@drawable/ic_check"
-            tools:ignore="VectorDrawableCompat" android:id="@+id/imageViewChecked"/>
+            android:layout_width="40dp"
+            android:layout_height="40dp" app:srcCompat="@drawable/ic_color_blue"
+            tools:ignore="VectorDrawableCompat" android:id="@+id/imageViewChecked" android:layout_marginTop="10dp"/>
     <LinearLayout
             android:background="#F9F9F9"
             android:layout_marginLeft="20dp"
             android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:layout_weight="1">
+            android:layout_height="wrap_content" android:layout_weight="1" android:id="@+id/linearLayoutContent">
         <LinearLayout
                 android:layout_marginBottom="10dp"
                 android:weightSum="100"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            <ImageView
-                    android:layout_weight="5"
-                    android:layout_marginRight="15dp"
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent" app:srcCompat="@drawable/ic_color_blue"
-                    android:id="@+id/imageViewColorPackage" tools:ignore="VectorDrawableCompat"/>
+                android:layout_height="20dp">
             <TextView
                     android:textStyle="bold"
-                    android:layout_weight="75"
-                    android:text="Trip Diary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/textViewTitle"/>
+                    android:layout_weight="90"
+                    android:text="Trip DiaryTrip DiaryTrip DiaryTrip Diary"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content" android:id="@+id/textViewTitle" android:textSize="16sp"
+                    android:background="@null"/>
             <TextView
-                    android:layout_weight="20"
+                    android:layout_weight="10"
                     android:text="18/06/2012"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/textViewDateEdit"/>
+                    android:layout_height="wrap_content" android:id="@+id/textViewDateEdit" android:gravity="right"
+                    android:layout_marginRight="10sp" android:background="@null"/>
         </LinearLayout>
         <TextView
                 android:text="One of nicest place was golden gate it was massive and cool it totally took over …"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/textViewContent"/>
+                android:layout_height="37dp" android:id="@+id/textViewContent"
+                android:paddingRight="20dp" android:background="@null"/>
     </LinearLayout>
 </LinearLayout>
