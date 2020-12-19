@@ -11,9 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ForgotPass3Activity"></activity>
-        <activity android:name=".ForgotPass2Activity" />
-        <activity android:name=".ForgotPass1Activity" />
+
+
+        <activity android:name=".ForgotPassActivity" />
         <activity
             android:name=".NewNoteActivity"
             android:label="@string/title_activity_new_note"
@@ -23,7 +23,6 @@
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".TmpHomeActivity" />
-        <activity android:name=".ForgotActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".LogInActivity" />
         <activity

@@ -245,7 +245,7 @@ public class SignUpActivity extends AppCompatActivity {
                     Toast.makeText(SignUpActivity.this, msg, Toast.LENGTH_SHORT).show();
                     return;
 
-                }else if(!EMAIL_PATTERN.matcher(username).matches()){
+                }else if(!EMAIL_PATTERN.matcher(email).matches()){
                     msg="Please enter a valid email address";
                     Toast.makeText(SignUpActivity.this, msg, Toast.LENGTH_SHORT).show();
                     return;

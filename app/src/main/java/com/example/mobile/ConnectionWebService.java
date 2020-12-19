@@ -1,14 +1,11 @@
 package com.example.mobile;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -23,12 +20,79 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class ConnectionWebService {
     private Activity activity;
 
     public ConnectionWebService(Activity activity) {
         this.activity = activity;
+    }
+
+    public void forgotPassword(final String email) {
+
+        if (activity instanceof ForgotPassActivity) {
+            final ForgotPassActivity forgotActivity = (ForgotPassActivity) activity;
+            forgotActivity.loading(null);
+
+            RequestQueue requestQueue = Volley.newRequestQueue(activity);
+            String url = Config.getURL() + "forgotpw.php";
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    String msg = "";
+                    if (response.toString().trim().equals("OK")) {
+                        msg = "Vui lòng check email";
+                        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+                        Log.e("Succuss", msg);
+
+                        forgotActivity.loading_complete(null);
+                        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(activity, LogInActivity.class);
+
+                        activity.startActivity(intent);
+
+                    } else if (response.toString().trim().equals("Error")) {
+                        msg = "Không thành công, vui lòng thử lại";
+                        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+                        Log.e("Error", msg);
+
+                        Log.e("Error", msg.toString());
+                        forgotActivity.loading_complete(null);
+                        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+
+                    }
+
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    String msg = "Kết nối mạng bị lỗi.";
+                    Log.e("Error", error.toString());
+                    forgotActivity.loading_complete(null);
+                    Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+
+                }
+            }) {
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    String newpw = randomPW();
+                    Map<String, String> params = new HashMap<>();
+                    params.put("newpw", newpw);
+                    params.put("email", email);
+
+                    SendMailSSL.sendMail(email, newpw);
+
+                    return params;
+                }
+
+
+            };
+            requestQueue.add(stringRequest);
+        }
     }
 
     public void login(final String username, final String password) {
@@ -189,4 +253,24 @@ public class ConnectionWebService {
         requestQueue.add(jsonArrayRequest);
 
     }
+
+    //random password
+    public static String randomPW() {
+
+        int leftLimit = 97; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 8;
+        Random random = new Random();
+        StringBuilder buffer = new StringBuilder(targetStringLength);
+        for (int i = 0; i < targetStringLength; i++) {
+            int randomLimitedInt = leftLimit + (int)
+                    (random.nextFloat() * (rightLimit - leftLimit + 1));
+            buffer.append((char) randomLimitedInt);
+        }
+        String generatedString = buffer.toString();
+
+//        System.out.println(generatedString);
+        return generatedString;
+    }
+
 }
