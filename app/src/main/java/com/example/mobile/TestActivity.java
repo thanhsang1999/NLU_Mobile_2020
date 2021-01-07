@@ -1,105 +1,62 @@
 package com.example.mobile;
 
-import java.io.FileNotFoundException;
 
-import android.app.Activity;
-import android.net.Uri;
+
+import android.os.Build;
 import android.os.Bundle;
-
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BlurMaskFilter;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.RectF;
+import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 
+import androidx.appcompat.app.AppCompatActivity;
 
-public class TestActivity extends Activity {
+import com.example.mobile.utils.ExactThreadHelper;
 
-    Button btnLoadImage;
-    ImageView imageResult;
 
-    final int RQS_IMAGE1 = 1;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
-    Uri source;
-    Bitmap bitmapMaster;
-    Canvas canvasMaster;
+
+public class TestActivity extends AppCompatActivity  {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
+        Button btn=findViewById(R.id.button);
+        TextView textView=findViewById(R.id.textView);
+        Calendar c = Calendar.getInstance();
 
-        btnLoadImage = (Button) findViewById(R.id.loadimage);
-        imageResult = (ImageView) findViewById(R.id.result);
+        c.set(Calendar.MINUTE, c.get(Calendar.MINUTE+1));
+        c.set(Calendar.SECOND,0);
 
-        btnLoadImage.setOnClickListener(new OnClickListener() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            DateFormat dateFormat= new SimpleDateFormat("hh:mm:ss");
+            textView.setText(dateFormat.format(c.getTime())+"");
+            Log.e("VErsion","run");
+            ExactThreadHelper.hel(TestActivity.this, c);
+        } else {
+            Log.e("VErsion","not");
+        }
+        btn.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View arg0) {
-                Intent intent = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, RQS_IMAGE1);
+            public void onClick(View v) {
+
+
+
             }
         });
+
+
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case RQS_IMAGE1:
-                    source = data.getData();
 
-                    try {
-                        bitmapMaster = BitmapFactory
-                                .decodeStream(getContentResolver().openInputStream(
-                                        source));
-                        loadGrayBitmap(bitmapMaster);
 
-                    } catch (FileNotFoundException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-
-                    break;
-            }
-        }
-    }
-
-    private void loadGrayBitmap(Bitmap src) {
-        if (src != null) {
-
-            int w = src.getWidth();
-            int h = src.getHeight();
-            RectF rectF = new RectF(w/4, h/4, w*3/4, h*3/4);
-            float blurRadius = 100.0f;
-
-            Bitmap bitmapResult = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-            Canvas canvasResult = new Canvas(bitmapResult);
-
-            Paint blurPaintOuter = new Paint();
-            blurPaintOuter.setColor(0xFFffffff);
-            blurPaintOuter.setMaskFilter(new
-                    BlurMaskFilter(blurRadius, BlurMaskFilter.Blur.INNER));
-            canvasResult.drawBitmap(bitmapMaster, 0, 0, blurPaintOuter);
-
-            Paint blurPaintInner = new Paint();
-            blurPaintInner.setColor(0xFFffffff);
-            blurPaintInner.setMaskFilter(new
-                    BlurMaskFilter(blurRadius, BlurMaskFilter.Blur.OUTER));
-            canvasResult.drawRect(rectF, blurPaintInner);
-
-            imageResult.setImageBitmap(bitmapResult);
-        }
-    }
 }
