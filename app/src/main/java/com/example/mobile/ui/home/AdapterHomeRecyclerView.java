@@ -2,13 +2,11 @@ package com.example.mobile.ui.home;
 
 
 import android.content.Context;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.HomeActivity;
@@ -87,6 +85,8 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
                         linearLayoutMain.setBackgroundResource(R.drawable.background_checked_list_item_linear);
                         linearLayoutContent.setBackgroundResource(R.drawable.background_checked_list_item_linear);
                         imageViewCheck.setImageResource(R.drawable.ic_checked_list);
+                        HomeActivity homeActivity =  (HomeActivity) context;
+                        homeActivity.showActionMode();
                     }
 
                     return true;

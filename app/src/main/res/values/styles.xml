@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowActionModeOverlay">true</item>
     </style>
     <style name="NavigationDrawerStyle">
         <item name="android:textSize">15sp</item>
@@ -26,6 +27,5 @@
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
-
 
 </resources>

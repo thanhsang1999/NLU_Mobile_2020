@@ -1,13 +1,12 @@
 package com.example.mobile.ui.home;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 
 import android.widget.*;
 import androidx.annotation.NonNull;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -27,6 +26,7 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
+    public ActionMode actionMode;
     RecyclerView recyclerView;
     View root;
     public static ArrayList<Notebook> notebooks;
@@ -44,6 +44,9 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(root.getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
         adapterHomeRecyclerView = new AdapterHomeRecyclerView(notebooks,root.getContext());
+
+        //action mode
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         //
         recyclerView.setAdapter(adapterHomeRecyclerView);
         return root;
@@ -54,4 +57,5 @@ public class HomeFragment extends Fragment {
         notebooks = new ArrayList<>();
         recyclerView = root.findViewById(R.id.recyclerViewHome);
     }
+
 }

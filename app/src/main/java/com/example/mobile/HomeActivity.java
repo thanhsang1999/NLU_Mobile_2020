@@ -3,11 +3,13 @@ package com.example.mobile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.view.ActionMode;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import com.example.mobile.model.DBConnSQLite;
@@ -34,7 +36,7 @@ public class HomeActivity extends AppCompatActivity {
     public static FloatingActionButton fab;
     NavController navController;
     public static DBConnSQLite sqLite;
-
+    ActionMode actionMode;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +45,6 @@ public class HomeActivity extends AppCompatActivity {
         init();
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,6 +110,7 @@ public class HomeActivity extends AppCompatActivity {
         navFooter2 = findViewById(R.id.footer_item_2);
         navFooter1 = findViewById(R.id.footer_item_1);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
     }
     private void initDB() {
 
@@ -151,5 +153,41 @@ public class HomeActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+    public ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.menu_item_select,menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()){
+                case R.id.menu_delete:
+                    Toast.makeText(HomeActivity.this, "menu_delete", Toast.LENGTH_SHORT).show();
+                    mode.finish();
+                    return true;
+                case R.id.menu_share:
+                    Toast.makeText(HomeActivity.this, "menu_share", Toast.LENGTH_SHORT).show();
+                    mode.finish();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            actionModeCallback = null;
+        }
+    };
+    public void showActionMode(){
+        actionMode = startSupportActionMode(actionModeCallback);
     }
 }

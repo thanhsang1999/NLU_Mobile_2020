@@ -16,18 +16,21 @@
                 android:orientation="horizontal"
                 android:weightSum="10"
                 android:background="#ffffff"
-                android:layout_width="match_parent" android:layout_height="match_parent">
+                android:layout_width="match_parent" android:layout_height="wrap_content">
             <androidx.appcompat.widget.Toolbar
-                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.5"
                     android:id="@+id/toolbar"
-                    android:layout_width="0dp"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="#FFFFFF">
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:scaleX="1.5"
+                    android:scaleY="1.1"
+                    app:navigationIcon="@drawable/ic_menu">
 
 
             </androidx.appcompat.widget.Toolbar>
             <EditText
-                    android:layout_weight="8.5"
+                    android:layout_weight="9"
                     android:paddingRight="10dp"
                     android:textColor="@color/black"
                     android:background="@drawable/edit_text_search"
@@ -44,18 +47,18 @@
                     android:layout_marginLeft="5dp" android:layout_marginStart="5dp"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton2" android:hint="Search"
                     android:layout_marginBottom="5dp"
-            />
+                    android:layout_gravity="center"/>
             <ImageButton
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="0.5"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     app:srcCompat="@drawable/ic_avatar_user"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="5dp"
                     android:id="@+id/imageButton2"
                     android:background="@null"
                     app:layout_constraintEnd_toEndOf="parent" tools:ignore="VectorDrawableCompat"
-                    android:scaleType="fitCenter" />
+                    android:scaleType="fitCenter"/>
         </LinearLayout>
 
 
