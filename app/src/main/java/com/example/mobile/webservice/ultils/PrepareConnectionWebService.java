@@ -1,9 +1,6 @@
 package com.example.mobile.webservice.ultils;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -12,15 +9,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.mobile.Config;
-import com.example.mobile.HomeActivity;
-import com.example.mobile.model.Account;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
 import java.util.Map;
 
 public class PrepareConnectionWebService {

@@ -1,4 +1,4 @@
-package com.example.mobile;
+package com.example.mobile.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,13 +8,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-public class ForgotPass3Activity extends AppCompatActivity {
+import com.example.mobile.R;
+
+public class ForgotPass1Activity extends AppCompatActivity {
     ImageView backArrow;
-    Button btn_finish;
+    Button btn_next;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgot_pass3);
+        setContentView(R.layout.activity_forgot_pass1);
         as();
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -22,16 +25,17 @@ public class ForgotPass3Activity extends AppCompatActivity {
                 finish();
             }
         });
-        btn_finish.setOnClickListener(new View.OnClickListener() {
+        btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ForgotPass3Activity.this, HomeActivity.class);
+                Intent intent = new Intent(ForgotPass1Activity.this, ForgotPass2Activity.class);
                 startActivity(intent);
             }
         });
     }
     public void as(){
         backArrow=findViewById(R.id.backArrow);
-        btn_finish=findViewById(R.id.btn_finish);
+        btn_next=findViewById(R.id.btn_next);
     }
+
 }

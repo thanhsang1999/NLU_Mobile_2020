@@ -1,9 +1,10 @@
-package com.example.mobile;
+package com.example.mobile.activity;
 
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,18 +18,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import com.example.mobile.model.DBConnSQLite;
+
+import com.example.mobile.ConnectionDatabaseLocalMobile;
+import com.example.mobile.ConnectionWebService;
+import com.example.mobile.R;
 import com.example.mobile.model.DateStringConverter;
+import com.example.mobile.model.Notebook;
 import com.example.mobile.ui.home.HomeFragment;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class NewNoteActivity extends AppCompatActivity {
     EditText editTextTitle,editTextContent;
     ConstraintLayout Mainlayout,contentLayout;
-    DBConnSQLite sqLite;
-    ConnectionWebService connectionWebService;
+    ConnectionDatabaseLocalMobile sqLite;
+
     private int mYear, mMonth, mDay, mHour, mMinute;
+    Notebook notebook;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +57,9 @@ public class NewNoteActivity extends AppCompatActivity {
         Mainlayout = findViewById(R.id.mainLayout);
         contentLayout = findViewById(R.id.contentLayout);
         editTextContent.requestFocus();
-        sqLite  = new DBConnSQLite(this);
-        connectionWebService = new ConnectionWebService(this);
+        notebook= new Notebook();
+        sqLite  = new ConnectionDatabaseLocalMobile(this);
+
     }
 
     @Override
@@ -61,12 +70,18 @@ public class NewNoteActivity extends AppCompatActivity {
                 String textContent = editTextContent.getText().toString();
                 int idPackage = 1;
                 String dateEdit = new DateStringConverter().getText();
+                notebook.setTitle(title);
+                notebook.setContent(textContent);
+                notebook.setDateEdit(new Date());
+
                 if (!textContent.equals("")){
-                   sqLite.QueryData("INSERT INTO notebook VALUES (null,'"+title+"','"+textContent+"','"+idPackage+"','"+dateEdit+"');");
-                    HomeFragment.notebooks.add(HomeActivity.sqLite.GetLastNotebooks());
+                    sqLite.CreateDefaultPackage(new Date());
+
+                    sqLite.QueryData("INSERT INTO notebook (id, title, content, id_package, last_edit) VALUES (null,'"+title+"','"+textContent+"','"+idPackage+"','"+dateEdit+"');");
+                    HomeFragment.currentPackage.getNotebooks().add(notebook);
                     HomeFragment.adapterHomeRecyclerView.notifyDataSetChanged();
                 }
-//                connectionWebService.QuerySQL();
+
                 finish();
                 return true;
             case R.id.menuChangeColor:
@@ -75,6 +90,7 @@ public class NewNoteActivity extends AppCompatActivity {
             case R.id.reminder:
                     // Get Current Date
                     final Calendar c = Calendar.getInstance();
+
                     mYear = c.get(Calendar.YEAR);
                     mMonth = c.get(Calendar.MONTH);
                     mDay = c.get(Calendar.DAY_OF_MONTH);
@@ -85,7 +101,12 @@ public class NewNoteActivity extends AppCompatActivity {
                                 @Override
                                 public void onDateSet(DatePicker view, int year,
                                                       int monthOfYear, int dayOfMonth) {
+
                                     final Calendar c = Calendar.getInstance();
+//
+                                    c.set(Calendar.YEAR, year);
+                                    c.set(Calendar.MONTH, monthOfYear);
+                                    c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                                     mHour = c.get(Calendar.HOUR_OF_DAY);
                                     mMinute = c.get(Calendar.MINUTE);
 
@@ -96,8 +117,13 @@ public class NewNoteActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onTimeSet(TimePicker view, int hourOfDay,
                                                                       int minute) {
+                                                    c.set(Calendar.HOUR_OF_DAY,hourOfDay);
+                                                    c.set(Calendar.MINUTE,minute);
 
-                                                    Toast.makeText(NewNoteActivity.this,dayOfMonth + "-" + (monthOfYear + 1) + "-" + year+ "--"+ hourOfDay + ":" + minute, Toast.LENGTH_SHORT).show();
+
+
+                                                    notebook.setRemind(c);
+
                                                 }
                                             }, mHour, mMinute, false);
                                     timePickerDialog.show();

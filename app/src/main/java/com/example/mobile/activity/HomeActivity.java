@@ -1,4 +1,4 @@
-package com.example.mobile;
+package com.example.mobile.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,10 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.view.ActionMode;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
-import com.example.mobile.model.DBConnSQLite;
+
+import com.example.mobile.ConnectionDatabaseLocalMobile;
+import com.example.mobile.ExitConfirmDialogFragment;
+import com.example.mobile.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import androidx.navigation.NavController;
@@ -30,28 +33,25 @@ public class HomeActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     View navFooter1,navFooter2;
     DrawerLayout drawer;
-    NavigationView navigationView;
+    public NavigationView navigationView;
     Toolbar toolbar;
     public static FloatingActionButton fab;
     NavController navController;
-    public static DBConnSQLite sqLite;
+
     ActionMode actionMode;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        initDB();
+
         init();
 
         setSupportActionBar(toolbar);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                FragmentManager fragmentManager = getSupportFragmentManager();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.replace(R.id.nav_host_fragment, new NewNoteFragment(), null);
-//                fragmentTransaction.commit();
-                Intent intent = new Intent(HomeActivity.this,NewNoteActivity.class);
+
+                Intent intent = new Intent(HomeActivity.this, NewNoteActivity.class);
                 startActivity(intent);
             }
         });
@@ -73,6 +73,8 @@ public class HomeActivity extends AppCompatActivity {
 
 
         navigationBackPressed();
+
+        navigationView.setCheckedItem(R.id.nav_home);
 
 
 
@@ -111,15 +113,7 @@ public class HomeActivity extends AppCompatActivity {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
     }
-    private void initDB() {
 
-        sqLite = new DBConnSQLite(this,R.string.app_name + ".db",null,1);
-        sqLite.CreateTableNotebook();
-        Date date = new Date();
-        sqLite.CreateDefaultPackage(date);
-        Log.e("bug","thoi de vay di");
-       // HomeActivity.sqLite
-    }
 
     private void NavigationBottom() {
         navFooter1.setOnClickListener(new View.OnClickListener() {

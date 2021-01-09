@@ -1,8 +1,10 @@
-package com.example.mobile;
+package com.example.mobile.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.mobile.R;
 
 public class ForgotActivity extends AppCompatActivity {
 

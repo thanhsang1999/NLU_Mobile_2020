@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mobile.ConnectionDatabaseLocalMobile;
-import com.example.mobile.HomeActivity;
+import com.example.mobile.activity.HomeActivity;
 import com.example.mobile.model.Package;
 import com.example.mobile.R;
 

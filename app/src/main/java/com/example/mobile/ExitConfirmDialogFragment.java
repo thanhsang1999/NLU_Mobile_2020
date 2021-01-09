@@ -1,14 +1,14 @@
 package com.example.mobile;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import com.example.mobile.activity.LogInActivity;
 
 public class ExitConfirmDialogFragment extends DialogFragment {
     public static final String ARG_TITLE = "ExitConfirmDialogFragment.Title";

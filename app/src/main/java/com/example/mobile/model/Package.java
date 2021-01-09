@@ -1,30 +1,40 @@
 package com.example.mobile.model;
 
-import java.util.Date;
 
-public class Package {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.List;
+
+public class Package implements Parcelable {
     int id;
     String color;
     String name;
-    DateStringConverter dateCreate;
+
     DateStringConverter lastEdit;
-
-    public Package(String color, String name, Date dateCreate, Date lastEdit) {
-        this.color = color;
-        this.name = name;
+    List<Notebook> notebooks;
 
 
-        this.dateCreate = new DateStringConverter(dateCreate);
-        this.lastEdit = new DateStringConverter(lastEdit);
+    protected Package(Parcel in) {
+        id = in.readInt();
+        color = in.readString();
+        name = in.readString();
     }
-    public Package(int id,String color, String name, String dateCreate, String lastEdit) {
-        this.color = color;
-        this.name = name;
-        this.id=id;
+    public Package(){
 
-        this.dateCreate = new DateStringConverter(dateCreate);
-        this.lastEdit = new DateStringConverter(lastEdit);
     }
+
+    public static final Creator<Package> CREATOR = new Creator<Package>() {
+        @Override
+        public Package createFromParcel(Parcel in) {
+            return new Package(in);
+        }
+
+        @Override
+        public Package[] newArray(int size) {
+            return new Package[size];
+        }
+    };
 
     public String getColor() {
         return color;
@@ -43,14 +53,6 @@ public class Package {
     }
 
 
-    public DateStringConverter getDateCreate() {
-        return dateCreate;
-    }
-
-    public void setDateCreate(DateStringConverter dateCreate) {
-        this.dateCreate = dateCreate;
-    }
-
     public DateStringConverter getLastEdit() {
         return lastEdit;
     }
@@ -65,5 +67,25 @@ public class Package {
 
     public void setId(int i) {
         this.id=i;
+    }
+
+    public List<Notebook> getNotebooks() {
+        return notebooks;
+    }
+
+    public void setNotebooks(List<Notebook> notebooks) {
+        this.notebooks = notebooks;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(color);
+        dest.writeString(name);
     }
 }

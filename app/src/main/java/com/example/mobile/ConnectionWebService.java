@@ -13,6 +13,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.mobile.activity.HomeActivity;
+import com.example.mobile.activity.LogInActivity;
+import com.example.mobile.activity.LogoActivity;
+import com.example.mobile.activity.SignUpActivity;
+import com.example.mobile.activity.WellComeActivity;
 import com.example.mobile.model.Account;
 import com.example.mobile.model.Package;
 

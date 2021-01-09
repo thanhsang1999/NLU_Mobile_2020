@@ -1,25 +1,31 @@
 package com.example.mobile.model;
 
 
+import android.util.Log;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+
 
 public class Notebook {
     private int id;
     private String title;
     private String content;
-    private int idPackage;
+
     private Date dateEdit;
+    private Calendar remind;
     private Boolean checked;
 
     public Notebook() {
         this.checked=false;
     }
 
-    public Notebook(int id, String title, String content, int idPackage, Date dateEdit, Boolean checked) {
+    public Notebook(int id, String title, String content, Date dateEdit, Boolean checked) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.idPackage = idPackage;
+
         this.dateEdit = dateEdit;
         this.checked = checked;
     }
@@ -27,7 +33,7 @@ public class Notebook {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.idPackage = idPackage;
+
         this.dateEdit = dateEdit;
         this.checked = false;
     }
@@ -56,13 +62,7 @@ public class Notebook {
         this.content = content;
     }
 
-    public int getIdPackage() {
-        return idPackage;
-    }
 
-    public void setIdPackage(int idPackage) {
-        this.idPackage = idPackage;
-    }
 
     public Date getDateEdit() {
         return dateEdit;
@@ -78,5 +78,14 @@ public class Notebook {
 
     public void setChecked(Boolean checked) {
         this.checked = checked;
+    }
+
+    public Calendar getRemind() {
+        return remind;
+    }
+
+    public void setRemind(Calendar remind) {
+
+        this.remind = remind;
     }
 }

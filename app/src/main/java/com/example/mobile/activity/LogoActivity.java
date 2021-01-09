@@ -1,4 +1,4 @@
-package com.example.mobile;
+package com.example.mobile.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,11 +7,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.mobile.Config;
+import com.example.mobile.R;
 import com.example.mobile.webservice.ultils.MyWorker;
 import com.example.mobile.webservice.ultils.PrepareConnectionWebService;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class LogoActivity extends AppCompatActivity {
 

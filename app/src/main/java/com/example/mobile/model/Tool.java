@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Tool {
     private static String paterm ="yyyy-MM-dd HH:mm:ss";
@@ -35,7 +36,7 @@ public class Tool {
         return context.getResources().getIdentifier(name, "drawable", context.getPackageName());
     }
     /**true if has notebook checked ----------- false if notebooks not exists*/
-    public static boolean FindCheckedInArrayList(ArrayList<Notebook> notebooks){
+    public static boolean FindCheckedInArrayList(List<Notebook> notebooks){
         for (Notebook item:notebooks) {
             if (item.getChecked()){
                 return true;

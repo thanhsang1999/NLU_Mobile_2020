@@ -1,21 +1,17 @@
 package com.example.mobile.ui.slideshow;
 
-import android.app.Activity;
+
+
 import android.app.Dialog;
+
 import android.graphics.Bitmap;
 
-import android.graphics.BitmapShader;
-import android.graphics.BlurMaskFilter;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.Rect;
-import android.graphics.Shader;
+
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
-import android.view.Display;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,12 +22,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 
 import com.example.mobile.ConnectionDatabaseLocalMobile;
+import com.example.mobile.activity.HomeActivity;
+import com.example.mobile.model.DateStringConverter;
 import com.example.mobile.model.Package;
 import com.example.mobile.R;
+import com.example.mobile.ui.home.HomeFragment;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,16 +43,30 @@ import java.util.List;
 public class PackageItemAdapter extends BaseAdapter {
 
     private final List<Package> _items;
-    Activity activity;
-    Fragment fragment;
+    HomeActivity activity;
+    SlideshowFragment fragment;
     ConnectionDatabaseLocalMobile c;
     public PackageItemAdapter(Fragment fragment, List<Package> aPackages){
         c= new ConnectionDatabaseLocalMobile(fragment.getActivity());
         this._items = new ArrayList<>();
-        this._items.add(new Package("create_package", "Create Note", new Date(), new Date()));
+        Package p=new Package();
+        p.setName("Create Note");
+        p.setLastEdit(new DateStringConverter());
+        p.setColor("create_package");
+        this._items.add(p);
         this._items.addAll(aPackages);
-        this.fragment = fragment;
-        this.activity=fragment.getActivity();
+
+        if(fragment instanceof  SlideshowFragment){
+            this.fragment =(SlideshowFragment) fragment;
+        }else{
+            Log.e("Error", "slideShow Frament");
+        }
+        if(fragment.getActivity() instanceof  AppCompatActivity){
+            this.activity=(HomeActivity) fragment.getActivity();
+        }else{
+            Log.e("Error", "Appcompat");
+        }
+
 
     }
     @Override
@@ -240,7 +256,10 @@ public class PackageItemAdapter extends BaseAdapter {
                         dialog.findViewById(R.id.btn_save).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Package p= new Package( drawablePackage.getContentDescription().toString(), titlePackage.getText().toString(), new Date(), new Date());
+                                Package p= new Package();
+                                p.setColor(drawablePackage.getContentDescription().toString());
+                                p.setName(titlePackage.getText().toString());
+                                p.setLastEdit(new DateStringConverter());
                                 _items.add(p);
                                 c.insert_package(p);
                                 notifyDataSetChanged();
@@ -304,6 +323,19 @@ public class PackageItemAdapter extends BaseAdapter {
         viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(null, top , null, null);
         viewHolder.textView.setCompoundDrawablePadding(0);
         viewHolder.textView.setText(book.getName());
+        viewHolder.textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager=PackageItemAdapter.this.activity.getSupportFragmentManager();
+                Fragment homeFragment=new HomeFragment();
+                Bundle bundle= new Bundle();
+                bundle.putParcelable("currentPackage", book);
+                homeFragment.setArguments(bundle);
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, homeFragment).setReorderingAllowed(true).commit();
+                activity.navigationView.setCheckedItem(R.id.nav_home);
+                //PackageItemAdapter.this.activi
+            }
+        });
         return convertView;
     }
     private class  ViewHolder{

@@ -59,7 +59,35 @@ public class TestActivity extends AppCompatActivity implements IRawSQL {
             @Override
             public void onClick(View v) {
 
-                ExecuteRawSQLFromWebServie.executeQueryRaw("select id from tblaccount", TestActivity.this);
+                ExecuteRawSQLFromWebServie.executeQueryRaw("select id from tblaccount", TestActivity.this, new IRawSQL(){
+
+                    @Override
+                    public void acceptReturnRowAffect(int rowAffect) {
+
+                    }
+
+                    @Override
+                    public void acceptReturnJSONArray(JSONArray jsonArray) throws JSONException {
+                        if (jsonArray.length() != 1) {
+                            String msg = "Tài khoản không hợp lệ.";
+                            Log.e("len", jsonArray.length()+"");
+                        }
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            try {
+                                JSONObject jsonObject = jsonArray.getJSONObject(i).getJSONObject("user_properties");
+
+                                Log.e("id"+i, jsonObject.getString("id"));
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+                        }
+                    }
+                });
+
 
             }
         });
@@ -68,7 +96,17 @@ public class TestActivity extends AppCompatActivity implements IRawSQL {
             @Override
             public void onClick(View v) {
 
-                ExecuteRawSQLFromWebServie.executeUpdateRaw("update tblaccount set password = '1111'", TestActivity.this);
+                ExecuteRawSQLFromWebServie.executeUpdateRaw("update tblaccount set password = '1111'", TestActivity.this, new IRawSQL() {
+                    @Override
+                    public void acceptReturnRowAffect(int rowAffect) {
+                        Log.e("rowAffect",rowAffect+"");
+                    }
+
+                    @Override
+                    public void acceptReturnJSONArray(JSONArray jsonArray) throws JSONException {
+
+                    }
+                });
 
             }
         });
@@ -81,28 +119,11 @@ public class TestActivity extends AppCompatActivity implements IRawSQL {
 
     @Override
     public void acceptReturnRowAffect(int rowAffect) {
-        Log.e("rowAffect",rowAffect+"");
 
     }
 
     @Override
     public void acceptReturnJSONArray(JSONArray jsonArray)  {
-        if (jsonArray.length() != 1) {
-            String msg = "Tài khoản không hợp lệ.";
-            Log.e("len", jsonArray.length()+"");
-        }
 
-        for (int i = 0; i < jsonArray.length(); i++) {
-            try {
-                JSONObject jsonObject = jsonArray.getJSONObject(i).getJSONObject("user_properties");
-
-                Log.e("id"+i, jsonObject.getString("id"));
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-
-        }
     }
 }
