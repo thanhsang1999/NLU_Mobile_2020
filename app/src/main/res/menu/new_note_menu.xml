@@ -3,6 +3,9 @@
     <item
             android:id="@+id/menuChangeColor"
             android:icon="@drawable/ic_color_change"
-            android:title="Đổi Màu"
-            app:showAsAction="always"/>
+            android:title="Đổi Màu"/>
+    <item
+            android:id="@+id/reminder"
+            android:icon="@drawable/ic_color_change"
+            android:title="Lời nhắc"/>
 </menu>
