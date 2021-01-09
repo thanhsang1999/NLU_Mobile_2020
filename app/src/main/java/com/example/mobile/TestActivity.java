@@ -2,25 +2,35 @@ package com.example.mobile;
 
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.mobile.model.Account;
 import com.example.mobile.utils.ExactThreadHelper;
+import com.example.mobile.webservice.ultils.ExecuteRawSQLFromWebServie;
+import com.example.mobile.webservice.ultils.IRawSQL;
 
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 
-public class TestActivity extends AppCompatActivity  {
+public class TestActivity extends AppCompatActivity implements IRawSQL {
 
 
 
@@ -29,6 +39,7 @@ public class TestActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         Button btn=findViewById(R.id.button);
+        Button btn1=findViewById(R.id.button1);
         TextView textView=findViewById(R.id.textView);
         Calendar c = Calendar.getInstance();
 
@@ -48,15 +59,50 @@ public class TestActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
 
+                ExecuteRawSQLFromWebServie.executeQueryRaw("select id from tblaccount", TestActivity.this);
 
+            }
+        });
+        btn1.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                ExecuteRawSQLFromWebServie.executeUpdateRaw("update tblaccount set password = '1111'", TestActivity.this);
 
             }
         });
 
 
+
+
     }
 
 
+    @Override
+    public void acceptReturnRowAffect(int rowAffect) {
+        Log.e("rowAffect",rowAffect+"");
+
+    }
+
+    @Override
+    public void acceptReturnJSONArray(JSONArray jsonArray)  {
+        if (jsonArray.length() != 1) {
+            String msg = "Tài khoản không hợp lệ.";
+            Log.e("len", jsonArray.length()+"");
+        }
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                JSONObject jsonObject = jsonArray.getJSONObject(i).getJSONObject("user_properties");
+
+                Log.e("id"+i, jsonObject.getString("id"));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
 
+        }
+    }
 }
