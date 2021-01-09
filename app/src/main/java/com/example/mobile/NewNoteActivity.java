@@ -1,12 +1,17 @@
 package com.example.mobile;
 
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.DatePicker;
 import android.widget.EditText;
 
+import android.widget.TimePicker;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -16,11 +21,14 @@ import com.example.mobile.model.DBConnSQLite;
 import com.example.mobile.model.DateStringConverter;
 import com.example.mobile.ui.home.HomeFragment;
 
+import java.util.Calendar;
+
 public class NewNoteActivity extends AppCompatActivity {
     EditText editTextTitle,editTextContent;
     ConstraintLayout Mainlayout,contentLayout;
     DBConnSQLite sqLite;
     ConnectionWebService connectionWebService;
+    private int mYear, mMonth, mDay, mHour, mMinute;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +72,40 @@ public class NewNoteActivity extends AppCompatActivity {
             case R.id.menuChangeColor:
                 contentLayout.setBackgroundResource(R.drawable.ic_bgblue1);
                 return true;
+            case R.id.reminder:
+                    // Get Current Date
+                    final Calendar c = Calendar.getInstance();
+                    mYear = c.get(Calendar.YEAR);
+                    mMonth = c.get(Calendar.MONTH);
+                    mDay = c.get(Calendar.DAY_OF_MONTH);
+
+
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                            new DatePickerDialog.OnDateSetListener() {
+                                @Override
+                                public void onDateSet(DatePicker view, int year,
+                                                      int monthOfYear, int dayOfMonth) {
+                                    final Calendar c = Calendar.getInstance();
+                                    mHour = c.get(Calendar.HOUR_OF_DAY);
+                                    mMinute = c.get(Calendar.MINUTE);
+
+                                    // Launch Time Picker Dialog
+                                    TimePickerDialog timePickerDialog = new TimePickerDialog(NewNoteActivity.this,
+                                            new TimePickerDialog.OnTimeSetListener() {
+
+                                                @Override
+                                                public void onTimeSet(TimePicker view, int hourOfDay,
+                                                                      int minute) {
+
+                                                    Toast.makeText(NewNoteActivity.this,dayOfMonth + "-" + (monthOfYear + 1) + "-" + year+ "--"+ hourOfDay + ":" + minute, Toast.LENGTH_SHORT).show();
+                                                }
+                                            }, mHour, mMinute, false);
+                                    timePickerDialog.show();
+                                }
+                            }, mYear, mMonth, mDay);
+                    datePickerDialog.show();
+
+        return true;
             default:return super.onOptionsItemSelected(item);
         }
     }
