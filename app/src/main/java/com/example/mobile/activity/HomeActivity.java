@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
@@ -37,7 +38,7 @@ public class HomeActivity extends AppCompatActivity {
     Toolbar toolbar;
     public static FloatingActionButton fab;
     NavController navController;
-
+    ImageView profile;
     ActionMode actionMode;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +112,16 @@ public class HomeActivity extends AppCompatActivity {
         navFooter2 = findViewById(R.id.footer_item_2);
         navFooter1 = findViewById(R.id.footer_item_1);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        profile= findViewById(R.id.profile);
 
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(HomeActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
 
