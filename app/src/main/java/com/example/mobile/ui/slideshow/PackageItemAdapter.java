@@ -323,19 +323,22 @@ public class PackageItemAdapter extends BaseAdapter {
         viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(null, top , null, null);
         viewHolder.textView.setCompoundDrawablePadding(0);
         viewHolder.textView.setText(book.getName());
-        viewHolder.textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager=PackageItemAdapter.this.activity.getSupportFragmentManager();
-                Fragment homeFragment=new HomeFragment();
-                Bundle bundle= new Bundle();
-                bundle.putParcelable("currentPackage", book);
-                homeFragment.setArguments(bundle);
-                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, homeFragment).setReorderingAllowed(true).commit();
-                activity.navigationView.setCheckedItem(R.id.nav_home);
-                //PackageItemAdapter.this.activi
-            }
-        });
+        if(book.getColor()!="create_package"){
+            viewHolder.textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentManager fragmentManager=PackageItemAdapter.this.activity.getSupportFragmentManager();
+                    Fragment homeFragment=new HomeFragment();
+                    Bundle bundle= new Bundle();
+                    bundle.putParcelable("currentPackage", book);
+                    homeFragment.setArguments(bundle);
+                    fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, homeFragment).setReorderingAllowed(true).commit();
+                    activity.navigationView.setCheckedItem(R.id.nav_home);
+                    //PackageItemAdapter.this.activi
+                }
+            });
+
+        }
         return convertView;
     }
     private class  ViewHolder{
