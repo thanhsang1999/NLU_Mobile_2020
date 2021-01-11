@@ -10,12 +10,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class Tool {
     private static String paterm ="yyyy-MM-dd HH:mm:ss";
     public static Date StringToDate(String str){
         Date tmpDate = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat(paterm);
+        formatter.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
         try {
             tmpDate = formatter.parse(str);
         } catch (ParseException e) {
@@ -24,12 +26,20 @@ public class Tool {
         return tmpDate;
     }
     public static String DateToString(Date date){
+        if(date==null){
+            Log.e("DateError", "Tool");
+        }
         SimpleDateFormat formatter = new SimpleDateFormat(paterm);
+        formatter.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
         return formatter.format(date);
     }
     public static String DateToStringPrint(Date date){
+        if(date==null){
+            Log.e("DateError", "Tool");
+        }
         String patermTmp ="dd/MM/yyyy";
         SimpleDateFormat formatter = new SimpleDateFormat(patermTmp);
+
         return formatter.format(date);
     }
     public static int getDrawableByName(Context context, String name){

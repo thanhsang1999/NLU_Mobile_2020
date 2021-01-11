@@ -232,30 +232,26 @@
                 <RadioGroup
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
+                    android:orientation="horizontal"
                     android:id="@+id/radioGroupGender">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        >
+
                         <RadioButton
-                            android:id="@+id/radioButtonTrue"
+                            android:id="@+id/radioButtonMale"
                             android:layout_width="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_height="wrap_content"
                             android:textSize="20sp"
                             android:text="@string/male" />
                         <RadioButton
-                            android:id="@+id/radioButtonWrong1"
+                            android:id="@+id/radioButtonFemale"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="25dp"
                             android:textSize="20sp"
                             android:text="@string/female" />
 
-                    </LinearLayout>
+
 
 
 

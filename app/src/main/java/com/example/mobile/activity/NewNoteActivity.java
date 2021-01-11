@@ -1,8 +1,10 @@
 package com.example.mobile.activity;
 
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -21,9 +23,12 @@ import androidx.core.content.ContextCompat;
 
 import com.example.mobile.ConnectionDatabaseLocalMobile;
 import com.example.mobile.ConnectionWebService;
+import com.example.mobile.IFragmentCanAddNote;
 import com.example.mobile.R;
 import com.example.mobile.model.DateStringConverter;
 import com.example.mobile.model.Notebook;
+import com.example.mobile.model.Package;
+import com.example.mobile.ui.home.AdapterHomeRecyclerView;
 import com.example.mobile.ui.home.HomeFragment;
 
 import java.util.Calendar;
@@ -34,17 +39,20 @@ public class NewNoteActivity extends AppCompatActivity {
     EditText editTextTitle,editTextContent;
     ConstraintLayout Mainlayout,contentLayout;
     ConnectionDatabaseLocalMobile sqLite;
-    int idPackage;
+
     private int mYear, mMonth, mDay, mHour, mMinute;
     Notebook notebook;
+
+
+    public int idPackage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_note);
-        idPackage=getIntent().getIntExtra("idPackage", 0);
-        if(idPackage==0){
-            Log.e("Error idp", idPackage+"");
-        }
+
+        idPackage=getIntent().getExtras().getInt("idPackage");
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -73,20 +81,19 @@ public class NewNoteActivity extends AppCompatActivity {
                 String title = editTextTitle.getText().toString();
                 String textContent = editTextContent.getText().toString();
 
-                String dateEdit = new DateStringConverter().getText();
+
                 notebook.setTitle(title);
                 notebook.setContent(textContent);
                 notebook.setDateEdit(new Date());
 
                 if (!textContent.equals("")){
-                    if(idPackage==1)
-                    sqLite.CreateDefaultPackage(new Date());
+                    notebook=sqLite.insert_notebook(notebook,idPackage);
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("notebook",notebook);
+                    setResult(Activity.RESULT_OK,returnIntent);
 
-                    sqLite.QueryData("INSERT INTO notebook (id, title, content, id_package, last_edit) VALUES (null,'"+title+"','"+textContent+"','"+idPackage+"','"+dateEdit+"');");
-                    HomeFragment.currentPackage.getNotebooks().add(notebook);
-                    HomeFragment.adapterHomeRecyclerView.notifyDataSetChanged();
                 }
-
+                Log.e("NewNote","Finish");
                 finish();
                 return true;
             case R.id.menuChangeColor:
@@ -147,4 +154,5 @@ public class NewNoteActivity extends AppCompatActivity {
         inflater.inflate(R.menu.new_note_menu,menu);
         return true;
     }
+
 }

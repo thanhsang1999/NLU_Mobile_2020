@@ -9,8 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
 import com.example.mobile.model.Account;
 import com.example.mobile.model.DateStringConverter;
 import com.example.mobile.model.Notebook;
@@ -151,17 +149,53 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("title", p.getName());
         values.put("color", p.getColor());
-        values.put("last_edit", p.getLastEdit().getText());
+        values.put("last_edit", Tool.DateToString( p.getLastEdit()));
 
         boolean rs = this.sqLiteDatabase.insert("tblpackage", null, values) != -1;
-        p.setId(1);
-        Log.e("Package", p.getColor());
+
         Log.e("Insert Package", "" + rs);
-        new Thread(()->{
-            ConnectionWebService connectionWebService= new ConnectionWebService(this.activity);
-            connectionWebService.insert_package(p, getAccount());
-        }).start();
+        if(rs){
+            final Package p2=getLastPackage();
+            new Thread(()->{
+                ConnectionWebService connectionWebService= new ConnectionWebService(this.activity);
+                connectionWebService.insert_package(p2, getAccount());
+            }).start();
+
+        }
+
         return rs;
+    }
+    public Notebook insert_notebook(Notebook n,int idPackage) {
+
+        if(idPackage==0){
+            idPackage=getLastPackage().getId();
+        }
+
+        ContentValues values = new ContentValues();
+        values.put("title", n.getTitle());
+        values.put("content", n.getContent());
+        values.put("id_package", idPackage);
+        values.put("last_edit", Tool.DateToString(n.getDateEdit()));
+
+        boolean success=this.sqLiteDatabase.insert("notebook", null, values) != -1;
+        int ret=updatePackageDateEdit(idPackage, n.getDateEdit());
+
+        Log.e("Insert Notebook", "" + success);
+        Log.e("Update PackageEditTime", "" + (ret==1));
+
+//        new Thread(()->{
+//            ConnectionWebService connectionWebService= new ConnectionWebService(this.activity);
+//            connectionWebService.insert_package(p, getAccount());
+//        }).start();
+        return getNotebooksLast(1).get(0);
+    }
+
+    public int updatePackageDateEdit(int idPackage, Date lastEdit){
+        ContentValues values = new ContentValues();
+        values.put("last_edit",Tool.DateToString(lastEdit));
+
+        int ret = this.sqLiteDatabase.update("tblpackage", values, "id=?", new String[]{idPackage+""});
+        return ret;
     }
 
     public List<Package> getPackages() {
@@ -189,7 +223,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                         p.setId(cursor.getInt(0));
                         p.setName(cursor.getString(1));
                         p.setColor(cursor.getString(2));
-                        p.setLastEdit(new DateStringConverter(cursor.getString(3)));
+                        p.setLastEdit(Tool.StringToDate(cursor.getString(3)));
                         aPackages.add(p);
 
 
@@ -230,10 +264,10 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
         Cursor cursor = GetData(query);
         cursor.moveToNext();
 
-        Log.e("aaa", String.valueOf(cursor.getCount()));
+
         return cursor.getString(0);
     }
-    public ArrayList<Notebook> GetNotebooks(int idPackage) {
+    public ArrayList<Notebook> getNotebooks(int idPackage) {
         String query = "SELECT id,title, content,last_edit FROM notebook where id_package="+idPackage;
         ArrayList<Notebook> notebooks = new ArrayList<>();
         Cursor cursor = GetData(query);
@@ -243,6 +277,26 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
             notebook.setTitle(cursor.getString(1));
             notebook.setContent(cursor.getString(2));
             notebook.setDateEdit(Tool.StringToDate(cursor.getString(3)));
+            notebooks.add(notebook);
+        }
+        return notebooks;
+    }
+    public ArrayList<Notebook> getNotebooksLast(int limit) {
+        String sqlLimit="";
+        if(limit!=-1){
+            sqlLimit=" limit "+limit;
+        }
+
+        String query = "SELECT notebook.id,notebook.title, notebook.content,notebook.last_edit, tblpackage.color FROM notebook join tblpackage on notebook.id_package = tblpackage.id order by notebook.last_edit desc"+sqlLimit;
+        ArrayList<Notebook> notebooks = new ArrayList<>();
+        Cursor cursor = GetData(query);
+        while (cursor.moveToNext()){
+            Notebook notebook = new Notebook();
+            notebook.setId(cursor.getInt(0));
+            notebook.setTitle(cursor.getString(1));
+            notebook.setContent(cursor.getString(2));
+            notebook.setDateEdit(Tool.StringToDate(cursor.getString(3)));
+            notebook.setColorPackage(cursor.getString(4));
             notebooks.add(notebook);
         }
         return notebooks;
@@ -273,7 +327,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
         String columnName[] = {"id", "title", "color", "last_edit"};
         Cursor cursor = this.sqLiteDatabase.query("tblpackage",
                 columnName, null, null,
-                null, null, "last_edit desc");
+                null, null, "last_edit desc limit 1");
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 Package p = new Package();
@@ -284,8 +338,8 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                     p.setName(cursor.getString(1));
                     p.setColor(cursor.getString(2));
                     String ls=cursor.getString(3);
-                    p.setLastEdit(new DateStringConverter(ls));
-                    p.setNotebooks(GetNotebooks(p.getId()));
+                    p.setLastEdit(Tool.StringToDate(ls));
+                    p.setNotebooks(getNotebooks(p.getId()));
 
 
                 } catch (Exception e) {
@@ -299,10 +353,10 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
 
         }
         Package p = new Package();
-
+        p.setId(1);
         p.setName("Default");
         p.setColor("color_blue");
-        p.setLastEdit(new DateStringConverter());
+        p.setLastEdit(new Date());
         p.setNotebooks(new ArrayList<Notebook>());
         insert_package(p);
         return p;

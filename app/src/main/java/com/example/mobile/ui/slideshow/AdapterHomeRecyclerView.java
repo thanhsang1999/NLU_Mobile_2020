@@ -1,7 +1,9 @@
-package com.example.mobile.ui.home;
+package com.example.mobile.ui.slideshow;
 
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,30 +11,50 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.mobile.activity.HomeActivity;
+
 import com.example.mobile.R;
+import com.example.mobile.activity.HomeActivity;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Package;
 import com.example.mobile.model.Tool;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRecyclerView.ViewHolder> {
+public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRecyclerView.ViewHolder> implements Parcelable {
 
 
     List<Notebook> notebooks;
     Context context;
     Boolean multiSelect = false;
-
-    public AdapterHomeRecyclerView( List<Notebook> notebooks, Context context) {
-
-        this.notebooks = notebooks;
+    Package currentPackage;
+    public AdapterHomeRecyclerView(Package p, Context context) {
+        currentPackage= p;
+        this.notebooks = p.getNotebooks();
         this.context = context;
     }
 
+
+
+    protected AdapterHomeRecyclerView(Parcel in) {
+        byte tmpMultiSelect = in.readByte();
+        multiSelect = tmpMultiSelect == 0 ? null : tmpMultiSelect == 1;
+        currentPackage = in.readParcelable(Package.class.getClassLoader());
+    }
+
+    public static final Creator<AdapterHomeRecyclerView> CREATOR = new Creator<AdapterHomeRecyclerView>() {
+        @Override
+        public AdapterHomeRecyclerView createFromParcel(Parcel in) {
+            return new AdapterHomeRecyclerView(in);
+        }
+
+        @Override
+        public AdapterHomeRecyclerView[] newArray(int size) {
+            return new AdapterHomeRecyclerView[size];
+        }
+    };
 
     @NonNull
 
@@ -44,9 +66,9 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
     }
 
     @Override
-    public void onBindViewHolder(@NonNull  AdapterHomeRecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull  ViewHolder holder, int position) {
         Notebook notebook = notebooks.get(position);
-        String stringColorPackage = notebook.getColorPackage();
+        String stringColorPackage = currentPackage.getColor();
         if (notebook.getChecked()&&multiSelect){
             holder.linearLayoutMain.setBackgroundResource(R.drawable.background_checked_list_item_linear);
             holder.linearLayoutContent.setBackgroundResource(R.drawable.background_checked_list_item_linear);
@@ -63,6 +85,17 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
     @Override
     public int getItemCount() {
         return notebooks.size();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte) (multiSelect == null ? 0 : multiSelect ? 1 : 2));
+        dest.writeParcelable(currentPackage, flags);
     }
 
 
@@ -104,7 +137,7 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
                         if (multiSelect){
                             if (notebook.getChecked()){
                                 notebook.setChecked(false);
-                                String stringColorPackage = notebook.getColorPackage();
+                                String stringColorPackage = currentPackage.getColor();
                                 linearLayoutMain.setBackgroundResource(R.drawable.background_list_item_linear);
                                 linearLayoutContent.setBackgroundResource(R.drawable.background_list_item_linear);
                                 imageViewCheck.setImageResource(Tool.getDrawableByName(context,"ic_"+stringColorPackage));

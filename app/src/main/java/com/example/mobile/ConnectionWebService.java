@@ -20,6 +20,7 @@ import com.example.mobile.activity.SignUpActivity;
 import com.example.mobile.activity.WellComeActivity;
 import com.example.mobile.model.Account;
 import com.example.mobile.model.Package;
+import com.example.mobile.model.Tool;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -364,8 +365,8 @@ public class ConnectionWebService {
                 params.put("id", p.getId()+"");
                 params.put("color", p.getColor()+"");
                 params.put("title", p.getName());
-                Log.e("Date", p.getLastEdit().getText());
-                params.put("last_edit", p.getLastEdit().getText());
+                Log.e("Date", Tool.DateToString( p.getLastEdit()));
+                params.put("last_edit", Tool.DateToString( p.getLastEdit()));
                 params.put("username", account.getUsername());
                 return params;
             }

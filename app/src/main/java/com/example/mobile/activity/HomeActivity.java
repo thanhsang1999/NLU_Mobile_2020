@@ -1,5 +1,6 @@
 package com.example.mobile.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,22 +13,31 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.view.ActionMode;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.mobile.ConnectionDatabaseLocalMobile;
+
 import com.example.mobile.ExitConfirmDialogFragment;
+import com.example.mobile.IFragmentCanAddNote;
 import com.example.mobile.R;
+import com.example.mobile.model.Notebook;
+import com.example.mobile.ui.home.HomeFragment;
+import com.example.mobile.ui.slideshow.PackageItemAdapter;
+import com.example.mobile.ui.slideshow.SlideshowFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.util.Date;
+
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -41,15 +51,8 @@ public class HomeActivity extends AppCompatActivity {
     ImageView profile;
     ActionMode actionMode;
 
-    public int getIdPackage() {
-        return idPackage;
-    }
 
-    public void setIdPackage(int idPackage) {
-        this.idPackage = idPackage;
-    }
 
-    int idPackage=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,15 +61,7 @@ public class HomeActivity extends AppCompatActivity {
         init();
 
         setSupportActionBar(toolbar);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                Intent intent = new Intent(HomeActivity.this, NewNoteActivity.class);
-                intent.putExtra("idPackage",idPackage);
-                startActivity(intent);
-            }
-        });
 
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -84,9 +79,34 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-        navigationBackPressed();
+        //navigationBackPressed();
 
         navigationView.setCheckedItem(R.id.nav_home);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Fragment fragment= HomeActivity.this.getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+
+
+                if(fragment instanceof NavHostFragment){
+
+                    fragment=fragment.getChildFragmentManager().getFragments().get(0);
+                }
+
+                if(fragment instanceof  IFragmentCanAddNote){
+
+                    IFragmentCanAddNote iFragmentCanAddNote=(IFragmentCanAddNote)fragment;
+                    iFragmentCanAddNote.startActivity(HomeActivity.this, NewNoteActivity.class);
+
+
+                }
+
+
+            }
+        });
+
 
 
 
@@ -204,4 +224,49 @@ public class HomeActivity extends AppCompatActivity {
     public void showActionMode(){
         actionMode = startSupportActionMode(actionModeCallback);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+
+        if (requestCode == NOTE_FRAGMENT || requestCode==HOME_FRAGMENT) {
+
+            if(resultCode == Activity.RESULT_OK){
+                Notebook notebook = data.getParcelableExtra("notebook");
+                Fragment currentFragment=null;
+                FragmentManager fragmentManager= getSupportFragmentManager();
+                if ( requestCode==HOME_FRAGMENT){
+                    currentFragment=fragmentManager.findFragmentById(R.id.nav_host_fragment).getChildFragmentManager().getFragments().get(0);
+                }
+                if (requestCode == NOTE_FRAGMENT){
+                    currentFragment=fragmentManager.findFragmentById(R.id.nav_host_fragment);
+                    FragmentTransaction ft = fragmentManager.beginTransaction();
+                    fragmentManager.beginTransaction().replace(currentFragment.getId(), this.beforeFragment).setReorderingAllowed(true).commit();
+                    ft.addToBackStack(null);
+                }
+
+                if(notebook!=null){
+
+                    if(currentFragment instanceof  IFragmentCanAddNote){
+                        IFragmentCanAddNote iFragmentCanAddNote=(IFragmentCanAddNote) currentFragment;
+                        iFragmentCanAddNote.updateApdater(notebook);
+
+
+                    }
+                }
+
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+
+        }
+    }//onActivityResult
+    public Fragment beforeFragment;
+    public final static int NOTE_FRAGMENT=2;
+    public final static int HOME_FRAGMENT=1;
+
+
 }

@@ -25,6 +25,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 
 import com.example.mobile.ConnectionDatabaseLocalMobile;
@@ -51,7 +52,7 @@ public class PackageItemAdapter extends BaseAdapter {
         this._items = new ArrayList<>();
         Package p=new Package();
         p.setName("Create Note");
-        p.setLastEdit(new DateStringConverter());
+        p.setLastEdit(new Date());
         p.setColor("create_package");
         this._items.add(p);
         this._items.addAll(aPackages);
@@ -259,7 +260,7 @@ public class PackageItemAdapter extends BaseAdapter {
                                 Package p= new Package();
                                 p.setColor(drawablePackage.getContentDescription().toString());
                                 p.setName(titlePackage.getText().toString());
-                                p.setLastEdit(new DateStringConverter());
+                                p.setLastEdit(new Date());
 
                                 c.insert_package(p);
                                 _items.add(c.getLastPackage());
@@ -328,13 +329,19 @@ public class PackageItemAdapter extends BaseAdapter {
             viewHolder.textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    FragmentManager fragmentManager=PackageItemAdapter.this.activity.getSupportFragmentManager();
-                    Fragment homeFragment=new HomeFragment();
+
+                    Fragment notesFragment=new NoteFragment();
                     Bundle bundle= new Bundle();
                     bundle.putParcelable("currentPackage", book);
-                    homeFragment.setArguments(bundle);
-                    fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, homeFragment).setReorderingAllowed(true).commit();
-                    activity.navigationView.setCheckedItem(R.id.nav_home);
+                    notesFragment.setArguments(bundle);
+                    FragmentManager fragmentManager=PackageItemAdapter.this.activity.getSupportFragmentManager();
+                    Fragment currentFragment=fragmentManager.findFragmentById(R.id.nav_host_fragment);
+                    PackageItemAdapter.this.activity.beforeFragment=currentFragment;
+                    Log.e("CurrentFrag", currentFragment.toString()+"");
+                    FragmentTransaction ft = fragmentManager.beginTransaction();
+                    fragmentManager.beginTransaction().replace(currentFragment.getId(), notesFragment).setReorderingAllowed(true).commit();
+                    ft.addToBackStack(null);
+
                    
                     //PackageItemAdapter.this.activi
                 }
