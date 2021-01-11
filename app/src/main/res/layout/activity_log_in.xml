@@ -218,6 +218,27 @@
                 app:layout_constraintVertical_bias="0.905" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn_log_in_facebook"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button"
+
+                android:textColor="@color/whitePrimary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.668"
+                app:layout_constraintStart_toEndOf="@+id/button"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.905" />
+        </LinearLayout>
+
 
     </LinearLayout>
 
