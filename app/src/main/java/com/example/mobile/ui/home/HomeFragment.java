@@ -2,10 +2,12 @@ package com.example.mobile.ui.home;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.*;
 
 import androidx.annotation.NonNull;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 
@@ -36,6 +38,7 @@ public class HomeFragment extends Fragment {
 
     public  static AdapterHomeRecyclerView adapterHomeRecyclerView;
     ConnectionDatabaseLocalMobile connectionDatabaseLocalMobile;
+    HomeActivity activity;
     public View onCreateView(@NonNull LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this.requireActivity()).get(HomeViewModel.class);
         root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -48,10 +51,18 @@ public class HomeFragment extends Fragment {
             if(p!=null){
                 currentPackage=(Package) p;
                 currentPackage.setNotebooks(connectionDatabaseLocalMobile.GetNotebooks(currentPackage.getId()));
+
             }
         }
         if(currentPackage==null)
         currentPackage= connectionDatabaseLocalMobile.getLastPackage();
+
+        if(this.getActivity() instanceof AppCompatActivity){
+            this.activity=(HomeActivity) this.getActivity();
+        }else{
+            Log.e("Error", "Appcompat");
+        }
+        this.activity.setIdPackage(currentPackage.getId());
 
         recyclerView.setHasFixedSize(true);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(root.getContext(),DividerItemDecoration.VERTICAL);

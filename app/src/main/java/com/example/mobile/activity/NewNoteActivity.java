@@ -34,13 +34,17 @@ public class NewNoteActivity extends AppCompatActivity {
     EditText editTextTitle,editTextContent;
     ConstraintLayout Mainlayout,contentLayout;
     ConnectionDatabaseLocalMobile sqLite;
-
+    int idPackage;
     private int mYear, mMonth, mDay, mHour, mMinute;
     Notebook notebook;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_note);
+        idPackage=getIntent().getIntExtra("idPackage", 0);
+        if(idPackage==0){
+            Log.e("Error idp", idPackage+"");
+        }
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -68,13 +72,14 @@ public class NewNoteActivity extends AppCompatActivity {
             case android.R.id.home:
                 String title = editTextTitle.getText().toString();
                 String textContent = editTextContent.getText().toString();
-                int idPackage = 1;
+
                 String dateEdit = new DateStringConverter().getText();
                 notebook.setTitle(title);
                 notebook.setContent(textContent);
                 notebook.setDateEdit(new Date());
 
                 if (!textContent.equals("")){
+                    if(idPackage==1)
                     sqLite.CreateDefaultPackage(new Date());
 
                     sqLite.QueryData("INSERT INTO notebook (id, title, content, id_package, last_edit) VALUES (null,'"+title+"','"+textContent+"','"+idPackage+"','"+dateEdit+"');");

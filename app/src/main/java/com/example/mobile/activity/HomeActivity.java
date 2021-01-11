@@ -40,6 +40,16 @@ public class HomeActivity extends AppCompatActivity {
     NavController navController;
     ImageView profile;
     ActionMode actionMode;
+
+    public int getIdPackage() {
+        return idPackage;
+    }
+
+    public void setIdPackage(int idPackage) {
+        this.idPackage = idPackage;
+    }
+
+    int idPackage=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +63,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent intent = new Intent(HomeActivity.this, NewNoteActivity.class);
+                intent.putExtra("idPackage",idPackage);
                 startActivity(intent);
             }
         });

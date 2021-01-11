@@ -260,8 +260,9 @@ public class PackageItemAdapter extends BaseAdapter {
                                 p.setColor(drawablePackage.getContentDescription().toString());
                                 p.setName(titlePackage.getText().toString());
                                 p.setLastEdit(new DateStringConverter());
-                                _items.add(p);
+
                                 c.insert_package(p);
+                                _items.add(c.getLastPackage());
                                 notifyDataSetChanged();
                                 dialog.cancel();
                             }
@@ -334,6 +335,7 @@ public class PackageItemAdapter extends BaseAdapter {
                     homeFragment.setArguments(bundle);
                     fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, homeFragment).setReorderingAllowed(true).commit();
                     activity.navigationView.setCheckedItem(R.id.nav_home);
+                   
                     //PackageItemAdapter.this.activi
                 }
             });
