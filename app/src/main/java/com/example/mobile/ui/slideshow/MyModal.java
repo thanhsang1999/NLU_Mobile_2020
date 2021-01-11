@@ -1,4 +1,4 @@
-package com.example.mobile.ui.home;
+package com.example.mobile.ui.slideshow;
 
 import android.app.FragmentManager;
 import android.os.Bundle;

@@ -12,6 +12,11 @@
     <color name="whitePrimary">#fff</color>
     <color name="graySearch">#E4E4E5</color>
 
+    <color name="btnSave">#7B1E58</color>
+    <color name="bgItemListView">#F9F9F9</color>
+    <color name="selected">#48dbfb</color>
+
+
 <!--    <color name="blueSecond">#2980b9</color>-->
 <!--    <color name="bluePrimary">#3498db</color>-->
 <!--    <color name="blueSecond">#2980b9</color>-->

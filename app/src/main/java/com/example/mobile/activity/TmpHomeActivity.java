@@ -1,9 +1,11 @@
-package com.example.mobile;
+package com.example.mobile.activity;
 
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.mobile.R;
 
 public class TmpHomeActivity extends AppCompatActivity {
     EditText editTextSearch;

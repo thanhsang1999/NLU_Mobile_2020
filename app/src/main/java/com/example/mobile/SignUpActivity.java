@@ -14,6 +14,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mobile.model.Account;
+
 import java.util.regex.Pattern;
 
 
@@ -254,7 +256,7 @@ public class SignUpActivity extends AppCompatActivity {
                 ;
                 msg="Error";
                 try {
-                    SignUpActivity.this.connectionWebService.insert_accounts(account);
+                    SignUpActivity.this.connectionWebService.insert_account(account);
 
                 }
                 catch (Exception e){

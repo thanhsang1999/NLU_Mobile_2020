@@ -1,16 +1,22 @@
-package com.example.mobile;
+package com.example.mobile.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
-import android.view.Window;
-import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
-import androidx.fragment.app.Fragment;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.view.ActionMode;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import com.example.mobile.ui.newnote.NewNoteFragment;
+
+import com.example.mobile.ConnectionDatabaseLocalMobile;
+import com.example.mobile.ExitConfirmDialogFragment;
+import com.example.mobile.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import androidx.navigation.NavController;
@@ -21,32 +27,32 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.Date;
+
 public class HomeActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     View navFooter1,navFooter2;
     DrawerLayout drawer;
-    NavigationView navigationView;
+    public NavigationView navigationView;
     Toolbar toolbar;
-    FloatingActionButton fab;
+    public static FloatingActionButton fab;
     NavController navController;
-
+    ImageView profile;
+    ActionMode actionMode;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         init();
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                FragmentManager fragmentManager = getSupportFragmentManager();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.replace(R.id.nav_host_fragment, new NewNoteFragment(), null);
-//                fragmentTransaction.commit();
-                Intent intent = new Intent(HomeActivity.this,NewNoteActivity.class);
+
+                Intent intent = new Intent(HomeActivity.this, NewNoteActivity.class);
                 startActivity(intent);
             }
         });
@@ -64,7 +70,39 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         NavigationBottom();
+
+
+
+        navigationBackPressed();
+
+        navigationView.setCheckedItem(R.id.nav_home);
+
+
+
     }
+    private void navigationBackPressed(){
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                // Create YesNoDialogFragment
+                DialogFragment dialogFragment = new ExitConfirmDialogFragment();
+
+
+                // Arguments:
+                Bundle args = new Bundle();
+                args.putString(ExitConfirmDialogFragment.ARG_TITLE, "????");
+                args.putString(ExitConfirmDialogFragment.ARG_MESSAGE, "Do you want?");
+                dialogFragment.setArguments(args);
+
+                FragmentManager fragmentManager = HomeActivity.this.getSupportFragmentManager();
+
+                // Show:
+                dialogFragment.show(fragmentManager, "Dialog");
+            }
+        };
+        this.getOnBackPressedDispatcher().addCallback(this, callback);
+    }
+
 
     private void init() {
         toolbar = findViewById(R.id.toolbar);
@@ -74,7 +112,18 @@ public class HomeActivity extends AppCompatActivity {
         navFooter2 = findViewById(R.id.footer_item_2);
         navFooter1 = findViewById(R.id.footer_item_1);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        profile= findViewById(R.id.profile);
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(HomeActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
+
 
     private void NavigationBottom() {
         navFooter1.setOnClickListener(new View.OnClickListener() {
@@ -107,5 +156,41 @@ public class HomeActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+    public ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.menu_item_select,menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()){
+                case R.id.menu_delete:
+                    Toast.makeText(HomeActivity.this, "menu_delete", Toast.LENGTH_SHORT).show();
+                    mode.finish();
+                    return true;
+                case R.id.menu_share:
+                    Toast.makeText(HomeActivity.this, "menu_share", Toast.LENGTH_SHORT).show();
+                    mode.finish();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            actionModeCallback = null;
+        }
+    };
+    public void showActionMode(){
+        actionMode = startSupportActionMode(actionModeCallback);
     }
 }

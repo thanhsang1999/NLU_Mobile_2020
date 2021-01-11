@@ -6,7 +6,7 @@
         android:background="@color/whitePrimary"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".NewNoteActivity" android:focusableInTouchMode="true" android:id="@+id/mainLayout">
+        tools:context=".activity.NewNoteActivity" android:focusableInTouchMode="true" android:id="@+id/mainLayout">
 
     <com.google.android.material.appbar.AppBarLayout
             android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/whitePrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
     </com.google.android.material.appbar.AppBarLayout>
     <androidx.constraintlayout.widget.ConstraintLayout

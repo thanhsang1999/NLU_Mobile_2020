@@ -1,4 +1,4 @@
-package com.example.mobile;
+package com.example.mobile.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.mobile.R;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
@@ -57,6 +58,7 @@ public class WellComeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(WellComeActivity.this, HomeActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         Button btnLogIn = findViewById(R.id.btn_log_in);
@@ -66,6 +68,7 @@ public class WellComeActivity extends AppCompatActivity {
                 Intent intent = new Intent(WellComeActivity.this, LogInActivity.class);
 
                 startActivity(intent);
+                finish();
 
             }
         });
