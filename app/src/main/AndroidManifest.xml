@@ -14,9 +14,6 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".activity.WellComeActivity" />
-        <activity android:name=".activity.ForgotPass3Activity" />
-        <activity android:name=".activity.ForgotPass2Activity" />
-        <activity android:name=".activity.ForgotPass1Activity" />
         <activity
             android:name=".activity.NewNoteActivity"
             android:label="@string/title_activity_new_note"
