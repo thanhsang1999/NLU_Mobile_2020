@@ -26,17 +26,17 @@
     </com.google.android.material.appbar.AppBarLayout>
     <androidx.recyclerview.widget.RecyclerView
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/appBarLayout2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="1.0"
-            android:id="@+id/recyclerView"/>
+            android:id="@+id/recyclerViewImage"/>
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:id="@+id/contentLayout" app:layout_constraintTop_toBottomOf="@+id/recyclerView">
+            android:id="@+id/contentLayout" app:layout_constraintTop_toBottomOf="@+id/recyclerViewImage">
         <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 app:hintTextColor="@color/bluePrimary"

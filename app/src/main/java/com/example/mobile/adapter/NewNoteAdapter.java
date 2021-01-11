@@ -41,11 +41,13 @@ public class NewNoteAdapter extends RecyclerView.Adapter<NewNoteAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull  NewNoteAdapter.ViewHolder holder, int position) {
+        Integer integer = images.get(position);
+        holder.imageViewItem.setImageResource(integer);
     }
 
     @Override
     public int getItemCount() {
-        return notebooks.size();
+        return images.size();
     }
 
 

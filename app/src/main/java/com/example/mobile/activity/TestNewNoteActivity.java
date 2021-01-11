@@ -3,6 +3,7 @@ package com.example.mobile.activity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -10,28 +11,27 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
-import android.widget.DatePicker;
-import android.widget.EditText;
+import android.widget.*;
 
-import android.widget.TimePicker;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.ConnectionDatabaseLocalMobile;
 import com.example.mobile.ConnectionWebService;
 import com.example.mobile.R;
+import com.example.mobile.adapter.NewNoteAdapter;
 import com.example.mobile.model.DateStringConverter;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.ui.home.HomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
+import java.util.*;
 
 public class TestNewNoteActivity extends AppCompatActivity {
     EditText editTextTitle,editTextContent;
@@ -44,6 +44,8 @@ public class TestNewNoteActivity extends AppCompatActivity {
     float translationY = 100f;
     boolean isMenuOpen = false;
     OvershootInterpolator overshootInterpolator = new OvershootInterpolator();
+    RecyclerView recyclerView;
+    NewNoteAdapter newNoteAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +63,22 @@ public class TestNewNoteActivity extends AppCompatActivity {
         toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_more_menu));
         init();
         FabOnClick();
+        //datatest images
+        List<Integer> images = new ArrayList<>();
+        images.add(R.drawable.cat1);
+        images.add(R.drawable.cat2);
+        images.add(R.drawable.cat3);
+        images.add(R.drawable.cat4);
+
+        // RecyclerView
+        recyclerView.setHasFixedSize(true);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(TestNewNoteActivity.this,DividerItemDecoration.HORIZONTAL);
+        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(TestNewNoteActivity.this, R.drawable.custom_divider));
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(TestNewNoteActivity.this,LinearLayoutManager.HORIZONTAL,false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        newNoteAdapter = new NewNoteAdapter(TestNewNoteActivity.this,images);
+        recyclerView.setAdapter(newNoteAdapter);
     }
 
 
@@ -82,6 +100,9 @@ public class TestNewNoteActivity extends AppCompatActivity {
 
         fabFile.setTranslationY(translationY);
         fabCamera.setTranslationY(translationY);
+        // RecyclerView
+        recyclerView = findViewById(R.id.recyclerViewImage);
+
 
     }
 
