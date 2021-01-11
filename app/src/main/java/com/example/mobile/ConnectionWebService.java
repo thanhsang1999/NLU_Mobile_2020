@@ -84,7 +84,7 @@ public class ConnectionWebService {
                     params.put("newpw", newpw);
                     params.put("email", email);
 
-                    SendMailSSL.sendMail(email, newpw);
+//                    SendMailSSL.sendMail(email, newpw);
 
                     return params;
                 }
