@@ -1,6 +1,7 @@
 package com.example.mobile.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +20,12 @@ import com.example.mobile.model.Tool;
 import java.util.List;
 
 public class NewNoteAdapter extends RecyclerView.Adapter<NewNoteAdapter.ViewHolder>{
-    List<Integer> images;
+    List<Bitmap> images;
     Context context;
     public NewNoteAdapter(Context context) {
         this.context = context;
     }
-    public NewNoteAdapter(Context context,List<Integer> images) {
+    public NewNoteAdapter(Context context,List<Bitmap> images) {
         this.context = context;
         this.images=images;
     }
@@ -41,8 +42,8 @@ public class NewNoteAdapter extends RecyclerView.Adapter<NewNoteAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull  NewNoteAdapter.ViewHolder holder, int position) {
-        Integer integer = images.get(position);
-        holder.imageViewItem.setImageResource(integer);
+        Bitmap bitmap = images.get(position);
+        holder.imageViewItem.setImageBitmap(bitmap);
     }
 
     @Override

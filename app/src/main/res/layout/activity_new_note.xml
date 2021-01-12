@@ -3,6 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:theme="@style/AppTheme.NewNote"
         android:background="@color/whitePrimary"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,12 +24,19 @@
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
     </com.google.android.material.appbar.AppBarLayout>
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.recyclerview.widget.RecyclerView
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="1.0"
+            android:id="@+id/recyclerViewImage"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintVertical_bias="1.0"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout2" android:id="@+id/contentLayout">
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/contentLayout" app:layout_constraintTop_toBottomOf="@+id/recyclerViewImage">
         <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 app:hintTextColor="@color/bluePrimary"
@@ -57,10 +65,39 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" android:autoText="false" android:hint="Nội Dung"
-                android:background="@null" android:layout_marginRight="16dp" android:layout_marginEnd="16dp"
-                android:layout_marginLeft="16dp" android:layout_marginStart="16dp" android:layout_marginTop="8dp"
+                android:background="@null" android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp" android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp" android:textCursorDrawable="@drawable/ic_cursor"/>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="24dp"
+                android:layout_marginBottom="32dp" android:gravity="center_horizontal">
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/bluePrimary"
+                    app:fabSize="mini" app:srcCompat="@drawable/ic_camera" android:id="@+id/fabCamera"
+                    tools:ignore="VectorDrawableCompat"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/bluePrimary"
+                    app:fabSize="mini" app:srcCompat="@drawable/ic_folder" android:id="@+id/fabFile"
+                    tools:ignore="VectorDrawableCompat"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:elevation="0dp"
+                    android:backgroundTint="@color/bluePrimary"
+                    app:fabSize="normal" app:srcCompat="@drawable/ic_add" android:id="@+id/fabMain"
+                    tools:ignore="VectorDrawableCompat"/>
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
