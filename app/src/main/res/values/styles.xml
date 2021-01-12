@@ -28,5 +28,8 @@
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
+    <style name="AppTheme.NewNote">
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
 
 </resources>
