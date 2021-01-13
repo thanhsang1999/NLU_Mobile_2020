@@ -197,6 +197,21 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
         int ret = this.sqLiteDatabase.update("tblpackage", values, "id=?", new String[]{idPackage+""});
         return ret;
     }
+    public int update_notebook(Notebook notebook, int idPackage){
+        ContentValues values = new ContentValues();
+        values.put("last_edit",Tool.DateToString(new Date()));
+        values.put("title",notebook.getTitle());
+        values.put("content",notebook.getContent());
+
+
+        int ret = this.sqLiteDatabase.update("notebook", values, "id=?", new String[]{notebook.getId()+""});
+        if(ret==1){
+            updatePackageDateEdit(idPackage,new Date());
+            Log.e("updatenote","ok");
+        }
+
+        return ret;
+    }
 
     public List<Package> getPackages() {
 
@@ -360,6 +375,29 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
         p.setNotebooks(new ArrayList<Notebook>());
         insert_package(p);
         return p;
+
+    }
+    public Notebook getNotebook(int id) {
+        Notebook notebook =null;
+        String columnName[] = {"notebook.title", "notebook.content", "notebook.last_edit", "tblpackage.color"};
+        Cursor cursor = this.sqLiteDatabase.query("notebook join tblpackage on notebook.id_package=tblpackage.id",
+                columnName, "notebook.id=?", new String[]{String.valueOf(id)},
+                null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                notebook = new Notebook();
+                try {
+                    notebook.setTitle(cursor.getString(0));
+                    notebook.setContent(cursor.getString(1));
+                    notebook.setDateEdit(Tool.StringToDate(cursor.getString(2)));
+                    notebook.setColorPackage(cursor.getString(3));
+                    notebook.setId(id);
+                } catch (Exception e) {
+                    Log.e("Get notebook by id", e.getMessage());
+                }
+            }
+        }
+        return notebook;
 
     }
 

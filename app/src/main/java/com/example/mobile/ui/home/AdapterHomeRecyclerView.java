@@ -1,7 +1,9 @@
 package com.example.mobile.ui.home;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.activity.HomeActivity;
 import com.example.mobile.R;
+import com.example.mobile.activity.NewNoteActivity;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Package;
 import com.example.mobile.model.Tool;
@@ -24,10 +27,10 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
 
 
     List<Notebook> notebooks;
-    Context context;
+    HomeFragment context;
     Boolean multiSelect = false;
 
-    public AdapterHomeRecyclerView( List<Notebook> notebooks, Context context) {
+    public AdapterHomeRecyclerView( List<Notebook> notebooks, HomeFragment context) {
 
         this.notebooks = notebooks;
         this.context = context;
@@ -52,7 +55,7 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
             holder.linearLayoutContent.setBackgroundResource(R.drawable.background_checked_list_item_linear);
             holder.imageViewCheck.setImageResource(R.drawable.ic_checked_list);
         }else {
-            holder.imageViewCheck.setImageResource(Tool.getDrawableByName(context,"ic_"+stringColorPackage));
+            holder.imageViewCheck.setImageResource(Tool.getDrawableByName(context.getContext(),"ic_"+stringColorPackage));
         }
         holder.textViewTitle.setText(notebook.getTitle());
         holder.textViewContent.setText(notebook.getContent());
@@ -89,8 +92,14 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
                         linearLayoutMain.setBackgroundResource(R.drawable.background_checked_list_item_linear);
                         linearLayoutContent.setBackgroundResource(R.drawable.background_checked_list_item_linear);
                         imageViewCheck.setImageResource(R.drawable.ic_checked_list);
-                        HomeActivity homeActivity =  (HomeActivity) context;
-                        homeActivity.showActionMode();
+                        Activity activity= context.getActivity();
+                        if(activity instanceof  HomeActivity){
+                            HomeActivity homeActivity =  (HomeActivity) activity;
+                            homeActivity.showActionMode();
+                        }else{
+                            Log.e("adapterhome","not acepti homeac");
+                        }
+
                     }
 
                     return true;
@@ -107,7 +116,7 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
                                 String stringColorPackage = notebook.getColorPackage();
                                 linearLayoutMain.setBackgroundResource(R.drawable.background_list_item_linear);
                                 linearLayoutContent.setBackgroundResource(R.drawable.background_list_item_linear);
-                                imageViewCheck.setImageResource(Tool.getDrawableByName(context,"ic_"+stringColorPackage));
+                                imageViewCheck.setImageResource(Tool.getDrawableByName(context.getContext(),"ic_"+stringColorPackage));
                             }else{
                                 notebook.setChecked(true);
                                 linearLayoutMain.setBackgroundResource(R.drawable.background_checked_list_item_linear);
@@ -117,7 +126,9 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
                         }
                     }else {
                         multiSelect = false;
-                            Toast.makeText(context, "select "+getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                        AdapterHomeRecyclerView.this.context.startActivity(AdapterHomeRecyclerView.this.context.getActivity(), NewNoteActivity.class,notebook.getId(), getAdapterPosition());
+
+                        Toast.makeText(context.getContext(), "select "+getAdapterPosition()+"id"+notebook.getId(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });

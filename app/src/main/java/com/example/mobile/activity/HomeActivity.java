@@ -47,7 +47,7 @@ public class HomeActivity extends AppCompatActivity {
     public NavigationView navigationView;
     Toolbar toolbar;
     public static FloatingActionButton fab;
-    NavController navController;
+    public NavController navController;
     ImageView profile;
     ActionMode actionMode;
 
@@ -79,7 +79,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-        //navigationBackPressed();
+        navigationBackPressed();
 
         navigationView.setCheckedItem(R.id.nav_home);
 
@@ -98,7 +98,7 @@ public class HomeActivity extends AppCompatActivity {
                 if(fragment instanceof  IFragmentCanAddNote){
 
                     IFragmentCanAddNote iFragmentCanAddNote=(IFragmentCanAddNote)fragment;
-                    iFragmentCanAddNote.startActivity(HomeActivity.this, NewNoteActivity.class);
+                    iFragmentCanAddNote.startActivity(HomeActivity.this, NewNoteActivity.class, 0, -1);
 
 
                 }
@@ -115,20 +115,26 @@ public class HomeActivity extends AppCompatActivity {
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                // Create YesNoDialogFragment
-                DialogFragment dialogFragment = new ExitConfirmDialogFragment();
+                FragmentManager fragmentManager= getSupportFragmentManager();
+                Fragment currentFragment=fragmentManager.findFragmentById(R.id.nav_host_fragment).getChildFragmentManager().getFragments().get(0);
+                if(currentFragment instanceof HomeFragment){
+                    // Call finish() on your Activity
+                    // Create YesNoDialogFragment
+                    DialogFragment dialogFragment = new ExitConfirmDialogFragment();
+                    //dialogFragment.getDialog().setCanceledOnTouchOutside(true);
+                    // Arguments:
+                    Bundle args = new Bundle();
+                    args.putString(ExitConfirmDialogFragment.ARG_TITLE, "????");
+                    args.putString(ExitConfirmDialogFragment.ARG_MESSAGE, "Do you want?");
+                    dialogFragment.setArguments(args);
+                    // Show:
+                    dialogFragment.show(fragmentManager, "Dialog");
+                    //finish();
 
+                } else {
+                    navController.popBackStack();
+                }
 
-                // Arguments:
-                Bundle args = new Bundle();
-                args.putString(ExitConfirmDialogFragment.ARG_TITLE, "????");
-                args.putString(ExitConfirmDialogFragment.ARG_MESSAGE, "Do you want?");
-                dialogFragment.setArguments(args);
-
-                FragmentManager fragmentManager = HomeActivity.this.getSupportFragmentManager();
-
-                // Show:
-                dialogFragment.show(fragmentManager, "Dialog");
             }
         };
         this.getOnBackPressedDispatcher().addCallback(this, callback);
@@ -137,6 +143,14 @@ public class HomeActivity extends AppCompatActivity {
 
     private void init() {
         toolbar = findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("toolbar","click");
+                //HomeActivity.this.setCurrentItem(0, true);
+
+            }
+        });
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         fab = findViewById(R.id.fab);
@@ -235,23 +249,17 @@ public class HomeActivity extends AppCompatActivity {
 
             if(resultCode == Activity.RESULT_OK){
                 Notebook notebook = data.getParcelableExtra("notebook");
+                int index = data.getIntExtra("index",-1);
                 Fragment currentFragment=null;
                 FragmentManager fragmentManager= getSupportFragmentManager();
-                if ( requestCode==HOME_FRAGMENT){
-                    currentFragment=fragmentManager.findFragmentById(R.id.nav_host_fragment).getChildFragmentManager().getFragments().get(0);
-                }
-                if (requestCode == NOTE_FRAGMENT){
-                    currentFragment=fragmentManager.findFragmentById(R.id.nav_host_fragment);
-                    FragmentTransaction ft = fragmentManager.beginTransaction();
-                    fragmentManager.beginTransaction().replace(currentFragment.getId(), this.beforeFragment).setReorderingAllowed(true).commit();
-                    ft.addToBackStack(null);
-                }
+
+                currentFragment=fragmentManager.findFragmentById(R.id.nav_host_fragment).getChildFragmentManager().getFragments().get(0);
 
                 if(notebook!=null){
 
                     if(currentFragment instanceof  IFragmentCanAddNote){
                         IFragmentCanAddNote iFragmentCanAddNote=(IFragmentCanAddNote) currentFragment;
-                        iFragmentCanAddNote.updateApdater(notebook);
+                        iFragmentCanAddNote.updateApdater(notebook,index);
 
 
                     }

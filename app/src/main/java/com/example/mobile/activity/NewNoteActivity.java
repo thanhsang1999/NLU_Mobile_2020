@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -25,6 +26,7 @@ import android.widget.*;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -62,7 +64,9 @@ public class NewNoteActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     NewNoteAdapter newNoteAdapter;
 
-    public int idPackage;
+    int idPackage=0;
+    int idNotebook=0;
+    int index=-1;
     public int PERM_CODE = 111;
     public int REQUEST_CODE_CAMERA = 112;
     List<Bitmap> images ;
@@ -73,7 +77,8 @@ public class NewNoteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_note);
 
         idPackage=getIntent().getExtras().getInt("idPackage");
-
+        idNotebook=getIntent().getExtras().getInt("idNotebook");
+        index=getIntent().getExtras().getInt("index");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -108,8 +113,16 @@ public class NewNoteActivity extends AppCompatActivity {
         Mainlayout = findViewById(R.id.mainLayout);
         contentLayout = findViewById(R.id.contentLayout);
         editTextContent.requestFocus();
-        notebook= new Notebook();
         sqLite  = new ConnectionDatabaseLocalMobile(this);
+        if(idNotebook==0)
+            notebook= new Notebook();
+        else {
+            notebook = sqLite.getNotebook(idNotebook);
+            editTextTitle.setText(notebook.getTitle());
+            editTextContent.setText(notebook.getContent());
+            Log.e("content",notebook.getContent());
+        }
+
         // set fab
         fabMain =  findViewById(R.id.fabMain);
         fabFile =  findViewById(R.id.fabFile);
@@ -139,10 +152,23 @@ public class NewNoteActivity extends AppCompatActivity {
                 notebook.setDateEdit(new Date());
 
                 if (!textContent.equals("")){
-                    notebook=sqLite.insert_notebook(notebook,idPackage);
-                    Intent returnIntent = new Intent();
-                    returnIntent.putExtra("notebook",notebook);
-                    setResult(Activity.RESULT_OK,returnIntent);
+                    if(idNotebook==0){
+                        notebook=sqLite.insert_notebook(notebook,idPackage);
+                        Intent returnIntent = new Intent();
+                        returnIntent.putExtra("notebook",notebook);
+                        returnIntent.putExtra("index",index);
+                        setResult(Activity.RESULT_OK,returnIntent);
+                    }else{
+                        int rs=sqLite.update_notebook(notebook,idPackage);
+                        if(rs==1){
+                            Intent returnIntent = new Intent();
+                            returnIntent.putExtra("notebook",notebook);
+                            returnIntent.putExtra("index",index);
+                            setResult(Activity.RESULT_OK,returnIntent);
+                        }
+
+                    }
+
 
                 }
                 Log.e("NewNote","Finish");
@@ -230,6 +256,7 @@ public class NewNoteActivity extends AppCompatActivity {
             }
         });
         fabCamera.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
                 CloseMenuFab();
@@ -247,6 +274,8 @@ public class NewNoteActivity extends AppCompatActivity {
             }
         });
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void PermissionsCamera(){
 
             if (checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED
@@ -271,6 +300,7 @@ public class NewNoteActivity extends AppCompatActivity {
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CAMERA && resultCode == RESULT_OK) {
             setPic();
             newNoteAdapter.notifyDataSetChanged();

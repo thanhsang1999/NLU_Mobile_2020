@@ -86,10 +86,19 @@ public class NoteFragment extends Fragment implements IFragmentCanAddNote {
 
         recyclerView = root.findViewById(R.id.recyclerViewHome);
     }
-    public <T> void startActivity(android.content.Context context, Class<T> classActivity){
-        Intent intent = new Intent(context, NewNoteActivity.class);
-        intent.putExtra("idPackage",this.currentPackage.getId());
-        this.getActivity().startActivityForResult(intent,HomeActivity.NOTE_FRAGMENT);
+    public <T> void startActivity(android.content.Context context, Class<T> classActivity, int idNotebook,int index){
+        if(idNotebook==0){
+            Intent intent = new Intent(context, NewNoteActivity.class);
+            intent.putExtra("idPackage",this.currentPackage.getId());
+            this.getActivity().startActivityForResult(intent,HomeActivity.NOTE_FRAGMENT);
+        }else{
+            Intent intent = new Intent(context, NewNoteActivity.class);
+            intent.putExtra("idPackage",this.currentPackage.getId());
+            intent.putExtra("idNotebook",idNotebook);
+            intent.putExtra("index",index);
+            this.getActivity().startActivityForResult(intent,HomeActivity.NOTE_FRAGMENT);
+        }
+
     }
 
     @Override
@@ -99,12 +108,19 @@ public class NoteFragment extends Fragment implements IFragmentCanAddNote {
     }
 
     @Override
-    public void updateApdater(Notebook notebook) {
+    public void updateApdater(Notebook notebook, int index) {
+        if(index==-1){
+            this.currentPackage.getNotebooks().add(notebook);
 
-        this.currentPackage.getNotebooks().add(notebook);
+            this.adapterHomeRecyclerView.notifyDataSetChanged();
+            Log.e("Add note new","in adapter");
 
-        this.adapterHomeRecyclerView.notifyDataSetChanged();
-        Log.e("Update","OK");
+        }else{
+            this.currentPackage.getNotebooks().remove(index);
+            this.currentPackage.getNotebooks().add(index, notebook);
+            this.adapterHomeRecyclerView.notifyDataSetChanged();
+        }
+
     }
 
 

@@ -26,6 +26,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 
 import com.example.mobile.ConnectionDatabaseLocalMobile;
@@ -330,20 +332,14 @@ public class PackageItemAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
 
-                    Fragment notesFragment=new NoteFragment();
+                    NavController navController=NavHostFragment.findNavController(PackageItemAdapter.this.fragment);
                     Bundle bundle= new Bundle();
                     bundle.putParcelable("currentPackage", book);
-                    notesFragment.setArguments(bundle);
-                    FragmentManager fragmentManager=PackageItemAdapter.this.activity.getSupportFragmentManager();
-                    Fragment currentFragment=fragmentManager.findFragmentById(R.id.nav_host_fragment);
-                    PackageItemAdapter.this.activity.beforeFragment=currentFragment;
-                    Log.e("CurrentFrag", currentFragment.toString()+"");
-                    FragmentTransaction ft = fragmentManager.beginTransaction();
-                    fragmentManager.beginTransaction().replace(currentFragment.getId(), notesFragment).setReorderingAllowed(true).commit();
-                    ft.addToBackStack(null);
+                    navController.navigate(R.id.action_package_to_notes,bundle);
 
-                   
-                    //PackageItemAdapter.this.activi
+
+
+
                 }
             });
 

@@ -72,7 +72,7 @@ public class HomeFragment extends Fragment implements IFragmentCanAddNote {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(root.getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
         listNotebook= connectionDatabaseLocalMobile.getNotebooksLast(-1);
-        adapterHomeRecyclerView = new AdapterHomeRecyclerView(listNotebook,root.getContext());
+        adapterHomeRecyclerView = new AdapterHomeRecyclerView(listNotebook,HomeFragment.this);
         recyclerView.setAdapter(adapterHomeRecyclerView);
         return root;
     }
@@ -82,19 +82,37 @@ public class HomeFragment extends Fragment implements IFragmentCanAddNote {
 
         recyclerView = root.findViewById(R.id.recyclerViewHome);
     }
-    public <T> void startActivity(android.content.Context context, Class<T> classActivity){
+    public <T> void startActivity(android.content.Context context, Class<T> classActivity, int idNotebook, int index) {
+        if(idNotebook==0){
+            Intent intent = new Intent(context, NewNoteActivity.class);
 
-        Intent intent = new Intent(context, NewNoteActivity.class);
+            intent.putExtra("idPackage",0);
 
-        intent.putExtra("idPackage",0);
+            this.getActivity().startActivityForResult(intent,HomeActivity.HOME_FRAGMENT);
+        }else{
+            Intent intent = new Intent(context, NewNoteActivity.class);
 
-        this.getActivity().startActivityForResult(intent,HomeActivity.HOME_FRAGMENT);
+            intent.putExtra("idPackage",0);
+            intent.putExtra("idNotebook",idNotebook);
+            intent.putExtra("index",index);
+
+            this.getActivity().startActivityForResult(intent,HomeActivity.HOME_FRAGMENT);
+        }
+
     }
     @Override
-    public void updateApdater(Notebook notebook) {
-        this.listNotebook.add(0,notebook);
-        this.adapterHomeRecyclerView.notifyDataSetChanged();
-        Log.e("Update","OK");
+    public void updateApdater(Notebook notebook, int index) {
+        if(index==-1){
+            this.listNotebook.add(0,notebook);
+            this.adapterHomeRecyclerView.notifyDataSetChanged();
+            Log.e("Add note new","in adapter");
+        }else{
+            this.listNotebook.remove(index);
+            this.listNotebook.add(index, notebook);
+            this.adapterHomeRecyclerView.notifyDataSetChanged();
+        }
+
+
     }
 
 
