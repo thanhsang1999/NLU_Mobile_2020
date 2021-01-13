@@ -18,7 +18,7 @@ public class Notebook implements Parcelable {
     private String title;
     private String content;
     private Date dateEdit;
-    private Calendar remind;
+    private Date remind;
     private boolean checked;
     private String colorPackage;
     List<Bitmap> images;
@@ -87,11 +87,11 @@ public class Notebook implements Parcelable {
         this.checked = checked;
     }
 
-    public Calendar getRemind() {
+    public Date getRemind() {
         return remind;
     }
 
-    public void setRemind(Calendar remind) {
+    public void setRemind(Date remind) {
 
         this.remind = remind;
     }
@@ -118,7 +118,7 @@ public class Notebook implements Parcelable {
         dest.writeLong(dateEdit.getTime());
         dest.writeByte((byte) ((remind == null) ? 0 : 1));
         if(remind!=null)
-        dest.writeLong(remind.getTimeInMillis());
+        dest.writeLong(remind.getTime());
         dest.writeString(colorPackage);
 
 
@@ -132,9 +132,8 @@ public class Notebook implements Parcelable {
         dateEdit=new Date(in.readLong());
         byte checkCalendar = in.readByte();
         if(checkCalendar==(byte)1){
-            Calendar c=Calendar.getInstance();
-            c.setTimeInMillis(in.readLong());
-            remind=c;
+
+            remind=new Date(in.readLong());
         }
         colorPackage=in.readString();
         images= new ArrayList<>();

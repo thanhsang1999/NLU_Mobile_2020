@@ -41,6 +41,9 @@ import com.example.mobile.R;
 import com.example.mobile.adapter.NewNoteAdapter;
 import com.example.mobile.database.sqlite.NoteDAO;
 import com.example.mobile.model.Notebook;
+import com.example.mobile.model.Tool;
+import com.example.mobile.utils.ExactThreadHelper;
+import com.example.mobile.utils.MyNotificationHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.jetbrains.annotations.NotNull;
 
@@ -174,7 +177,16 @@ public class NewNoteActivity extends AppCompatActivity {
 
 
                 }
+                if(notebook.getRemind()!=null){
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        ExactThreadHelper.hel(this,notebook.getRemind(),notebook.getTitle(), notebook.getContent());
+                    }else{
+                        Toast.makeText(this,"Chưa làm cho bản android này", Toast.LENGTH_SHORT).show();
+                    }
+                }
                 Log.e("NewNote","Finish");
+
                 finish();
                 return true;
             case R.id.menuChangeColor:
@@ -215,7 +227,8 @@ public class NewNoteActivity extends AppCompatActivity {
 
 
 
-                                                notebook.setRemind(c);
+                                                notebook.setRemind(new Date(c.getTimeInMillis()));
+                                                Log.e("setRemind", Tool.DateToString(new Date(c.getTimeInMillis())));
 
                                             }
                                         }, mHour, mMinute, false);

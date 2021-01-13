@@ -28,6 +28,7 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 
 public class TestActivity extends AppCompatActivity implements IRawSQL {
@@ -50,7 +51,7 @@ public class TestActivity extends AppCompatActivity implements IRawSQL {
             DateFormat dateFormat= new SimpleDateFormat("hh:mm:ss");
             textView.setText(dateFormat.format(c.getTime())+"");
             Log.e("VErsion","run");
-            ExactThreadHelper.hel(TestActivity.this, c);
+            ExactThreadHelper.hel(TestActivity.this,new Date(c.getTimeInMillis()),"Hello"," World");
         } else {
             Log.e("VErsion","not");
         }

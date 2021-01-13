@@ -51,7 +51,7 @@ public class NoteDAO  extends PackageDAO {
         String columnName[] = {"images_note.id", "images_note.image"};
         Cursor cursor = this.sqLiteDatabase.query("images_note",
                 columnName, "images_note.id_notebook=?", new String[]{String.valueOf(idNotebook)},
-                null, null, null);
+                null, null, "images_note.id desc");
         if (cursor != null) {
             if (cursor.moveToFirst()) {
 
@@ -105,6 +105,7 @@ public class NoteDAO  extends PackageDAO {
         values.put("title", n.getTitle());
         values.put("content", n.getContent());
         values.put("id_package", idPackage);
+        values.put("remind", Tool.DateToString(n.getRemind()));
         values.put("last_edit", Tool.DateToString(n.getDateEdit()));
 
         boolean success=this.sqLiteDatabase.insert("notebook", null, values) != -1;
@@ -137,12 +138,48 @@ public class NoteDAO  extends PackageDAO {
 
 
         int ret = this.sqLiteDatabase.update("notebook", values, "id=?", new String[]{notebook.getId()+""});
+        updateImages(notebook.getId(),notebook.getImages(),notebook.getDateEdit());
         if(ret==1){
             updatePackageDateEdit(idPackage,new Date());
             Log.e("updatenote","ok");
         }
 
         return ret;
+    }
+    public void updateImages(int idNotebook, List<Bitmap> bitmaps, Date d){
+
+        List<Bitmap> bitmaps2= new ArrayList<>(bitmaps);
+
+        String columnName[] = {"images_note.id"};
+        Cursor cursor = this.sqLiteDatabase.query("images_note",
+                columnName, "images_note.id_notebook=?", new String[]{String.valueOf(idNotebook)},
+                null, null, "id desc");
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                try {
+                   updateImage(cursor.getInt(0),bitmaps2.remove(0),d);
+                } catch (Exception e) {
+                    Log.e("Get image by id", e.getMessage());
+                }
+            }
+        }
+        while(bitmaps2.size()!=0){
+            insertImage(idNotebook,bitmaps2.remove(0),d);
+        }
+    }
+    public boolean updateImage(int id, Bitmap bitmap, Date d){
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+
+        byte[] byteArray = stream.toByteArray();
+
+
+        ContentValues values = new ContentValues();
+        values.put("last_edit",Tool.DateToString(d));
+        values.put("image",byteArray);
+        int ret = this.sqLiteDatabase.update("images-note", values, "id=?", new String[]{id+""});
+        return ret==1;
     }
 
 
@@ -152,7 +189,7 @@ public class NoteDAO  extends PackageDAO {
             sqlLimit=" limit "+limit;
         }
 
-        String query = "SELECT notebook.id,notebook.title, notebook.content,notebook.last_edit, tblpackage.color FROM notebook join tblpackage on notebook.id_package = tblpackage.id order by notebook.last_edit desc"+sqlLimit;
+        String query = "SELECT notebook.id,notebook.title, notebook.content,notebook.last_edit, tblpackage.color,notebook.remind FROM notebook join tblpackage on notebook.id_package = tblpackage.id order by notebook.last_edit desc"+sqlLimit;
         ArrayList<Notebook> notebooks = new ArrayList<>();
         Cursor cursor = GetData(query);
         while (cursor.moveToNext()){
@@ -162,10 +199,10 @@ public class NoteDAO  extends PackageDAO {
             notebook.setContent(cursor.getString(2));
             notebook.setDateEdit(Tool.StringToDate(cursor.getString(3)));
             notebook.setColorPackage(cursor.getString(4));
+            notebook.setRemind(Tool.StringToDate(cursor.getString(5)));
             notebook.setImages(getImagesByIdNotebook(notebook.getId()));
             Log.e("getlastnote","imgC"+notebook.getImages().size());
             notebooks.add(notebook);
-
 
         }
         return notebooks;

@@ -80,7 +80,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                 "title TEXT," +
                 "content TEXT,"+
                 "id_package integer,"+
-
+                "remind TEXT,"+
                 "last_edit TEXT);";
         sqLiteDatabase.execSQL(sqlCreateTableNotebook);
 
