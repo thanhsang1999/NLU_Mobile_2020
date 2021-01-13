@@ -24,18 +24,14 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 
-import com.example.mobile.ConnectionDatabaseLocalMobile;
 import com.example.mobile.activity.HomeActivity;
-import com.example.mobile.model.DateStringConverter;
+import com.example.mobile.database.sqlite.PackageDAO;
 import com.example.mobile.model.Package;
 import com.example.mobile.R;
-import com.example.mobile.ui.home.HomeFragment;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,9 +44,9 @@ public class PackageItemAdapter extends BaseAdapter {
     private final List<Package> _items;
     HomeActivity activity;
     SlideshowFragment fragment;
-    ConnectionDatabaseLocalMobile c;
+    PackageDAO c;
     public PackageItemAdapter(Fragment fragment, List<Package> aPackages){
-        c= new ConnectionDatabaseLocalMobile(fragment.getActivity());
+        c= new PackageDAO(fragment.getActivity());
         this._items = new ArrayList<>();
         Package p=new Package();
         p.setName("Create Note");

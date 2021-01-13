@@ -5,7 +5,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -37,11 +36,11 @@ import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.mobile.ConnectionDatabaseLocalMobile;
+
 import com.example.mobile.R;
 import com.example.mobile.adapter.NewNoteAdapter;
+import com.example.mobile.database.sqlite.NoteDAO;
 import com.example.mobile.model.Notebook;
-import com.example.mobile.model.Tool;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.jetbrains.annotations.NotNull;
 
@@ -54,7 +53,7 @@ public class NewNoteActivity extends AppCompatActivity {
     EditText editTextTitle,editTextContent;
     ScrollView Mainlayout;
     ConstraintLayout  contentLayout;
-    ConnectionDatabaseLocalMobile sqLite;
+    NoteDAO sqLite;
 
     private int mYear, mMonth, mDay, mHour, mMinute;
     Notebook notebook;
@@ -70,7 +69,7 @@ public class NewNoteActivity extends AppCompatActivity {
     int index=-1;
     public int PERM_CODE = 111;
     public int REQUEST_CODE_CAMERA = 112;
-    List<Bitmap> images ;
+
     String currentPhotoPath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +79,7 @@ public class NewNoteActivity extends AppCompatActivity {
         idPackage=getIntent().getExtras().getInt("idPackage");
         idNotebook=getIntent().getExtras().getInt("idNotebook");
         index=getIntent().getExtras().getInt("index");
+        Log.e("new note","index="+index);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -104,7 +104,7 @@ public class NewNoteActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(NewNoteActivity.this,LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        newNoteAdapter = new NewNoteAdapter(NewNoteActivity.this,images);
+        newNoteAdapter = new NewNoteAdapter(NewNoteActivity.this,notebook.getImages());
         recyclerView.setAdapter(newNoteAdapter);
     }
 
@@ -114,7 +114,7 @@ public class NewNoteActivity extends AppCompatActivity {
         Mainlayout = findViewById(R.id.mainLayout);
         contentLayout = findViewById(R.id.contentLayout);
         editTextContent.requestFocus();
-        sqLite  = new ConnectionDatabaseLocalMobile(this);
+        sqLite  = new NoteDAO(this);
         if(idNotebook==0)
             notebook= new Notebook();
         else {
@@ -137,7 +137,7 @@ public class NewNoteActivity extends AppCompatActivity {
         // RecyclerView
         recyclerView = findViewById(R.id.recyclerViewImage);
 
-        images = new ArrayList<>();
+
     }
 
     @Override
@@ -154,13 +154,14 @@ public class NewNoteActivity extends AppCompatActivity {
 
                 if (!textContent.equals("")){
                     if(idNotebook==0){
-                        notebook=sqLite.insert_notebook(notebook,idPackage);
+                        notebook=sqLite.insertNotebook(notebook,idPackage);
                         Intent returnIntent = new Intent();
                         returnIntent.putExtra("notebook",notebook);
+                        Log.e("new notea","imageC"+notebook.getImages().size());
                         returnIntent.putExtra("index",index);
                         setResult(Activity.RESULT_OK,returnIntent);
                     }else{
-                        int rs=sqLite.update_notebook(notebook,idPackage);
+                        int rs=sqLite.updateNotebook(notebook,idPackage);
 
                         if(rs==1){
                             Intent returnIntent = new Intent();
@@ -262,7 +263,14 @@ public class NewNoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 CloseMenuFab();
-                PermissionsCamera();
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                    Log.e("os version", ">= M");
+                    PermissionsCamera();
+                } else{
+                    Log.e("os version", "< M");
+                    dispatchTakePictureIntent();
+                }
+
             }
         });
         fabFile.setOnClickListener(new View.OnClickListener() {
@@ -330,6 +338,7 @@ public class NewNoteActivity extends AppCompatActivity {
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
+                Log.e("takePicture", ex.getMessage());
             }
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,"com.example.mobile.fileprovider",photoFile);
@@ -372,6 +381,6 @@ public class NewNoteActivity extends AppCompatActivity {
         Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
         Bitmap bitmap1 = Bitmap.createBitmap(bitmap, 0, 0, targetW, targetH,
                 matrix, true);
-        images.add(bitmap1);
+        notebook.getImages().add(bitmap1);
     }
 }

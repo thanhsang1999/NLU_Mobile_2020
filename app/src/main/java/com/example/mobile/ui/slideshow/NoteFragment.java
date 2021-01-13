@@ -17,11 +17,12 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mobile.ConnectionDatabaseLocalMobile;
+import com.example.mobile.database.sqlite.ConnectionDatabaseLocalMobile;
 import com.example.mobile.IFragmentCanAddNote;
 import com.example.mobile.R;
 import com.example.mobile.activity.HomeActivity;
 import com.example.mobile.activity.NewNoteActivity;
+import com.example.mobile.database.sqlite.NoteDAO;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Package;
 import com.example.mobile.ui.home.HomeViewModel;
@@ -35,7 +36,7 @@ public class NoteFragment extends Fragment implements IFragmentCanAddNote {
     Package currentPackage;
 
     AdapterNoteFragmentRecyclerView adapterHomeRecyclerView;
-    ConnectionDatabaseLocalMobile connectionDatabaseLocalMobile;
+    NoteDAO connectionDatabaseLocalMobile;
     HomeActivity activity;
 
     public NoteFragment() {
@@ -48,7 +49,7 @@ public class NoteFragment extends Fragment implements IFragmentCanAddNote {
         homeViewModel = new ViewModelProvider(this.requireActivity()).get(HomeViewModel.class);
         root = inflater.inflate(R.layout.fragment_notes, container, false);
         init();
-        connectionDatabaseLocalMobile= new ConnectionDatabaseLocalMobile(this.getActivity());
+        connectionDatabaseLocalMobile= new NoteDAO(this.getActivity());
         Bundle bundle = this.getArguments();
 
         if(bundle != null){
@@ -88,6 +89,7 @@ public class NoteFragment extends Fragment implements IFragmentCanAddNote {
         if(idNotebook==0){
             Intent intent = new Intent(context, NewNoteActivity.class);
             intent.putExtra("idPackage",this.currentPackage.getId());
+            intent.putExtra("index",index);
             this.getActivity().startActivityForResult(intent,HomeActivity.NOTE_FRAGMENT);
         }else{
             Intent intent = new Intent(context, NewNoteActivity.class);

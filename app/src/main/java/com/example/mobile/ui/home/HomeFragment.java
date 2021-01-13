@@ -2,8 +2,6 @@ package com.example.mobile.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.*;
 
@@ -21,14 +19,13 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mobile.ConnectionDatabaseLocalMobile;
+import com.example.mobile.database.sqlite.ConnectionDatabaseLocalMobile;
 import com.example.mobile.IFragmentCanAddNote;
 import com.example.mobile.activity.HomeActivity;
 import com.example.mobile.R;
 import com.example.mobile.activity.NewNoteActivity;
+import com.example.mobile.database.sqlite.NoteDAO;
 import com.example.mobile.model.Notebook;
-import com.example.mobile.model.Package;
-import com.example.mobile.model.Tool;
 
 import java.util.List;
 
@@ -41,7 +38,7 @@ public class HomeFragment extends Fragment implements IFragmentCanAddNote {
 
 
     public  AdapterHomeRecyclerView adapterHomeRecyclerView;
-    ConnectionDatabaseLocalMobile connectionDatabaseLocalMobile;
+    NoteDAO connectionDatabaseLocalMobile;
     HomeActivity activity;
     List<Notebook> listNotebook;
 
@@ -54,7 +51,7 @@ public class HomeFragment extends Fragment implements IFragmentCanAddNote {
 
         root = inflater.inflate(R.layout.fragment_home, container, false);
         init();
-        connectionDatabaseLocalMobile= new ConnectionDatabaseLocalMobile(this.getActivity());
+        connectionDatabaseLocalMobile= new NoteDAO(this.getActivity());
 
 
 
@@ -84,10 +81,13 @@ public class HomeFragment extends Fragment implements IFragmentCanAddNote {
         recyclerView = root.findViewById(R.id.recyclerViewHome);
     }
     public <T> void startActivity(android.content.Context context, Class<T> classActivity, int idNotebook, int index) {
+        Log.e("index",""+index);
         if(idNotebook==0){
             Intent intent = new Intent(context, NewNoteActivity.class);
 
             intent.putExtra("idPackage",0);
+            intent.putExtra("index",-1);
+
 
             this.getActivity().startActivityForResult(intent,HomeActivity.HOME_FRAGMENT);
         }else{
@@ -103,6 +103,7 @@ public class HomeFragment extends Fragment implements IFragmentCanAddNote {
     }
     @Override
     public void updateApdater(Notebook notebook, int index) {
+        Log.e("update",index+"");
         if(index==-1){
             this.listNotebook.add(0,notebook);
             this.adapterHomeRecyclerView.notifyDataSetChanged();
@@ -113,6 +114,8 @@ public class HomeFragment extends Fragment implements IFragmentCanAddNote {
 
             this.adapterHomeRecyclerView.notifyDataSetChanged();
         }
+
+        Log.e("imageCount",notebook.getImages().size()+"");
 
 
     }

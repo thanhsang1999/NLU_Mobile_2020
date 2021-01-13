@@ -1,45 +1,35 @@
 package com.example.mobile.model;
 
 
+import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 
 public class Notebook implements Parcelable {
     private int id;
     private String title;
     private String content;
-
     private Date dateEdit;
     private Calendar remind;
     private boolean checked;
     private String colorPackage;
+    List<Bitmap> images;
 
     public Notebook() {
+
         this.checked=false;
+        this.images= new ArrayList<>();
     }
 
-    public Notebook(int id, String title, String content, Date dateEdit, Boolean checked) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
 
-        this.dateEdit = dateEdit;
-        this.checked = checked;
-    }
-    public Notebook(int id, String title, String content, int idPackage, Date dateEdit) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-
-        this.dateEdit = dateEdit;
-        this.checked = false;
-    }
 
 
 
@@ -132,6 +122,7 @@ public class Notebook implements Parcelable {
         dest.writeString(colorPackage);
 
 
+
     }
     protected Notebook(Parcel in) {
         id = in.readInt();
@@ -146,8 +137,18 @@ public class Notebook implements Parcelable {
             remind=c;
         }
         colorPackage=in.readString();
+        images= new ArrayList<>();
 
 
 
+
+    }
+
+    public List<Bitmap> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Bitmap> images) {
+        this.images = images;
     }
 }

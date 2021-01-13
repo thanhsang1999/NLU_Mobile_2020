@@ -10,8 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.mobile.ConnectionDatabaseLocalMobile;
+import com.example.mobile.database.sqlite.ConnectionDatabaseLocalMobile;
 import com.example.mobile.activity.HomeActivity;
+import com.example.mobile.database.sqlite.NoteDAO;
 import com.example.mobile.model.Package;
 import com.example.mobile.R;
 
@@ -20,7 +21,7 @@ import java.util.List;
 public class SlideshowFragment extends Fragment {
 
     private SlideshowViewModel slideshowViewModel;
-    private ConnectionDatabaseLocalMobile c;
+    private NoteDAO c;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
@@ -30,7 +31,7 @@ public class SlideshowFragment extends Fragment {
 
 
         final GridView gridView = root.findViewById(R.id.gridView);
-        c= new ConnectionDatabaseLocalMobile(this.getActivity());
+        c= new NoteDAO(this.getActivity());
         List<Package> aPackages = c.getPackages();
 
         gridView.setAdapter(new PackageItemAdapter(this, aPackages));

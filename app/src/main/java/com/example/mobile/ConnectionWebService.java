@@ -18,6 +18,8 @@ import com.example.mobile.activity.LogInActivity;
 import com.example.mobile.activity.LogoActivity;
 import com.example.mobile.activity.SignUpActivity;
 import com.example.mobile.activity.WellComeActivity;
+import com.example.mobile.database.sqlite.AccountDAO;
+import com.example.mobile.database.sqlite.ConnectionDatabaseLocalMobile;
 import com.example.mobile.model.Account;
 import com.example.mobile.model.Package;
 import com.example.mobile.model.Tool;
@@ -32,11 +34,11 @@ import java.util.Random;
 
 public class ConnectionWebService {
     private Activity activity;
-    private ConnectionDatabaseLocalMobile connectionDatabaseLocalMobile;
+    private AccountDAO connectionDatabaseLocalMobile;
     private String addressHome = "https://mobilenlu2020.000webhostapp.com";
     private String urlQuery = "/home/query.php";
     public ConnectionWebService(Activity activity) {
-        connectionDatabaseLocalMobile= new ConnectionDatabaseLocalMobile(activity);
+        connectionDatabaseLocalMobile= new AccountDAO(activity);
         this.activity = activity;
     }
 
