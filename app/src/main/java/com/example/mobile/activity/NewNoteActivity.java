@@ -21,11 +21,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
-import android.widget.DatePicker;
-import android.widget.EditText;
+import android.widget.*;
 
-import android.widget.TimePicker;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,7 +49,8 @@ import java.util.*;
 
 public class NewNoteActivity extends AppCompatActivity {
     EditText editTextTitle,editTextContent;
-    ConstraintLayout Mainlayout,contentLayout;
+    ScrollView Mainlayout;
+    ConstraintLayout  contentLayout;
     ConnectionDatabaseLocalMobile sqLite;
 
     private int mYear, mMonth, mDay, mHour, mMinute;
@@ -234,6 +232,7 @@ public class NewNoteActivity extends AppCompatActivity {
         fabCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                CloseMenuFab();
                 PermissionsCamera();
             }
         });
