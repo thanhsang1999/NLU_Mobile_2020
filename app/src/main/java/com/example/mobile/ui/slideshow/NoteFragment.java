@@ -2,7 +2,6 @@ package com.example.mobile.ui.slideshow;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,7 +24,6 @@ import com.example.mobile.activity.HomeActivity;
 import com.example.mobile.activity.NewNoteActivity;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Package;
-import com.example.mobile.ui.slideshow.AdapterHomeRecyclerView;
 import com.example.mobile.ui.home.HomeViewModel;
 
 public class NoteFragment extends Fragment implements IFragmentCanAddNote {
@@ -36,7 +34,7 @@ public class NoteFragment extends Fragment implements IFragmentCanAddNote {
     View root;
     Package currentPackage;
 
-    AdapterHomeRecyclerView adapterHomeRecyclerView;
+    AdapterNoteFragmentRecyclerView adapterHomeRecyclerView;
     ConnectionDatabaseLocalMobile connectionDatabaseLocalMobile;
     HomeActivity activity;
 
@@ -76,7 +74,7 @@ public class NoteFragment extends Fragment implements IFragmentCanAddNote {
         recyclerView.addItemDecoration(dividerItemDecoration);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(root.getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapterHomeRecyclerView = new AdapterHomeRecyclerView(currentPackage,root.getContext());
+        adapterHomeRecyclerView = new AdapterNoteFragmentRecyclerView(currentPackage,NoteFragment.this);
         recyclerView.setAdapter(adapterHomeRecyclerView);
         return root;
     }

@@ -124,8 +124,8 @@ public class Notebook implements Parcelable {
         dest.writeInt(id);
         dest.writeString(title);
         dest.writeString(content);
-        dest.writeLong(dateEdit.getTime());
         dest.writeByte((byte) ((checked) ? 1: 0));
+        dest.writeLong(dateEdit.getTime());
         dest.writeByte((byte) ((remind == null) ? 0 : 1));
         if(remind!=null)
         dest.writeLong(remind.getTimeInMillis());

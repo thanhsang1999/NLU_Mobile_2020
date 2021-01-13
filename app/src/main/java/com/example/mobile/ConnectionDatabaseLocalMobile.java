@@ -200,6 +200,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
     public int update_notebook(Notebook notebook, int idPackage){
         ContentValues values = new ContentValues();
         values.put("last_edit",Tool.DateToString(new Date()));
+        notebook.setDateEdit(new Date());
         values.put("title",notebook.getTitle());
         values.put("content",notebook.getContent());
 

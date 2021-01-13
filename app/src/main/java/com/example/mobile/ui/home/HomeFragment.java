@@ -28,6 +28,7 @@ import com.example.mobile.R;
 import com.example.mobile.activity.NewNoteActivity;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Package;
+import com.example.mobile.model.Tool;
 
 import java.util.List;
 
@@ -109,6 +110,7 @@ public class HomeFragment extends Fragment implements IFragmentCanAddNote {
         }else{
             this.listNotebook.remove(index);
             this.listNotebook.add(index, notebook);
+
             this.adapterHomeRecyclerView.notifyDataSetChanged();
         }
 

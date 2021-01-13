@@ -1,9 +1,11 @@
 package com.example.mobile.ui.slideshow;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,20 +19,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobile.R;
 import com.example.mobile.activity.HomeActivity;
+import com.example.mobile.activity.NewNoteActivity;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Package;
 import com.example.mobile.model.Tool;
+import com.example.mobile.ui.home.AdapterHomeRecyclerView;
+import com.example.mobile.ui.home.HomeFragment;
 
 import java.util.List;
 
-public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRecyclerView.ViewHolder> implements Parcelable {
+public class AdapterNoteFragmentRecyclerView extends RecyclerView.Adapter<AdapterNoteFragmentRecyclerView.ViewHolder> implements Parcelable {
 
 
     List<Notebook> notebooks;
-    Context context;
+    NoteFragment context;
     Boolean multiSelect = false;
     Package currentPackage;
-    public AdapterHomeRecyclerView(Package p, Context context) {
+    public AdapterNoteFragmentRecyclerView(Package p, NoteFragment context) {
         currentPackage= p;
         this.notebooks = p.getNotebooks();
         this.context = context;
@@ -38,21 +43,21 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
 
 
 
-    protected AdapterHomeRecyclerView(Parcel in) {
+    protected AdapterNoteFragmentRecyclerView(Parcel in) {
         byte tmpMultiSelect = in.readByte();
         multiSelect = tmpMultiSelect == 0 ? null : tmpMultiSelect == 1;
         currentPackage = in.readParcelable(Package.class.getClassLoader());
     }
 
-    public static final Creator<AdapterHomeRecyclerView> CREATOR = new Creator<AdapterHomeRecyclerView>() {
+    public static final Creator<AdapterNoteFragmentRecyclerView> CREATOR = new Creator<AdapterNoteFragmentRecyclerView>() {
         @Override
-        public AdapterHomeRecyclerView createFromParcel(Parcel in) {
-            return new AdapterHomeRecyclerView(in);
+        public AdapterNoteFragmentRecyclerView createFromParcel(Parcel in) {
+            return new AdapterNoteFragmentRecyclerView(in);
         }
 
         @Override
-        public AdapterHomeRecyclerView[] newArray(int size) {
-            return new AdapterHomeRecyclerView[size];
+        public AdapterNoteFragmentRecyclerView[] newArray(int size) {
+            return new AdapterNoteFragmentRecyclerView[size];
         }
     };
 
@@ -74,7 +79,7 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
             holder.linearLayoutContent.setBackgroundResource(R.drawable.background_checked_list_item_linear);
             holder.imageViewCheck.setImageResource(R.drawable.ic_checked_list);
         }else {
-            holder.imageViewCheck.setImageResource(Tool.getDrawableByName(context,"ic_"+stringColorPackage));
+            holder.imageViewCheck.setImageResource(Tool.getDrawableByName(context.getContext(),"ic_"+stringColorPackage));
         }
         holder.textViewTitle.setText(notebook.getTitle());
         holder.textViewContent.setText(notebook.getContent());
@@ -122,8 +127,14 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
                         linearLayoutMain.setBackgroundResource(R.drawable.background_checked_list_item_linear);
                         linearLayoutContent.setBackgroundResource(R.drawable.background_checked_list_item_linear);
                         imageViewCheck.setImageResource(R.drawable.ic_checked_list);
-                        HomeActivity homeActivity =  (HomeActivity) context;
-                        homeActivity.showActionMode();
+
+                        Activity activity= context.getActivity();
+                        if(activity instanceof  HomeActivity){
+                            HomeActivity homeActivity =  (HomeActivity) activity;
+                            homeActivity.showActionMode();
+                        }else{
+                            Log.e("adapterhome","not acepti homeac");
+                        }
                     }
 
                     return true;
@@ -140,7 +151,7 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
                                 String stringColorPackage = currentPackage.getColor();
                                 linearLayoutMain.setBackgroundResource(R.drawable.background_list_item_linear);
                                 linearLayoutContent.setBackgroundResource(R.drawable.background_list_item_linear);
-                                imageViewCheck.setImageResource(Tool.getDrawableByName(context,"ic_"+stringColorPackage));
+                                imageViewCheck.setImageResource(Tool.getDrawableByName(context.getContext(),"ic_"+stringColorPackage));
                             }else{
                                 notebook.setChecked(true);
                                 linearLayoutMain.setBackgroundResource(R.drawable.background_checked_list_item_linear);
@@ -150,7 +161,8 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
                         }
                     }else {
                         multiSelect = false;
-                            Toast.makeText(context, "select "+getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                        AdapterNoteFragmentRecyclerView.this.context.startActivity(AdapterNoteFragmentRecyclerView.this.context.getActivity(), NewNoteActivity.class,notebook.getId(), getAdapterPosition());
+                            Toast.makeText(context.getContext(), "select "+getAdapterPosition(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });

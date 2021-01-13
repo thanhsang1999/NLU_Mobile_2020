@@ -41,6 +41,7 @@ import com.example.mobile.ConnectionDatabaseLocalMobile;
 import com.example.mobile.R;
 import com.example.mobile.adapter.NewNoteAdapter;
 import com.example.mobile.model.Notebook;
+import com.example.mobile.model.Tool;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.jetbrains.annotations.NotNull;
 
@@ -160,6 +161,7 @@ public class NewNoteActivity extends AppCompatActivity {
                         setResult(Activity.RESULT_OK,returnIntent);
                     }else{
                         int rs=sqLite.update_notebook(notebook,idPackage);
+
                         if(rs==1){
                             Intent returnIntent = new Intent();
                             returnIntent.putExtra("notebook",notebook);
