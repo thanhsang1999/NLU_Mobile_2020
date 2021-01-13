@@ -53,7 +53,7 @@ public class NoteDAO  extends PackageDAO {
                 columnName, "images_note.id_notebook=?", new String[]{String.valueOf(idNotebook)},
                 null, null, "images_note.id desc");
         if (cursor != null) {
-            if (cursor.moveToFirst()) {
+            while (cursor.moveToNext()) {
 
                 try {
                     byte[] photo=null;
@@ -155,7 +155,7 @@ public class NoteDAO  extends PackageDAO {
                 columnName, "images_note.id_notebook=?", new String[]{String.valueOf(idNotebook)},
                 null, null, "id desc");
         if (cursor != null) {
-            if (cursor.moveToFirst()) {
+            while (cursor.moveToNext()) {
                 try {
                    updateImage(cursor.getInt(0),bitmaps2.remove(0),d);
                 } catch (Exception e) {
@@ -200,8 +200,8 @@ public class NoteDAO  extends PackageDAO {
             notebook.setDateEdit(Tool.StringToDate(cursor.getString(3)));
             notebook.setColorPackage(cursor.getString(4));
             notebook.setRemind(Tool.StringToDate(cursor.getString(5)));
-            notebook.setImages(getImagesByIdNotebook(notebook.getId()));
-            Log.e("getlastnote","imgC"+notebook.getImages().size());
+
+
             notebooks.add(notebook);
 
         }
