@@ -7,6 +7,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -14,6 +15,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
@@ -45,7 +47,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -69,6 +75,8 @@ public class NewNoteActivity extends AppCompatActivity {
     int index=-1;
     public int PERM_CODE = 111;
     public int REQUEST_CODE_CAMERA = 112;
+    public int PERM_CODE_GALLERY = 222;
+    public int REQUEST_CODE_GALLERY = 223;
 
     String currentPhotoPath;
     @Override
@@ -276,11 +284,8 @@ public class NewNoteActivity extends AppCompatActivity {
         fabFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isMenuOpen){
-                    CloseMenuFab();
-                }else {
-                    OpenMenuFab();
-                }
+                CloseMenuFab();
+                PermissionsGallery();
             }
         });
     }
@@ -298,11 +303,34 @@ public class NewNoteActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this,Premissions, PERM_CODE);
             }
     }
+    private void PermissionsGallery(){
+
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED
+                && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED
+        ){
+            OpenGallery();
+        }else {
+            String [] Premissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            ActivityCompat.requestPermissions(this,Premissions, PERM_CODE_GALLERY);
+        }
+    }
+
+    private void OpenGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent,REQUEST_CODE_GALLERY);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull @NotNull String[] permissions, @NonNull @NotNull int[] grantResults) {
         if (requestCode == PERM_CODE){
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED){
                 dispatchTakePictureIntent();
+            }else {
+                Toast.makeText(this, "denied authorization", Toast.LENGTH_SHORT).show();
+            }
+        }else if(requestCode == PERM_CODE_GALLERY){
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
+                OpenGallery();
             }else {
                 Toast.makeText(this, "denied authorization", Toast.LENGTH_SHORT).show();
             }
@@ -314,6 +342,16 @@ public class NewNoteActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_CAMERA && resultCode == RESULT_OK) {
             setPic();
             newNoteAdapter.notifyDataSetChanged();
+        }else if(requestCode == REQUEST_CODE_GALLERY && resultCode == RESULT_OK){
+            Uri imageUri = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),imageUri);
+                notebook.getImages().add(bitmap);
+                newNoteAdapter.notifyDataSetChanged();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
     }
     private File createImageFile() throws IOException {
