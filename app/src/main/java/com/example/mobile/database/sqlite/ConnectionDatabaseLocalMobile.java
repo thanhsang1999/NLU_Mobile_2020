@@ -246,25 +246,63 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                             Log.e("delete", "sync"+sync.getId());
                         }
                     });
-                    if(sync.getTableName().equals("tblpackage")){
+                    String key= sync.getTableName();
+                    switch (key){
+                        case "tblpackage":
+                            myWorker.setParams(new HashMap<String,String>(){{
+                                PackageDAO packageDAO= new PackageDAO(ConnectionDatabaseLocalMobile.this.activity);
+                                Package p= packageDAO.getPackage(sync.getIdRow());
+                                if(p.getId()==0){
+                                    Log.e("Error","idpackage not found");
+                                }
+                                Account account= packageDAO.getAccount();
+                                put("id", p.getId()+"");
+                                put("color", p.getColor()+"");
+                                put("title", p.getName());
+                                Log.e("Date", Tool.DateToString( p.getLastEdit()));
+                                put("last_edit", Tool.DateToString( p.getLastEdit()));
+                                put("username", account.getUsername());
+                            }});
+                            if(sync.getAction().equals("insert"))
+                                PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "addpackage.php");
 
-                        myWorker.setParams(new HashMap<String,String>(){{
-                            PackageDAO packageDAO= new PackageDAO(ConnectionDatabaseLocalMobile.this.activity);
-                            Package p= packageDAO.getPackage(sync.getIdRow());
-                            if(p.getId()==0){
-                                Log.e("Error","idpackage not found");
-                            }
-                            Account account= packageDAO.getAccount();
-                            put("id", p.getId()+"");
-                            put("color", p.getColor()+"");
-                            put("title", p.getName());
-                            Log.e("Date", Tool.DateToString( p.getLastEdit()));
-                            put("last_edit", Tool.DateToString( p.getLastEdit()));
-                            put("username", account.getUsername());
-                        }});
-                        if(sync.getAction().equals("insert"))
-                            PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "addpackage.php");
+                            break;
+                        case "tblnotebook":
+                            myWorker.setParams(new HashMap<String,String>(){{
+                                NoteDAO noteDAO= new NoteDAO(ConnectionDatabaseLocalMobile.this.activity);
+                                Notebook p= noteDAO.getNotebook(sync.getIdRow());
+                                if(p.getId()==0){
+                                    Log.e("Error","idnotebook not found");
+                                }
+                                Account account= noteDAO.getAccount();
+                                put("id", p.getId()+"");
+                                put("id_package", p.id_package+"");
+
+                                put("title", p.getTitle());
+                                put("content", p.getContent());
+
+                                put("last_edit", Tool.DateToString( p.getDateEdit()));
+
+                                put("username", account.getUsername());
+                                if(p.getRemind()!=null){
+                                    put("has_remind", "true");
+                                    put("remind", Tool.DateToString( p.getRemind()));
+                                }else
+                                put("has_remind", "false");
+
+                            }});
+                            if(sync.getAction().equals("insert"))
+                                PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "addnotebook.php");
+
+                            break;
+
+                        case "tblimage":
+                            break;
+
+                        default:
+                            break;
                     }
+
 
 
 

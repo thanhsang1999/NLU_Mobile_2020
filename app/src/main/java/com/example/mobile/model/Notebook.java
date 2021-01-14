@@ -22,6 +22,7 @@ public class Notebook implements Parcelable {
     private boolean checked;
     private String colorPackage;
     List<Bitmap> images;
+    public int id_package;
 
     public Notebook() {
 

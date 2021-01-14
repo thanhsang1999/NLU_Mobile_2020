@@ -1,5 +1,6 @@
 package com.example.mobile.ui.home;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,9 +16,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.mobile.database.sqlite.ConnectionDatabaseLocalMobile;
 import com.example.mobile.IFragmentCanAddNote;
@@ -41,6 +45,7 @@ public class HomeFragment extends Fragment implements IFragmentCanAddNote {
     NoteDAO connectionDatabaseLocalMobile;
     HomeActivity activity;
     List<Notebook> listNotebook;
+    SwipeRefreshLayout swiperefresh;
 
 
 
@@ -50,6 +55,7 @@ public class HomeFragment extends Fragment implements IFragmentCanAddNote {
         homeViewModel = new ViewModelProvider(this.requireActivity()).get(HomeViewModel.class);
 
         root = inflater.inflate(R.layout.fragment_home, container, false);
+
         init();
         connectionDatabaseLocalMobile= new NoteDAO(this.getActivity());
 
@@ -70,6 +76,7 @@ public class HomeFragment extends Fragment implements IFragmentCanAddNote {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(root.getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
         listNotebook= connectionDatabaseLocalMobile.getNotebooksLast(-1);
+        Log.e("HomeFragment","Run");
         adapterHomeRecyclerView = new AdapterHomeRecyclerView(listNotebook,HomeFragment.this);
         recyclerView.setAdapter(adapterHomeRecyclerView);
         return root;
@@ -79,6 +86,35 @@ public class HomeFragment extends Fragment implements IFragmentCanAddNote {
         HomeActivity.fab.show();
 
         recyclerView = root.findViewById(R.id.recyclerViewHome);
+        swiperefresh=root.findViewById(R.id.swiperefresh);
+        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                listNotebook.clear();
+                listNotebook.addAll(connectionDatabaseLocalMobile.getNotebooksLast(-1));
+                adapterHomeRecyclerView.notifyDataSetChanged();
+                swiperefresh.setRefreshing(false);
+            }
+        });
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(500);
+                    listNotebook.clear();
+                    listNotebook.addAll(connectionDatabaseLocalMobile.getNotebooksLast(-1));
+                    HomeFragment.this.getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapterHomeRecyclerView.notifyDataSetChanged();
+                        }
+                    });
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
     public <T> void startActivity(android.content.Context context, Class<T> classActivity, int idNotebook, int index) {
         Log.e("index",""+index);

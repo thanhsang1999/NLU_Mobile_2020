@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.TimeZone;
 
 public class Tool {
+    private final static String prime ="Etc/UTC";
+    private final static String myloace ="Asia/Ho_Chi_Minh";
     private static String paterm ="yyyy-MM-dd HH:mm:ss";
     public static Date StringToDate(String str){
         if(str==null){
@@ -21,7 +23,7 @@ public class Tool {
         }
         Date tmpDate = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat(paterm);
-        formatter.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+        formatter.setTimeZone(TimeZone.getTimeZone(prime));
         try {
             tmpDate = formatter.parse(str);
         } catch (ParseException e) {
@@ -35,7 +37,7 @@ public class Tool {
             return null;
         }
         SimpleDateFormat formatter = new SimpleDateFormat(paterm);
-        formatter.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+        formatter.setTimeZone(TimeZone.getTimeZone(prime));
         return formatter.format(date);
     }
     public static String DateToStringPrint(Date date){

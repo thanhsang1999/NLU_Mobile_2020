@@ -1,7 +1,8 @@
 <?php
 	require 'db.php';
-	require 'class_package.php';
+	
 	require 'getidaccount.php';
+	
 	
 	$i1 =$_POST['id'];
 	$i1 = null;

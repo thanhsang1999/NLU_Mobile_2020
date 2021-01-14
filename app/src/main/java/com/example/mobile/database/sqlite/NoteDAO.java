@@ -7,7 +7,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.example.mobile.model.MySync;
 import com.example.mobile.model.Notebook;
+import com.example.mobile.model.Package;
 import com.example.mobile.model.Tool;
 
 import java.io.ByteArrayInputStream;
@@ -95,7 +97,7 @@ public class NoteDAO  extends PackageDAO {
         return success;
     }
 
-    public Notebook insertNotebook(Notebook n, int idPackage) {
+    public Notebook insertNotebook(Notebook n, int idPackage, boolean isSyns) {
 
         if(idPackage==0){
             idPackage=getLastPackage().getId();
@@ -114,6 +116,24 @@ public class NoteDAO  extends PackageDAO {
         Log.e("Insert Notebook", "" + success);
         Log.e("Update PackageEditTime", "" + (ret==1));
         Notebook notebook=getNotebooksLast(1).get(0);
+        if(success){
+
+            if(!isSyns)return notebook;
+            MySync sync=new MySync();
+            sync.setAction("insert");
+            sync.setIdRow(notebook.getId());
+            sync.setTableName("tblnotebook");
+            sync.setTime(Tool.DateToString(notebook.getDateEdit()));
+            if(insert_sync(sync)){
+                Log.e("insert","n sync");
+            }
+//
+//            new Thread(()->{
+//                ConnectionWebService connectionWebService= new ConnectionWebService(this.activity);
+//                connectionWebService.insert_package(p2, getAccount());
+//            }).start();
+
+        }
         int countI=1;
         for(Bitmap b:n.getImages()){
             insertImage(notebook.getId(),b,notebook.getDateEdit());
@@ -210,7 +230,7 @@ public class NoteDAO  extends PackageDAO {
 
     public Notebook getNotebook(int id) {
         Notebook notebook =null;
-        String columnName[] = {"notebook.title", "notebook.content", "notebook.last_edit", "tblpackage.color"};
+        String columnName[] = {"notebook.title", "notebook.content", "notebook.last_edit", "tblpackage.color","notebook.id_package"};
         Cursor cursor = this.sqLiteDatabase.query("notebook join tblpackage on notebook.id_package=tblpackage.id",
                 columnName, "notebook.id=?", new String[]{String.valueOf(id)},
                 null, null, null);
@@ -222,6 +242,7 @@ public class NoteDAO  extends PackageDAO {
                     notebook.setContent(cursor.getString(1));
                     notebook.setDateEdit(Tool.StringToDate(cursor.getString(2)));
                     notebook.setColorPackage(cursor.getString(3));
+                    notebook.id_package=cursor.getInt(4);
                     notebook.setImages(getImagesByIdNotebook(id));
                     notebook.setId(id);
                 } catch (Exception e) {

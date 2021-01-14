@@ -165,7 +165,8 @@ public class NewNoteActivity extends AppCompatActivity {
 
                 if (!textContent.equals("")){
                     if(idNotebook==0){
-                        notebook=sqLite.insertNotebook(notebook,idPackage);
+                        notebook=sqLite.insertNotebook(notebook,idPackage, true);
+                        sqLite.sync();
                         Intent returnIntent = new Intent();
                         returnIntent.putExtra("notebook",notebook);
                         Log.e("new notea","imageC"+notebook.getImages().size());
@@ -295,6 +296,7 @@ public class NewNoteActivity extends AppCompatActivity {
             }
         });
         fabFile.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
                 CloseMenuFab();
@@ -316,6 +318,7 @@ public class NewNoteActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this,Premissions, PERM_CODE);
             }
     }
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void PermissionsGallery(){
 
         if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED
