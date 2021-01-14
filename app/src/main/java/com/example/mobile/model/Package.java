@@ -48,6 +48,7 @@ public class Package implements Parcelable {
     }
 
     public void setName(String name) {
+        if(name==null)this.name="";
         this.name = name;
     }
 
@@ -86,13 +87,12 @@ public class Package implements Parcelable {
         dest.writeInt(id);
         dest.writeString(color);
         dest.writeString(name);
-        dest.writeArray(this.notebooks.toArray());
+
     }
     protected Package(Parcel in) {
         id = in.readInt();
         color = in.readString();
         name = in.readString();
-        notebooks = new ArrayList<>();
-        in.readList(notebooks,Notebook.class.getClassLoader());
+
     }
 }
