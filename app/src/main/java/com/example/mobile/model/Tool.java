@@ -82,7 +82,7 @@ public class Tool {
             item.setChecked(false);
         }
     }
-    public static Bitmap getByteFromBitmap(byte[] photo){
+    public static Bitmap getBitmapFromBitmap(byte[] photo){
         if(photo==null)return null;
         ByteArrayInputStream imageStream = new ByteArrayInputStream(photo);
         Bitmap theImage= BitmapFactory.decodeStream(imageStream);
@@ -103,12 +103,24 @@ public class Tool {
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         return  decodedByte;
     }
+    public static byte[] getByteFromBase64(String base64){
+        if(base64==null)return null;
+        byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
+
+        return  decodedString;
+    }
     public static String getBase64FromBitmap(Bitmap bitmap){
         if(bitmap==null)return null;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos); //bm is the bitmap object
         byte[] b = baos.toByteArray();
         String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+        return  encodedImage;
+    }
+    public static String getBase64FromByte(byte[] bitmap){
+        if(bitmap==null)return null;
+
+        String encodedImage = Base64.encodeToString(bitmap, Base64.DEFAULT);
         return  encodedImage;
     }
 

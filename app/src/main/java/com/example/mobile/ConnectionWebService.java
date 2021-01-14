@@ -23,6 +23,7 @@ import com.example.mobile.database.sqlite.ConnectionDatabaseLocalMobile;
 import com.example.mobile.database.sqlite.NoteDAO;
 import com.example.mobile.database.sqlite.PackageDAO;
 import com.example.mobile.model.Account;
+import com.example.mobile.model.MyImage;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Package;
 import com.example.mobile.model.Tool;
@@ -530,6 +531,54 @@ public class ConnectionWebService {
                     p.setDateEdit(Tool.StringToDate(jsonObject.getString("LastEdit")));
                     p.id_package= jsonObject.getInt("IdPackage");
                     packageDAO.insertNotebook(p, p.id_package,false);
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.e("JSONException", e.getMessage());
+            }
+            packageDAO.close();
+
+
+
+        });
+
+
+        myWorker.setParams(new HashMap<String,String>(){{
+
+            Account account= packageDAO.getAccount();
+            put("username", account.getUsername());
+
+        }});
+
+        PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "getnotebooks.php");
+
+    }
+    public void takeDataImage(){
+        NoteDAO packageDAO= new NoteDAO(ConnectionWebService.this.activity);
+        MyWorker myWorker= new MyWorker();
+        myWorker.setActivity(this.activity);
+        myWorker.setError(()->{
+            String msg = "Kết nối mạng bị lỗi.";
+            Log.e("Error", myWorker.getErrorMessengr());
+
+        });
+        myWorker.setSuccess(()->{
+
+
+            try {
+                Log.e("Return", myWorker.getResponse());
+                JSONArray jsonArray = new JSONArray(myWorker.getResponse());
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    MyImage p = new MyImage();
+                    p.setId(jsonObject.getInt("Id"));
+                    p.setImage(Tool.getByteFromBase64(jsonObject.getString("Image")));
+
+                    p.setLastEdit(Tool.StringToDate(jsonObject.getString("LastEdit")));
+                    p.idNotebook=jsonObject.getInt("IdNotebook");
+                    packageDAO.insertImage(p.idNotebook, p.getImage(),p.getLastEdit(),false);
 
                 }
             } catch (JSONException e) {

@@ -18,6 +18,7 @@ import com.example.mobile.activity.LogoActivity;
 import com.example.mobile.activity.WellComeActivity;
 import com.example.mobile.model.Account;
 import com.example.mobile.model.DateStringConverter;
+import com.example.mobile.model.MyImage;
 import com.example.mobile.model.MySync;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Package;
@@ -223,9 +224,39 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
         }
         return syncs;
     }
+    public Account getAccount() {
+
+        String columnName[] = {"username", "fullname", "email", "password"};
+
+        Cursor cursor = this.sqLiteDatabase.query("tblaccounts",
+                columnName, null, null, null, null, null
+        );
+
+        if (cursor != null) {
+
+            if (cursor.moveToFirst()) {
+                if (cursor.getCount() == 1)
+                    try {
+
+                        Account account = new Account(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
+
+                        Log.e("Account", account.getUsername());
+                        return account;
+                    } catch (Exception e) {
+                        Log.e("Exception", e.getMessage().toString());
+                    }
+
+
+            }
+
+        }
+
+
+        return null;
+    }
     boolean isRunning=true;
     public void sync(){
-
+        if(getAccount()==null)return;
         new Thread(new Runnable() {
             public void run() {
 
@@ -300,6 +331,25 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                             break;
 
                         case "tblimage":
+                            myWorker.setParams(new HashMap<String,String>(){{
+                                NoteDAO noteDAO= new NoteDAO(ConnectionDatabaseLocalMobile.this.activity);
+                                MyImage p= noteDAO.getImage(sync.getIdRow());
+                                if(p.getId()==0){
+                                    Log.e("Error","idimage not found");
+                                }
+                                Account account= noteDAO.getAccount();
+                                put("id", p.getId()+"");
+                                put("id_notebook", p.idNotebook+"");
+                                put("image", Tool.getBase64FromByte(p.getImage()));
+                                put("last_edit", Tool.DateToString( p.getLastEdit()));
+                                put("username", account.getUsername());
+
+
+                            }});
+                            if(sync.getAction().equals("insert"))
+                                PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "addimagenotebook.php");
+
+
                             break;
 
                         default:

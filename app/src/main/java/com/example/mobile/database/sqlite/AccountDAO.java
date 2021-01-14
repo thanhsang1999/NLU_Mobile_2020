@@ -31,36 +31,7 @@ public class AccountDAO extends ConnectionDatabaseLocalMobile {
         super(activity);
     }
 
-    public Account getAccount() {
 
-        String columnName[] = {"username", "fullname", "email", "password"};
-
-        Cursor cursor = this.sqLiteDatabase.query("tblaccounts",
-                columnName, null, null, null, null, null
-        );
-
-        if (cursor != null) {
-
-            if (cursor.moveToFirst()) {
-                if (cursor.getCount() == 1)
-                    try {
-
-                        Account account = new Account(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
-
-                        Log.e("Account", account.getUsername());
-                        return account;
-                    } catch (Exception e) {
-                        Log.e("Exception", e.getMessage().toString());
-                    }
-
-
-            }
-
-        }
-
-
-        return null;
-    }
     public boolean insert_account(Account account) {
 
         prepare();

@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.example.mobile.model.MyImage;
 import com.example.mobile.model.MySync;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Package;
@@ -22,30 +23,31 @@ public class NoteDAO  extends PackageDAO {
     public NoteDAO(Activity activity) {
         super(activity);
     }
-    public Bitmap getImage(int id) {
-        byte[] photo=null;
-        String columnName[] = {"images_note.id", "images_note.image"};
+    public MyImage getImage(int id) {
+        MyImage myImage=null;
+        String columnName[] = {"images_note.id", "images_note.id_notebook","images_note.image", "images_note.last_edit"};
         Cursor cursor = this.sqLiteDatabase.query("images_note",
                 columnName, "images_note.id=?", new String[]{String.valueOf(id)},
                 null, null, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
 
-                try {
-                   photo=cursor.getBlob(1);
+                try { myImage= new MyImage();
+                    myImage.setId(cursor.getInt(0));
+                    myImage.idNotebook= cursor.getInt(1);
+                    myImage.setLastEdit(Tool.StringToDate(cursor.getString(3)));
+                    myImage.setImage(cursor.getBlob(2));
                 } catch (Exception e) {
                     Log.e("Get image by id", e.getMessage());
                 }
             }
         }
-        if(photo==null){
-            Log.e("not byte", "ok");
-            return null;
-        }
-        ByteArrayInputStream imageStream = new ByteArrayInputStream(photo);
-        Bitmap theImage= BitmapFactory.decodeStream(imageStream);
 
-        return theImage;
+
+
+
+
+        return myImage;
     }
     public List<byte[]> getImagesByIdNotebook(int idNotebook) {
         Log.e("checkid", "idNote"+idNotebook+"");
@@ -72,7 +74,7 @@ public class NoteDAO  extends PackageDAO {
 
         return bitmaps;
     }
-    public boolean insertImage(int idNotebook, byte[] bitmap, Date d) {
+    public boolean insertImage(int idNotebook, byte[] bitmap, Date d, boolean isSyns) {
 
 
 
@@ -88,7 +90,24 @@ public class NoteDAO  extends PackageDAO {
 
 
         Log.e("Insert Image", "" + success);
+        if(success){
+            MyImage myImage=getImagesLast(1).get(0);
+            if(!isSyns)return success;
+            MySync sync=new MySync();
+            sync.setAction("insert");
+            sync.setIdRow(myImage.getId());
+            sync.setTableName("tblnotebook");
+            sync.setTime(Tool.DateToString(d));
+            if(insert_sync(sync)){
+                Log.e("insert","i sync");
+            }
+//
+//            new Thread(()->{
+//                ConnectionWebService connectionWebService= new ConnectionWebService(this.activity);
+//                connectionWebService.insert_package(p2, getAccount());
+//            }).start();
 
+        }
         return success;
     }
 
@@ -131,7 +150,7 @@ public class NoteDAO  extends PackageDAO {
         }
         int countI=1;
         for(byte[] b:n.getImages()){
-            insertImage(notebook.getId(),b,notebook.getDateEdit());
+            insertImage(notebook.getId(),b,notebook.getDateEdit(), true);
             Log.e("Insert Image", ""+(countI++));
         }
 
@@ -157,6 +176,14 @@ public class NoteDAO  extends PackageDAO {
         if(ret==1){
             updatePackageDateEdit(idPackage,new Date());
             Log.e("updatenote","ok");
+            MySync sync=new MySync();
+            sync.setAction("update");
+            sync.setIdRow(notebook.getId());
+            sync.setTableName("tblnotebook");
+            sync.setTime(Tool.DateToString(notebook.getDateEdit()));
+            if(insert_sync(sync)){
+                Log.e("update","n sync");
+            }
         }
 
         return ret;
@@ -172,17 +199,17 @@ public class NoteDAO  extends PackageDAO {
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 try {
-                   updateImage(cursor.getInt(0),bitmaps2.remove(0),d);
+                   updateImage(cursor.getInt(0),bitmaps2.remove(0),d,true);
                 } catch (Exception e) {
                     Log.e("Get image by id", e.getMessage());
                 }
             }
         }
         while(bitmaps2.size()!=0){
-            insertImage(idNotebook,bitmaps2.remove(0),d);
+            insertImage(idNotebook,bitmaps2.remove(0),d, true);
         }
     }
-    public boolean updateImage(int id, byte[] bitmap, Date d){
+    public boolean updateImage(int id, byte[] bitmap, Date d, boolean isSync){
 
 
 
@@ -190,7 +217,19 @@ public class NoteDAO  extends PackageDAO {
         values.put("last_edit",Tool.DateToString(d));
         values.put("image",bitmap);
         int ret = this.sqLiteDatabase.update("images-note", values, "id=?", new String[]{id+""});
-        return ret==1;
+        if(ret==1){
+            if(!isSync)return true;
+
+            MySync sync=new MySync();
+            sync.setAction("update");
+            sync.setIdRow(id);
+            sync.setTableName("tblimage");
+            sync.setTime(Tool.DateToString(d));
+            if(insert_sync(sync)){
+                Log.e("update","i sync");
+            }
+        }
+        return true;
     }
 
 
@@ -211,6 +250,29 @@ public class NoteDAO  extends PackageDAO {
             notebook.setDateEdit(Tool.StringToDate(cursor.getString(3)));
             notebook.setColorPackage(cursor.getString(4));
             notebook.setRemind(Tool.StringToDate(cursor.getString(5)));
+
+
+            notebooks.add(notebook);
+
+        }
+        return notebooks;
+    }
+    public ArrayList<MyImage> getImagesLast(int limit) {
+        String sqlLimit="";
+        if(limit!=-1){
+            sqlLimit=" limit "+limit;
+        }
+
+        String query = "SELECT id,id_notebook, image, time, order by time desc"+sqlLimit;
+        ArrayList<MyImage> notebooks = new ArrayList<>();
+        Cursor cursor = GetData(query);
+        while (cursor.moveToNext()){
+            MyImage notebook = new MyImage();
+            notebook.setId(cursor.getInt(0));
+            notebook.idNotebook=cursor.getInt(1);
+            notebook.setImage(cursor.getBlob(2));
+            notebook.setLastEdit(Tool.StringToDate(cursor.getString(3)));
+
 
 
             notebooks.add(notebook);
