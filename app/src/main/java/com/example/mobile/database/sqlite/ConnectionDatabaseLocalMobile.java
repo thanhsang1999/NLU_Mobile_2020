@@ -4,20 +4,30 @@ import android.app.Activity;
 import android.content.ContentValues;
 
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.mobile.Config;
 import com.example.mobile.R;
+import com.example.mobile.activity.HomeActivity;
+import com.example.mobile.activity.LogoActivity;
+import com.example.mobile.activity.WellComeActivity;
 import com.example.mobile.model.Account;
 import com.example.mobile.model.DateStringConverter;
+import com.example.mobile.model.MySync;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Package;
 import com.example.mobile.model.Tool;
+import com.example.mobile.webservice.ultils.MyWorker;
+import com.example.mobile.webservice.ultils.PrepareConnectionWebService;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
@@ -91,6 +101,14 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                 "last_edit TEXT);";
         sqLiteDatabase.execSQL(sqlCreateTableImage);
 
+        String sqlCreateTableSync = "CREATE TABLE IF NOT EXISTS tblsync ("+
+                "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"+
+                "id_row integer," +
+                "action_sync TEXT,"+
+                "name_table TEXT,"+
+                "time TEXT);";
+        sqLiteDatabase.execSQL(sqlCreateTableSync);
+
 
 
     }
@@ -100,9 +118,11 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
         String sql = "DELETE FROM tblaccounts;";
         String sql2 = "DELETE FROM tblpackage";
         String sql3 = "DELETE FROM notebook";
+        String sql4 = "DELETE FROM tblsync";
         sqLiteDatabase.execSQL(sql);
         sqLiteDatabase.execSQL(sql2);
         sqLiteDatabase.execSQL(sql3);
+        sqLiteDatabase.execSQL(sql4);
         prepare();
 
 
@@ -146,25 +166,121 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
 
 
 
-    /**
-     * true => has data
-     * false => not data
-     * */
-    public boolean checkDBExists(String sql) {
-        Cursor cursor = GetData(sql);
-        return cursor.moveToNext();
-    }
+    public boolean insert_sync(MySync sync) {
 
 
-    public boolean CreateDefaultPackage(Date dateEdit){
-        if (!checkDBExists("SELECT title FROM tblpackage WHERE id='1'")){
-            String sql = "INSERT INTO tblpackage(id,color,title,last_edit) VALUES (1,'color_blue','Default','"+Tool.DateToString(dateEdit)+"')";
-            QueryData(sql);
-            return true;
-        }else {
-            return false;
+        ContentValues values = new ContentValues();
+        values.put("id_row", sync.getIdRow());
+        values.put("name_table", sync.getTableName());
+        values.put("time", sync.getTime());
+        values.put("action_sync", sync.getAction());
+        boolean rs = this.sqLiteDatabase.insert("tblsync", null, values) == 1;
+        if(rs){
+            Log.e("Insert Sync", "Ok" );
         }
+        return rs;
     }
+    public boolean deleteSync(MySync mySync){
+        String table = "tblsync";
+        String whereClause = "id=?";
+        String[] whereArgs = new String[] { String.valueOf(mySync.getId()) };
+        int rs=this.sqLiteDatabase.delete(table, whereClause, whereArgs);
+        return rs==1;
+    }
+    public List<MySync> getAllSync(){
+        List<MySync> syncs = new ArrayList<>();
+        String columnName[] = {"id", "id_row", "name_table", "time","action_sync"};
+
+        Cursor cursor = this.sqLiteDatabase.query("tblsync",
+                columnName, null, null, null, null, "time asc"
+        );
+
+        if (cursor != null) {
+
+            if (cursor.moveToFirst()) {
+
+                while (!cursor.isAfterLast()) {
+                    try {
+
+                        MySync p = new MySync();
+                        p.setId(cursor.getInt(0));
+                        p.setIdRow(cursor.getInt(1));
+                        p.setTableName(cursor.getString(2));
+                        p.setTime(cursor.getString(3));
+                        p.setAction(cursor.getString(4));
+
+                        syncs.add(p);
+
+
+                    } catch (Exception e) {
+                        Log.e("Error Get Package", e.getMessage());
+                    }
+                    cursor.moveToNext();
+                }
+            }
+
+
+        }
+        return syncs;
+    }
+    public void sync(){
+
+        new Thread(new Runnable() {
+            public void run() {
+
+                List<MySync> syncs= getAllSync();
+
+                while(syncs.size()!=0){
+                    MySync sync = syncs.remove(0);
+                    MyWorker myWorker= new MyWorker();
+                    myWorker.setActivity(ConnectionDatabaseLocalMobile.this.activity);
+                    myWorker.setError(()->{
+                        String msg = "Kết nối mạng bị lỗi.";
+                        Log.e("Error", myWorker.getErrorMessengr());
+
+                    });
+                    myWorker.setSuccess(()->{
+                        Log.e("sync",myWorker.getResponse() );
+                        if(myWorker.getResponse().trim().equals("OK")){
+                            ConnectionDatabaseLocalMobile.this.deleteSync(sync);
+                            Log.e("delete", "sync"+sync.getId());
+                        }
+                    });
+                    if(sync.getTableName().equals("tblpackage")){
+
+                        myWorker.setParams(new HashMap<String,String>(){{
+                            PackageDAO packageDAO= new PackageDAO(ConnectionDatabaseLocalMobile.this.activity);
+                            Package p= packageDAO.getPackage(sync.getIdRow());
+                            if(p.getId()==0){
+                                Log.e("Error","idpackage not found");
+                            }
+                            Account account= packageDAO.getAccount();
+                            put("id", p.getId()+"");
+                            put("color", p.getColor()+"");
+                            put("title", p.getName());
+                            Log.e("Date", Tool.DateToString( p.getLastEdit()));
+                            put("last_edit", Tool.DateToString( p.getLastEdit()));
+                            put("username", account.getUsername());
+                        }});
+                        if(sync.getAction().equals("insert"))
+                            PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "addpackage.php");
+                    }
+
+
+
+                }
+
+
+
+
+
+
+            }
+        }).start();
+    }
+
+
+
 
 
 

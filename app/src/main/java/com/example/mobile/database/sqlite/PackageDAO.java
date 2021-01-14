@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.util.Log;
 
 import com.example.mobile.ConnectionWebService;
+import com.example.mobile.model.MySync;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Package;
 import com.example.mobile.model.Tool;
@@ -18,18 +19,50 @@ public class PackageDAO  extends AccountDAO {
     public PackageDAO(Activity activity) {
         super(activity);
     }
+    public Package getPackage(int id) {
+        Package p=new Package();
+
+        String columnName[] = {"id", "title", "color", "last_edit"};
+
+        Cursor cursor = this.sqLiteDatabase.query("tblpackage",
+                columnName, "id=?", new String[]{id+""}, null, null, null
+        );
+
+        if (cursor != null) {
+
+            if (cursor.moveToFirst()) {
+
+                if (!cursor.isAfterLast()) {
+                    try {
+
+
+                        p.setId(cursor.getInt(0));
+                        p.setName(cursor.getString(1));
+                        p.setColor(cursor.getString(2));
+                        p.setLastEdit(Tool.StringToDate(cursor.getString(3)));
+
+
+
+                    } catch (Exception e) {
+                        Log.e("Error Get Package", e.getMessage());
+                    }
+                    cursor.moveToNext();
+                }
+            }
+
+
+        }
+
+
+        return p;
+    }
     public List<Package> getPackages() {
 
         List<Package> aPackages = new ArrayList<>();
         String columnName[] = {"id", "title", "color", "last_edit"};
 
-//        Cursor cursor = this.sqLiteDatabase.query("tblpackage",
-//                columnName, null, null, null, null, null
-//        );
-
-
         Cursor cursor = this.sqLiteDatabase.query("tblpackage",
-                columnName, null, null, null, null, null
+                columnName, null, null, null, null, "last_edit desc"
         );
 
         if (cursor != null) {
@@ -60,10 +93,13 @@ public class PackageDAO  extends AccountDAO {
 
         return aPackages;
     }
-    public boolean insert_package(Package p) {
+    public boolean insert_package(Package p, boolean isSyns) {
 
-        prepare();
+
         ContentValues values = new ContentValues();
+        if(p.getId()!=0){
+            values.put("id",p.getId());
+        }
         values.put("title", p.getName());
         values.put("color", p.getColor());
         values.put("last_edit", Tool.DateToString( p.getLastEdit()));
@@ -73,10 +109,20 @@ public class PackageDAO  extends AccountDAO {
         Log.e("Insert Package", "" + rs);
         if(rs){
             final Package p2=getLastPackage();
-            new Thread(()->{
-                ConnectionWebService connectionWebService= new ConnectionWebService(this.activity);
-                connectionWebService.insert_package(p2, getAccount());
-            }).start();
+            if(!isSyns)return rs;
+            MySync sync=new MySync();
+            sync.setAction("insert");
+            sync.setIdRow(p2.getId());
+            sync.setTableName("tblpackage");
+            sync.setTime(Tool.DateToString(p2.getLastEdit()));
+            if(insert_sync(sync)){
+                Log.e("insert","p sync");
+            }
+//
+//            new Thread(()->{
+//                ConnectionWebService connectionWebService= new ConnectionWebService(this.activity);
+//                connectionWebService.insert_package(p2, getAccount());
+//            }).start();
 
         }
 
@@ -117,7 +163,7 @@ public class PackageDAO  extends AccountDAO {
         p.setColor("color_blue");
         p.setLastEdit(new Date());
         p.setNotebooks(new ArrayList<Notebook>());
-        insert_package(p);
+        insert_package(p,true);
         return p;
 
     }

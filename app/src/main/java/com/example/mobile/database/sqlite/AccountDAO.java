@@ -32,7 +32,7 @@ public class AccountDAO extends ConnectionDatabaseLocalMobile {
     }
 
     public Account getAccount() {
-        prepare();
+
         String columnName[] = {"username", "fullname", "email", "password"};
 
         Cursor cursor = this.sqLiteDatabase.query("tblaccounts",

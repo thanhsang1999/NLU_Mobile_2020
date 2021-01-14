@@ -260,7 +260,8 @@ public class PackageItemAdapter extends BaseAdapter {
                                 p.setName(titlePackage.getText().toString());
                                 p.setLastEdit(new Date());
 
-                                c.insert_package(p);
+                                c.insert_package(p,true);
+                                c.sync();
                                 _items.add(c.getLastPackage());
                                 notifyDataSetChanged();
                                 dialog.cancel();
