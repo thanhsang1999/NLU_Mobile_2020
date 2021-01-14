@@ -225,7 +225,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
     }
     boolean isRunning=true;
     public void sync(){
-
+        if(true)    return;
         new Thread(new Runnable() {
             public void run() {
 

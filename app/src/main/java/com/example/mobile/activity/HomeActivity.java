@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
@@ -23,14 +22,10 @@ import com.example.mobile.IFragmentCanAddNote;
 import com.example.mobile.R;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Tool;
-import com.example.mobile.ui.home.AdapterHomeRecyclerView;
 import com.example.mobile.ui.home.HomeFragment;
-import com.example.mobile.ui.slideshow.PackageItemAdapter;
-import com.example.mobile.ui.slideshow.SlideshowFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -41,7 +36,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -229,7 +223,8 @@ public class HomeActivity extends AppCompatActivity {
                         ArrayList<Notebook> notebooks = homeFragment.listNotebook;
 //                        Tool.SetAllUnChecked(notebooks);
                         homeFragment.adapterHomeRecyclerView.multiSelect=false;
-                        removeNoteAtHomeFragment(notebooks);
+                        homeFragment.listNotebook = removeNoteAtHomeFragment(notebooks);
+                        homeFragment.adapterHomeRecyclerView.notifyDataSetChanged();
                         actionMode.finish();
                         // Hoàng làm database chỗ nãy
                         // TODO
@@ -245,8 +240,8 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-                Tool.SetAllUnChecked(homeFragment.listNotebook);
-                homeFragment.adapterHomeRecyclerView.notifyDataSetChanged();
+//                Tool.SetAllUnChecked(homeFragment.listNotebook);
+//                homeFragment.adapterHomeRecyclerView.notifyDataSetChanged();
                 actionMode = null;
             }
         });
@@ -268,12 +263,13 @@ private void LoadDataFragmentHome(){
     }
 }
     private ArrayList<Notebook> removeNoteAtHomeFragment(ArrayList<Notebook> notebooks) {
+        ArrayList<Notebook> notebooks2 = new ArrayList<>(notebooks);
         for (Notebook item: notebooks) {
             if (item.getChecked()){
                 notebooks.remove(item);
             }
         }
-        return notebooks;
+        return notebooks2;
     }
 
     @Override
