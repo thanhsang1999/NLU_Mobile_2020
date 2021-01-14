@@ -47,9 +47,9 @@ public class NoteDAO  extends PackageDAO {
 
         return theImage;
     }
-    public List<Bitmap> getImagesByIdNotebook(int idNotebook) {
+    public List<byte[]> getImagesByIdNotebook(int idNotebook) {
         Log.e("checkid", "idNote"+idNotebook+"");
-        List<Bitmap> bitmaps= new ArrayList<>();
+        List<byte[]> bitmaps= new ArrayList<>();
         String columnName[] = {"images_note.id", "images_note.image"};
         Cursor cursor = this.sqLiteDatabase.query("images_note",
                 columnName, "images_note.id_notebook=?", new String[]{String.valueOf(idNotebook)},
@@ -58,11 +58,10 @@ public class NoteDAO  extends PackageDAO {
             while (cursor.moveToNext()) {
 
                 try {
-                    byte[] photo=null;
+                    byte[]
                     photo=cursor.getBlob(1);
-                    ByteArrayInputStream imageStream = new ByteArrayInputStream(photo);
-                    Bitmap theImage= BitmapFactory.decodeStream(imageStream);
-                    bitmaps.add(theImage);
+
+                    bitmaps.add(photo);
                 } catch (Exception e) {
                     Log.e("Get image by id", e.getMessage());
                 }
@@ -73,20 +72,16 @@ public class NoteDAO  extends PackageDAO {
 
         return bitmaps;
     }
-    public boolean insertImage(int idNotebook, Bitmap bitmap, Date d) {
+    public boolean insertImage(int idNotebook, byte[] bitmap, Date d) {
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-
-        byte[] byteArray = stream.toByteArray();
 
 
 
         ContentValues values = new ContentValues();
 
         values.put("id_notebook", idNotebook);
-        values.put("image", byteArray);
+        values.put("image", bitmap);
         values.put("last_edit", Tool.DateToString(d));
 
         boolean success=this.sqLiteDatabase.insert("images_note", null, values) != -1;
@@ -135,7 +130,7 @@ public class NoteDAO  extends PackageDAO {
 
         }
         int countI=1;
-        for(Bitmap b:n.getImages()){
+        for(byte[] b:n.getImages()){
             insertImage(notebook.getId(),b,notebook.getDateEdit());
             Log.e("Insert Image", ""+(countI++));
         }
@@ -166,9 +161,9 @@ public class NoteDAO  extends PackageDAO {
 
         return ret;
     }
-    public void updateImages(int idNotebook, List<Bitmap> bitmaps, Date d){
+    public void updateImages(int idNotebook, List<byte[]> bitmaps, Date d){
 
-        List<Bitmap> bitmaps2= new ArrayList<>(bitmaps);
+        List<byte[]> bitmaps2= new ArrayList<>(bitmaps);
 
         String columnName[] = {"images_note.id"};
         Cursor cursor = this.sqLiteDatabase.query("images_note",
@@ -187,17 +182,13 @@ public class NoteDAO  extends PackageDAO {
             insertImage(idNotebook,bitmaps2.remove(0),d);
         }
     }
-    public boolean updateImage(int id, Bitmap bitmap, Date d){
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    public boolean updateImage(int id, byte[] bitmap, Date d){
 
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-
-        byte[] byteArray = stream.toByteArray();
 
 
         ContentValues values = new ContentValues();
         values.put("last_edit",Tool.DateToString(d));
-        values.put("image",byteArray);
+        values.put("image",bitmap);
         int ret = this.sqLiteDatabase.update("images-note", values, "id=?", new String[]{id+""});
         return ret==1;
     }

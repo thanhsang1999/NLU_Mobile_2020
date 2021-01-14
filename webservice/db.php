@@ -4,4 +4,9 @@
 	
 	
 	
+	
+	mysqli_query($connect,"SET time_zone='UTC';");
+	
+	
+	
 ?>

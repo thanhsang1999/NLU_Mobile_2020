@@ -18,13 +18,13 @@ public class TestImageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_image);
-        Bitmap icon = BitmapFactory.decodeResource(this.getResources(),
-                R.drawable.girl);
-        NoteDAO noteDAO= new NoteDAO(this);
-        noteDAO.insertImage(1,icon,new Date());
-        Bitmap bitmap=noteDAO.getImage(1);
-        if(bitmap instanceof Bitmap){
-            Log.e("final","ok");
-        }
+//        Bitmap icon = BitmapFactory.decodeResource(this.getResources(),
+//                R.drawable.girl);
+//        NoteDAO noteDAO= new NoteDAO(this);
+//        noteDAO.insertImage(1,icon,new Date());
+//        Bitmap bitmap=noteDAO.getImage(1);
+//        if(bitmap instanceof Bitmap){
+//            Log.e("final","ok");
+//        }
     }
 }

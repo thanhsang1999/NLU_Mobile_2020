@@ -362,7 +362,9 @@ public class NewNoteActivity extends AppCompatActivity {
             Uri imageUri = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),imageUri);
-                notebook.getImages().add(bitmap);
+                notebook.getImages().add(Tool.getByteFromBitmap(bitmap));
+                bitmap.recycle();
+
                 newNoteAdapter.notifyDataSetChanged();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -435,6 +437,7 @@ public class NewNoteActivity extends AppCompatActivity {
         Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
         Bitmap bitmap1 = Bitmap.createBitmap(bitmap, 0, 0, targetW, targetH,
                 matrix, true);
-        notebook.getImages().add(bitmap1);
+        notebook.getImages().add(Tool.getByteFromBitmap(bitmap1));
+        bitmap1.recycle();
     }
 }
