@@ -263,7 +263,7 @@ public class NoteDAO  extends PackageDAO {
             sqlLimit=" limit "+limit;
         }
 
-        String query = "SELECT id,id_notebook, image, time, order by time desc"+sqlLimit;
+        String query = "SELECT id,id_notebook, image, last_edit from images_note  order by last_edit desc "+sqlLimit;
         ArrayList<MyImage> notebooks = new ArrayList<>();
         Cursor cursor = GetData(query);
         while (cursor.moveToNext()){

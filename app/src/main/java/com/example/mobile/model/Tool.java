@@ -82,7 +82,7 @@ public class Tool {
             item.setChecked(false);
         }
     }
-    public static Bitmap getBitmapFromBitmap(byte[] photo){
+    public static Bitmap getBitmapFromByte(byte[] photo){
         if(photo==null)return null;
         ByteArrayInputStream imageStream = new ByteArrayInputStream(photo);
         Bitmap theImage= BitmapFactory.decodeStream(imageStream);
