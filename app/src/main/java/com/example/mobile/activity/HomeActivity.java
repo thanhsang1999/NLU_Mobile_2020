@@ -21,6 +21,8 @@ import com.example.mobile.ExitConfirmDialogFragment;
 import com.example.mobile.IFragmentCanAddNote;
 import com.example.mobile.R;
 import com.example.mobile.model.Notebook;
+import com.example.mobile.model.Tool;
+import com.example.mobile.ui.home.AdapterHomeRecyclerView;
 import com.example.mobile.ui.home.HomeFragment;
 import com.example.mobile.ui.slideshow.PackageItemAdapter;
 import com.example.mobile.ui.slideshow.SlideshowFragment;
@@ -37,6 +39,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.List;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -49,7 +52,7 @@ public class HomeActivity extends AppCompatActivity {
     public static FloatingActionButton fab;
     public NavController navController;
     ImageView profile;
-    ActionMode actionMode;
+    public ActionMode actionMode;
 
 
 
@@ -202,41 +205,42 @@ public class HomeActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
-    public ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            mode.getMenuInflater().inflate(R.menu.menu_item_select,menu);
-            return true;
-        }
-
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false;
-        }
-
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            switch (item.getItemId()){
-                case R.id.menu_delete:
-                    Toast.makeText(HomeActivity.this, "menu_delete", Toast.LENGTH_SHORT).show();
-                    mode.finish();
-                    return true;
-                case R.id.menu_share:
-                    Toast.makeText(HomeActivity.this, "menu_share", Toast.LENGTH_SHORT).show();
-                    mode.finish();
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            actionModeCallback = null;
-        }
-    };
     public void showActionMode(){
-        actionMode = startSupportActionMode(actionModeCallback);
+        actionMode = startSupportActionMode(new ActionMode.Callback() {
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                mode.getMenuInflater().inflate(R.menu.menu_item_select,menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.menu_delete:
+                        Toast.makeText(HomeActivity.this, "menu_delete", Toast.LENGTH_SHORT).show();
+                        Tool.SetAllUnChecked(HomeFragment.listNotebook);
+                        AdapterHomeRecyclerView.multiSelect=false;
+                        mode.finish();
+                        return true;
+                    case R.id.menu_share:
+                        Toast.makeText(HomeActivity.this, "menu_share", Toast.LENGTH_SHORT).show();
+                        mode.finish();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+                actionMode = null;
+            }
+        });
     }
 
     @Override

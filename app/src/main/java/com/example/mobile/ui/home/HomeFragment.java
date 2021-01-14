@@ -40,7 +40,7 @@ public class HomeFragment extends Fragment implements IFragmentCanAddNote {
     public  AdapterHomeRecyclerView adapterHomeRecyclerView;
     NoteDAO connectionDatabaseLocalMobile;
     HomeActivity activity;
-    List<Notebook> listNotebook;
+    public static List<Notebook> listNotebook;
 
 
 

@@ -28,7 +28,7 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
 
     List<Notebook> notebooks;
     HomeFragment context;
-    Boolean multiSelect = false;
+    public static Boolean multiSelect = false;
 
     public AdapterHomeRecyclerView( List<Notebook> notebooks, HomeFragment context) {
 
@@ -81,7 +81,6 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
             textViewDateEdit = itemView.findViewById(R.id.textViewDateEdit);
             linearLayoutMain = itemView.findViewById(R.id.linearLayoutMain);
             linearLayoutContent = itemView.findViewById(R.id.linearLayoutContent);
-
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -89,9 +88,11 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
                     if (!notebook.getChecked()){
                         multiSelect=true;
                         notebook.setChecked(true);
+                        // thay doi ngoai hinh
                         linearLayoutMain.setBackgroundResource(R.drawable.background_checked_list_item_linear);
                         linearLayoutContent.setBackgroundResource(R.drawable.background_checked_list_item_linear);
                         imageViewCheck.setImageResource(R.drawable.ic_checked_list);
+                        //Show activity
                         Activity activity= context.getActivity();
                         if(activity instanceof  HomeActivity){
                             HomeActivity homeActivity =  (HomeActivity) activity;
@@ -112,11 +113,23 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
                     if (Tool.FindCheckedInArrayList(notebooks)){
                         if (multiSelect){
                             if (notebook.getChecked()){
+                                // trả về chưa check
                                 notebook.setChecked(false);
+                                // thay đổi ngoại hình
                                 String stringColorPackage = notebook.getColorPackage();
                                 linearLayoutMain.setBackgroundResource(R.drawable.background_list_item_linear);
                                 linearLayoutContent.setBackgroundResource(R.drawable.background_list_item_linear);
                                 imageViewCheck.setImageResource(Tool.getDrawableByName(context.getContext(),"ic_"+stringColorPackage));
+                                if (!Tool.FindCheckedInArrayList(notebooks)){
+                                    Activity activity= context.getActivity();
+                                    if(activity instanceof  HomeActivity){
+                                        HomeActivity homeActivity =  (HomeActivity) activity;
+                                        homeActivity.actionMode.finish();
+                                        multiSelect=!multiSelect;
+                                    }else{
+                                        Log.e("adapterhome","destroyActionMode");
+                                    }
+                                }
                             }else{
                                 notebook.setChecked(true);
                                 linearLayoutMain.setBackgroundResource(R.drawable.background_checked_list_item_linear);
@@ -126,6 +139,7 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
                         }
                     }else {
                         multiSelect = false;
+                        // qua chinh sua new note
                         AdapterHomeRecyclerView.this.context.startActivity(AdapterHomeRecyclerView.this.context.getActivity(), NewNoteActivity.class,notebook.getId(), getAdapterPosition());
 
                         Toast.makeText(context.getContext(), "select "+getAdapterPosition()+"id"+notebook.getId(), Toast.LENGTH_SHORT).show();

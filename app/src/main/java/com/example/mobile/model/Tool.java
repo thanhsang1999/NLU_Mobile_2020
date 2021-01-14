@@ -60,4 +60,18 @@ public class Tool {
         }
         return false;
     }
+    public static boolean LastCheckNotes(List<Notebook> notebooks){
+        int count = 0;
+        for (Notebook item:notebooks) {
+            if (item.getChecked()){
+                count++;
+            }
+        }
+        return count==1;
+    }
+    public static void SetAllUnChecked(List<Notebook> notebooks){
+        for (Notebook item: notebooks) {
+            item.setChecked(false);
+        }
+    }
 }
