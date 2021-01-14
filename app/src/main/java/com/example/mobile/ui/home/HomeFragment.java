@@ -105,7 +105,7 @@ public class HomeFragment extends Fragment implements IFragmentCanAddNote {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(1000);
                     listNotebook.clear();
                     listNotebook.addAll(connectionDatabaseLocalMobile.getNotebooksLast(-1));
                     HomeFragment.this.getActivity().runOnUiThread(new Runnable() {

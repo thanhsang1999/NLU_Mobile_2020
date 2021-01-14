@@ -20,18 +20,15 @@ import com.example.mobile.model.Tool;
 import java.util.List;
 
 public class NewNoteAdapter extends RecyclerView.Adapter<NewNoteAdapter.ViewHolder>{
-    List<Bitmap> images;
+    List<byte[]> images;
     Context context;
-    public NewNoteAdapter(Context context) {
-        this.context = context;
-    }
-    public NewNoteAdapter(Context context,List<Bitmap> images) {
+
+    public NewNoteAdapter(Context context,List<byte[]> images) {
         this.context = context;
         this.images=images;
     }
 
     @NonNull
-
     @Override
     public NewNoteAdapter.ViewHolder onCreateViewHolder(@NonNull  ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -42,7 +39,7 @@ public class NewNoteAdapter extends RecyclerView.Adapter<NewNoteAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull  NewNoteAdapter.ViewHolder holder, int position) {
-        Bitmap bitmap = images.get(position);
+        Bitmap bitmap = Tool.getByteFromBitmap(images.get(position));
         holder.imageViewItem.setImageBitmap(bitmap);
     }
 

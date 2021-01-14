@@ -223,6 +223,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
         }
         return syncs;
     }
+    boolean isRunning=true;
     public void sync(){
 
         new Thread(new Runnable() {
@@ -237,6 +238,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                     myWorker.setError(()->{
                         String msg = "Kết nối mạng bị lỗi.";
                         Log.e("Error", myWorker.getErrorMessengr());
+                        if(ConnectionDatabaseLocalMobile.this.isRunning==false)ConnectionDatabaseLocalMobile.this.close();
 
                     });
                     myWorker.setSuccess(()->{
@@ -245,6 +247,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                             ConnectionDatabaseLocalMobile.this.deleteSync(sync);
                             Log.e("delete", "sync"+sync.getId());
                         }
+                        if(ConnectionDatabaseLocalMobile.this.isRunning==false)ConnectionDatabaseLocalMobile.this.close();
                     });
                     String key= sync.getTableName();
                     switch (key){
@@ -313,18 +316,14 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
 
 
 
+
             }
         }).start();
     }
 
-
-
-
-
-
-
-
-
-
-
+    @Override
+    public synchronized void close() {
+        super.close();
+        this.sqLiteDatabase.close();
+    }
 }

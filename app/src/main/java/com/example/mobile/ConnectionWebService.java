@@ -453,6 +453,7 @@ public class ConnectionWebService {
     public void takeData(){
         takeDataPackage();
         takeDataNotebook();
+        this.connectionDatabaseLocalMobile.close();
 
 
     }
@@ -488,6 +489,7 @@ public class ConnectionWebService {
                 e.printStackTrace();
                 Log.e("JSONException", e.getMessage());
             }
+            packageDAO.close();
 
 
 
@@ -534,6 +536,7 @@ public class ConnectionWebService {
                 e.printStackTrace();
                 Log.e("JSONException", e.getMessage());
             }
+            packageDAO.close();
 
 
 

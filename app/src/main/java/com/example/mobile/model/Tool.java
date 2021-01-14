@@ -1,13 +1,19 @@
 package com.example.mobile.model;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+
+import android.util.Base64;
 import android.util.Log;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -76,4 +82,35 @@ public class Tool {
             item.setChecked(false);
         }
     }
+    public static Bitmap getByteFromBitmap(byte[] photo){
+        if(photo==null)return null;
+        ByteArrayInputStream imageStream = new ByteArrayInputStream(photo);
+        Bitmap theImage= BitmapFactory.decodeStream(imageStream);
+        return theImage;
+    }
+    public static byte[] getByteFromBitmap(Bitmap bitmap){
+        if(bitmap==null)return null;
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+
+        byte[] byteArray = stream.toByteArray();
+        return  byteArray;
+    }
+    public static Bitmap getBitmapFromBase64(String base64){
+        if(base64==null)return null;
+        byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        return  decodedByte;
+    }
+    public static String getBase64FromBitmap(Bitmap bitmap){
+        if(bitmap==null)return null;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos); //bm is the bitmap object
+        byte[] b = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+        return  encodedImage;
+    }
+
+
 }
