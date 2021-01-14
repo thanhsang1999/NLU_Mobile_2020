@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +33,7 @@ public class NoteFragment extends Fragment implements IFragmentCanAddNote {
     private HomeViewModel homeViewModel;
 
     RecyclerView recyclerView;
+    TextView titlePackage;
     View root;
     Package currentPackage;
 
@@ -48,7 +50,7 @@ public class NoteFragment extends Fragment implements IFragmentCanAddNote {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this.requireActivity()).get(HomeViewModel.class);
         root = inflater.inflate(R.layout.fragment_notes, container, false);
-        init();
+
         connectionDatabaseLocalMobile= new NoteDAO(this.getActivity());
         Bundle bundle = this.getArguments();
 
@@ -60,6 +62,7 @@ public class NoteFragment extends Fragment implements IFragmentCanAddNote {
                 Log.e("getListNote", currentPackage.getNotebooks().size()+"");
             }
         }
+        init();
 
 
         if(this.getActivity() instanceof AppCompatActivity){
@@ -84,6 +87,8 @@ public class NoteFragment extends Fragment implements IFragmentCanAddNote {
         HomeActivity.fab.show();
 
         recyclerView = root.findViewById(R.id.recyclerViewHome);
+        titlePackage = root.findViewById(R.id.textViewNamePackage);
+        titlePackage.setText(currentPackage.getName());
     }
     public <T> void startActivity(android.content.Context context, Class<T> classActivity, int idNotebook,int index){
         if(idNotebook==0){

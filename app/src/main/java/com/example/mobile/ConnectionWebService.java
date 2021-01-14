@@ -20,9 +20,12 @@ import com.example.mobile.activity.SignUpActivity;
 import com.example.mobile.activity.WellComeActivity;
 import com.example.mobile.database.sqlite.AccountDAO;
 import com.example.mobile.database.sqlite.ConnectionDatabaseLocalMobile;
+import com.example.mobile.database.sqlite.PackageDAO;
 import com.example.mobile.model.Account;
 import com.example.mobile.model.Package;
 import com.example.mobile.model.Tool;
+import com.example.mobile.webservice.ultils.MyWorker;
+import com.example.mobile.webservice.ultils.PrepareConnectionWebService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -143,6 +146,8 @@ public class ConnectionWebService {
                             Log.e("Success", msg);
                             connectionDatabaseLocalMobile.earse();
                             connectionDatabaseLocalMobile.insert_account(account);
+
+                            ConnectionWebService.this.takeDataPackage();
                             Intent intent = new Intent(activity, HomeActivity.class);
 
                             activity.startActivity(intent);
@@ -441,6 +446,52 @@ public class ConnectionWebService {
         };
         requestQueue.add(stringRequest);
         return false;
+
+    }
+
+    public void takeDataPackage(){
+        PackageDAO packageDAO= new PackageDAO(ConnectionWebService.this.activity);
+        MyWorker myWorker= new MyWorker();
+        myWorker.setActivity(this.activity);
+        myWorker.setError(()->{
+            String msg = "Kết nối mạng bị lỗi.";
+            Log.e("Error", myWorker.getErrorMessengr());
+
+        });
+        myWorker.setSuccess(()->{
+
+
+            try {
+                Log.e("Error", myWorker.getResponse());
+                JSONArray jsonArray = new JSONArray(myWorker.getResponse());
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    Package p = new Package();
+                    p.setId(jsonObject.getInt("Id"));
+                    p.setColor(jsonObject.getString("Color"));
+                    p.setName(jsonObject.getString("Title"));
+                    p.setLastEdit(Tool.StringToDate(jsonObject.getString("LastEdit")));
+                    packageDAO.insert_package(p,false);
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.e("JSONException", e.getMessage());
+            }
+
+
+
+        });
+
+
+        myWorker.setParams(new HashMap<String,String>(){{
+
+            Account account= packageDAO.getAccount();
+            put("username", account.getUsername());
+        }});
+
+        PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "getpackages.php");
 
     }
 
