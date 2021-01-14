@@ -15,10 +15,10 @@ import com.example.mobile.model.Tool;
 import java.util.List;
 
 public class NewNoteAdapter extends RecyclerView.Adapter<NewNoteAdapter.ViewHolder>{
-    List<byte[]> images;
+    List<Bitmap> images;
     Context context;
 
-    public NewNoteAdapter(Context context,List<byte[]> images) {
+    public NewNoteAdapter(Context context,List<Bitmap> images) {
         this.context = context;
         this.images=images;
     }
@@ -34,7 +34,7 @@ public class NewNoteAdapter extends RecyclerView.Adapter<NewNoteAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull  NewNoteAdapter.ViewHolder holder, int position) {
-        Bitmap bitmap = Tool.getBitmapFromByte(images.get(position));
+        Bitmap bitmap = images.get(position);
         holder.imageViewItem.setImageBitmap(bitmap);
     }
 

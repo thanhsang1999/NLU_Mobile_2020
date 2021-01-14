@@ -72,6 +72,7 @@ public class NewNoteActivity extends AppCompatActivity {
     OvershootInterpolator overshootInterpolator = new OvershootInterpolator();
     RecyclerView recyclerView;
     NewNoteAdapter newNoteAdapter;
+    List<Bitmap> lstBitmap;
 
     int idPackage=0;
     int idNotebook=0;
@@ -86,7 +87,7 @@ public class NewNoteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_note);
-
+        lstBitmap= new ArrayList<>();
         idPackage=getIntent().getExtras().getInt("idPackage");
         idNotebook=getIntent().getExtras().getInt("idNotebook");
         index=getIntent().getExtras().getInt("index");
@@ -115,7 +116,11 @@ public class NewNoteActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(NewNoteActivity.this,LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        newNoteAdapter = new NewNoteAdapter(NewNoteActivity.this,notebook.getImages());
+
+        for(byte[] b:notebook.getImages()){
+            lstBitmap.add(Tool.getBitmapFromByte(b));
+        }
+        newNoteAdapter = new NewNoteAdapter(NewNoteActivity.this,lstBitmap);
         recyclerView.setAdapter(newNoteAdapter);
     }
 
@@ -362,8 +367,9 @@ public class NewNoteActivity extends AppCompatActivity {
             Uri imageUri = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),imageUri);
+                lstBitmap.add(bitmap);
                 notebook.getImages().add(Tool.getByteFromBitmap(bitmap));
-                bitmap.recycle();
+
 
                 newNoteAdapter.notifyDataSetChanged();
             } catch (IOException e) {
@@ -438,6 +444,6 @@ public class NewNoteActivity extends AppCompatActivity {
         Bitmap bitmap1 = Bitmap.createBitmap(bitmap, 0, 0, targetW, targetH,
                 matrix, true);
         notebook.getImages().add(Tool.getByteFromBitmap(bitmap1));
-        bitmap1.recycle();
+        lstBitmap.add(bitmap1);
     }
 }

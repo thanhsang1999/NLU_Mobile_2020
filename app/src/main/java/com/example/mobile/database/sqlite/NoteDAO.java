@@ -216,7 +216,7 @@ public class NoteDAO  extends PackageDAO {
         ContentValues values = new ContentValues();
         values.put("last_edit",Tool.DateToString(d));
         values.put("image",bitmap);
-        int ret = this.sqLiteDatabase.update("images-note", values, "id=?", new String[]{id+""});
+        int ret = this.sqLiteDatabase.update("images_note", values, "id=?", new String[]{id+""});
         if(ret==1){
             if(!isSync)return true;
 
