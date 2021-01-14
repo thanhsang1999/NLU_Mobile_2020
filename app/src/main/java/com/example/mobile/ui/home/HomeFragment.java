@@ -27,6 +27,7 @@ import com.example.mobile.activity.NewNoteActivity;
 import com.example.mobile.database.sqlite.NoteDAO;
 import com.example.mobile.model.Notebook;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements IFragmentCanAddNote {
@@ -40,7 +41,7 @@ public class HomeFragment extends Fragment implements IFragmentCanAddNote {
     public  AdapterHomeRecyclerView adapterHomeRecyclerView;
     NoteDAO connectionDatabaseLocalMobile;
     HomeActivity activity;
-    public static List<Notebook> listNotebook;
+    public ArrayList<Notebook> listNotebook;
 
 
 

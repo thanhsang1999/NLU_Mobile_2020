@@ -26,11 +26,11 @@ import java.util.List;
 public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRecyclerView.ViewHolder> {
 
 
-    List<Notebook> notebooks;
+    ArrayList<Notebook> notebooks;
     HomeFragment context;
-    public static Boolean multiSelect = false;
+    public Boolean multiSelect = false;
 
-    public AdapterHomeRecyclerView( List<Notebook> notebooks, HomeFragment context) {
+    public AdapterHomeRecyclerView( ArrayList<Notebook> notebooks, HomeFragment context) {
 
         this.notebooks = notebooks;
         this.context = context;
@@ -56,6 +56,8 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
             holder.imageViewCheck.setImageResource(R.drawable.ic_checked_list);
         }else {
             holder.imageViewCheck.setImageResource(Tool.getDrawableByName(context.getContext(),"ic_"+stringColorPackage));
+            holder.linearLayoutMain.setBackgroundResource(R.drawable.background_list_item_linear);
+            holder.linearLayoutContent.setBackgroundResource(R.drawable.background_list_item_linear);
         }
         holder.textViewTitle.setText(notebook.getTitle());
         holder.textViewContent.setText(notebook.getContent());

@@ -39,6 +39,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -53,7 +54,7 @@ public class HomeActivity extends AppCompatActivity {
     public NavController navController;
     ImageView profile;
     public ActionMode actionMode;
-
+    HomeFragment homeFragment;
 
 
     @Override
@@ -170,6 +171,7 @@ public class HomeActivity extends AppCompatActivity {
                 finish();
             }
         });
+
     }
 
 
@@ -220,12 +222,31 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                // lay fragment tu activity
+
+                Fragment fragment1 = HomeActivity.this.getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+
+
+                if(fragment1 instanceof NavHostFragment){
+
+                    fragment1=fragment1.getChildFragmentManager().getFragments().get(0);
+                }
+
+                if(fragment1 instanceof  HomeFragment){
+
+                    homeFragment =(HomeFragment) fragment1;
+                }
                 switch (item.getItemId()){
                     case R.id.menu_delete:
                         Toast.makeText(HomeActivity.this, "menu_delete", Toast.LENGTH_SHORT).show();
-                        Tool.SetAllUnChecked(HomeFragment.listNotebook);
-                        AdapterHomeRecyclerView.multiSelect=false;
-                        mode.finish();
+                        ArrayList<Notebook> notebooks = homeFragment.listNotebook;
+//                        Tool.SetAllUnChecked(notebooks);
+                        homeFragment.adapterHomeRecyclerView.multiSelect=false;
+                        removeNoteAtHomeFragment(notebooks);
+                        homeFragment.adapterHomeRecyclerView.notifyDataSetChanged();
+                        actionMode.finish();
+                        // Hoàng làm database chỗ nãy
+                        // TODO
                         return true;
                     case R.id.menu_share:
                         Toast.makeText(HomeActivity.this, "menu_share", Toast.LENGTH_SHORT).show();
@@ -241,6 +262,15 @@ public class HomeActivity extends AppCompatActivity {
                 actionMode = null;
             }
         });
+    }
+
+    private ArrayList<Notebook> removeNoteAtHomeFragment(ArrayList<Notebook> notebooks) {
+        for (Notebook item: notebooks) {
+            if (item.getChecked()){
+                notebooks.remove(item);
+            }
+        }
+        return notebooks;
     }
 
     @Override
