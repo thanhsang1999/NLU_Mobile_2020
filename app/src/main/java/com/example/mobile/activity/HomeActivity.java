@@ -22,14 +22,10 @@ import com.example.mobile.IFragmentCanAddNote;
 import com.example.mobile.R;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Tool;
-import com.example.mobile.ui.home.AdapterHomeRecyclerView;
 import com.example.mobile.ui.home.HomeFragment;
-import com.example.mobile.ui.slideshow.PackageItemAdapter;
-import com.example.mobile.ui.slideshow.SlideshowFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -40,7 +36,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -211,6 +206,7 @@ public class HomeActivity extends AppCompatActivity {
         actionMode = startSupportActionMode(new ActionMode.Callback() {
             @Override
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                LoadDataFragmentHome();
                 mode.getMenuInflater().inflate(R.menu.menu_item_select,menu);
                 return true;
             }
@@ -222,34 +218,18 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                // lay fragment tu activity
-
-                Fragment fragment1 = HomeActivity.this.getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-
-
-                if(fragment1 instanceof NavHostFragment){
-
-                    fragment1=fragment1.getChildFragmentManager().getFragments().get(0);
-                }
-
-                if(fragment1 instanceof  HomeFragment){
-
-                    homeFragment =(HomeFragment) fragment1;
-                }
                 switch (item.getItemId()){
                     case R.id.menu_delete:
-                        Toast.makeText(HomeActivity.this, "menu_delete", Toast.LENGTH_SHORT).show();
                         ArrayList<Notebook> notebooks = homeFragment.listNotebook;
 //                        Tool.SetAllUnChecked(notebooks);
                         homeFragment.adapterHomeRecyclerView.multiSelect=false;
                         removeNoteAtHomeFragment(notebooks);
-                        homeFragment.adapterHomeRecyclerView.notifyDataSetChanged();
                         actionMode.finish();
                         // Hoàng làm database chỗ nãy
                         // TODO
                         return true;
                     case R.id.menu_share:
-                        Toast.makeText(HomeActivity.this, "menu_share", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomeActivity.this, "Share", Toast.LENGTH_SHORT).show();
                         mode.finish();
                         return true;
                     default:
@@ -259,18 +239,35 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
+                Tool.SetAllUnChecked(homeFragment.listNotebook);
+                homeFragment.adapterHomeRecyclerView.notifyDataSetChanged();
                 actionMode = null;
             }
         });
     }
+private void LoadDataFragmentHome(){
+    // lay fragment tu activity
 
-    private ArrayList<Notebook> removeNoteAtHomeFragment(ArrayList<Notebook> notebooks) {
-        for (Notebook item: notebooks) {
+    Fragment fragment1 = HomeActivity.this.getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+
+
+    if(fragment1 instanceof NavHostFragment){
+
+        fragment1=fragment1.getChildFragmentManager().getFragments().get(0);
+    }
+
+    if(fragment1 instanceof  HomeFragment){
+
+        homeFragment =(HomeFragment) fragment1;
+    }
+}
+    private void removeNoteAtHomeFragment(ArrayList<Notebook> notebooks) {
+        ArrayList<Notebook> notebooks2 = new ArrayList<>(notebooks);
+        for (Notebook item: notebooks2) {
             if (item.getChecked()){
                 notebooks.remove(item);
             }
         }
-        return notebooks;
     }
 
     @Override

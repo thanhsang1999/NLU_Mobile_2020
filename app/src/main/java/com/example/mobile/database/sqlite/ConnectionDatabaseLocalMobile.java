@@ -256,7 +256,6 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
     }
     boolean isRunning=true;
     public void sync(){
-        if(getAccount()==null)return;
         new Thread(new Runnable() {
             public void run() {
 
