@@ -223,8 +223,7 @@ public class HomeActivity extends AppCompatActivity {
                         ArrayList<Notebook> notebooks = homeFragment.listNotebook;
 //                        Tool.SetAllUnChecked(notebooks);
                         homeFragment.adapterHomeRecyclerView.multiSelect=false;
-                        homeFragment.listNotebook = removeNoteAtHomeFragment(notebooks);
-                        homeFragment.adapterHomeRecyclerView.notifyDataSetChanged();
+                        removeNoteAtHomeFragment(notebooks);
                         actionMode.finish();
                         // Hoàng làm database chỗ nãy
                         // TODO
@@ -240,8 +239,8 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-//                Tool.SetAllUnChecked(homeFragment.listNotebook);
-//                homeFragment.adapterHomeRecyclerView.notifyDataSetChanged();
+                Tool.SetAllUnChecked(homeFragment.listNotebook);
+                homeFragment.adapterHomeRecyclerView.notifyDataSetChanged();
                 actionMode = null;
             }
         });
@@ -262,14 +261,13 @@ private void LoadDataFragmentHome(){
         homeFragment =(HomeFragment) fragment1;
     }
 }
-    private ArrayList<Notebook> removeNoteAtHomeFragment(ArrayList<Notebook> notebooks) {
+    private void removeNoteAtHomeFragment(ArrayList<Notebook> notebooks) {
         ArrayList<Notebook> notebooks2 = new ArrayList<>(notebooks);
-        for (Notebook item: notebooks) {
+        for (Notebook item: notebooks2) {
             if (item.getChecked()){
                 notebooks.remove(item);
             }
         }
-        return notebooks2;
     }
 
     @Override

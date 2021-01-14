@@ -101,25 +101,25 @@ public class HomeFragment extends Fragment implements IFragmentCanAddNote {
                 swiperefresh.setRefreshing(false);
             }
         });
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    Thread.sleep(1000);
-//                    listNotebook.clear();
-//                    listNotebook.addAll(connectionDatabaseLocalMobile.getNotebooksLast(-1));
-//                    HomeFragment.this.getActivity().runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            adapterHomeRecyclerView.notifyDataSetChanged();
-//                        }
-//                    });
-//
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1000);
+                    listNotebook.clear();
+                    listNotebook.addAll(connectionDatabaseLocalMobile.getNotebooksLast(-1));
+                    HomeFragment.this.getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapterHomeRecyclerView.notifyDataSetChanged();
+                        }
+                    });
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
     public <T> void startActivity(android.content.Context context, Class<T> classActivity, int idNotebook, int index) {
         Log.e("index",""+index);
