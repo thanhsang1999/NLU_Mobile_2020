@@ -1,16 +1,14 @@
-package com.example.mobile.activity;
+package com.example.mobile;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.example.mobile.R;
-
-public class ForgotActivity extends AppCompatActivity {
+public class ChangePassActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgot_pass1);
+        setContentView(R.layout.activity_change_pass);
     }
 }

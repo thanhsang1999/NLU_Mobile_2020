@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:background="@drawable/ic_backgroud"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 
@@ -16,7 +15,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="76dp"
         android:layout_marginRight="96dp"
-        android:text="@string/login_tiltle"
+        android:text="@string/change_pass_title"
         android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +30,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginLeft="4dp"
         android:layout_marginTop="5dp"
-        android:text="@string/login_sub_tiltle"
+        android:text="@string/change_pass_sub_tiltle"
         android:textSize="20sp"
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="@+id/textViewTitle"
@@ -54,12 +53,12 @@
 
 
         <TextView
-            android:id="@+id/textViewTitleName"
+            android:id="@+id/textViewOldPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginLeft="30dp"
-            android:text="@string/username_tiltle"
+            android:text="@string/old_password_title"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -67,23 +66,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/layoutFieldUsername"
+            android:id="@+id/layoutFieldOldPassword"
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewTitleName"
+            app:layout_constraintTop_toBottomOf="@+id/textViewOldPassword"
             android:background="@drawable/border_set"
 
             android:padding="5dp">
 
             <ImageView
-                android:id="@+id/iconUsername"
+                android:id="@+id/iconOldPassword"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:contentDescription="@string/icon_user_description"
-                app:srcCompat="@drawable/ic_user"
+                android:contentDescription="@string/icon_password_description"
+                app:srcCompat="@drawable/ic_password"
                 tools:ignore="VectorDrawableCompat"
                 />
 
@@ -94,39 +93,39 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:hint="@string/username_hint"
+                android:hint="@string/old_password_hint"
                 android:background="@android:color/transparent"
                 android:autofillHints="" />
 
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textViewTitlePassword"
+            android:id="@+id/textViewTitleNewPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
-            android:text="@string/password_title"
+            android:text="@string/new_password_title"
             android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="@+id/layoutFieldUsername"
-            app:layout_constraintTop_toBottomOf="@+id/layoutFieldUsername" />
+            app:layout_constraintStart_toStartOf="@+id/layoutFieldOldPassword"
+            app:layout_constraintTop_toBottomOf="@+id/layoutFieldOldPassword" />
 
         <LinearLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/linearLayoutNewPassword"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:orientation="horizontal"
-            app:layout_constraintLeft_toLeftOf="@+id/textViewTitlePassword"
-            app:layout_constraintStart_toStartOf="@+id/textViewTitlePassword"
-            app:layout_constraintTop_toBottomOf="@+id/textViewTitlePassword"
+            app:layout_constraintLeft_toLeftOf="@+id/textViewTitleNewPassword"
+            app:layout_constraintStart_toStartOf="@+id/textViewTitleNewPassword"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTitleNewPassword"
             android:background="@drawable/border_set"
             android:padding="5dp">
 
             <ImageView
-                android:id="@+id/iconPassword"
+                android:id="@+id/iconNewPassword"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:contentDescription="@string/icon_password_description"
@@ -134,28 +133,60 @@
                 tools:ignore="VectorDrawableCompat" />
 
             <EditText
-                android:id="@+id/editTextPassword"
+                android:id="@+id/editTextNewPassword"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="@string/password_hint"
+                android:hint="@string/new_password_hint"
                 android:inputType="textPassword"
                 android:background="@android:color/transparent"
                 android:autofillHints="" />
-            <TextView
-                android:id="@+id/textViewForgot"
-                android:layout_width="wrap_content"
+
+        </LinearLayout>
+        <TextView
+            android:id="@+id/textViewTitleConfirmPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/new_password_title"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/linearLayoutNewPassword"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutNewPassword" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="@+id/textViewTitleConfirmPassword"
+            app:layout_constraintStart_toStartOf="@+id/textViewTitleConfirmPassword"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTitleConfirmPassword"
+            android:background="@drawable/border_set"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/iconConfirmPassword"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:contentDescription="@string/icon_password_description"
+                app:srcCompat="@drawable/ic_password"
+                tools:ignore="VectorDrawableCompat" />
+
+            <EditText
+                android:id="@+id/editTextConfirmPassword"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-
-                android:text="@string/forgot"
-                android:textColor="@color/bluePrimary"
-                android:textSize="20sp"
-                android:textStyle="bold"
-
-
-
-                />
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/new_password_hint"
+                android:inputType="textPassword"
+                android:background="@android:color/transparent"
+                android:autofillHints="" />
 
         </LinearLayout>
 
@@ -221,63 +252,6 @@
 
 
 
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-
-        android:layout_marginTop="30dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="@+id/layout_btn"
-        app:layout_constraintTop_toBottomOf="@+id/layout_btn"
-        android:baselineAligned="false">
-
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/login_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp"
-            />
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:layout_marginBottom="10dp"
-        android:paddingBottom="5dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_marginLeft="30dp"
-
-            android:text="@string/dont_account"
-            android:textSize="20sp"
-            android:layout_marginStart="30dp" />
-
-        <TextView
-            android:id="@+id/textViewSignUp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_marginLeft="30dp"
-
-            android:text="@string/sign_up"
-            android:textColor="@color/bluePrimary"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginStart="30dp" />
 
     </LinearLayout>
     <LinearLayout

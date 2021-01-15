@@ -24,7 +24,6 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="center"
-
             android:background="@drawable/round_define"
             />
 
@@ -112,11 +111,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:hint="@string/fullname_hint"
+                    android:autofillHints=""
                     android:background="@android:color/transparent"
-                    android:autofillHints="" />
+                    android:ems="10"
+                    android:hint="@string/fullname_hint"
+                    android:inputType="textPersonName" />
 
             </LinearLayout>
 
@@ -180,30 +179,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 app:layout_constraintLeft_toLeftOf="@id/textViewTitleDateOfBirth"
                 app:layout_constraintStart_toStartOf="@id/textViewTitleDateOfBirth"
                 app:layout_constraintTop_toBottomOf="@id/textViewTitleDateOfBirth"
                 android:background="@drawable/border_set"
                 android:padding="5dp">
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:contentDescription="@string/icon_password_description"
-                    app:srcCompat="@drawable/ic_user"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <EditText
-                    android:id="@+id/editTextDateOfBirth"
-                    android:layout_width="0dp"
+                <Button
+                    android:id="@+id/btn_dOB"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="@string/date_of_birth_hint"
-                    android:inputType="textPassword"
-                    android:background="@android:color/transparent"
-                    android:autofillHints="" />
+                    android:text="Ngày/Tháng/Năm"
+                    android:layout_gravity="start"
+                    android:background="@color/bgItemListView"/>
             </LinearLayout>
             <TextView
                 android:id="@+id/textViewTitleGender"
@@ -240,20 +229,25 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         >
-                        <RadioButton
-                            android:id="@+id/radioButtonTrue"
-                            android:layout_width="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="20sp"
-                            android:text="@string/male" />
-                        <RadioButton
-                            android:id="@+id/radioButtonWrong1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="25dp"
-                            android:textSize="20sp"
-                            android:text="@string/female" />
+                        <RadioGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <RadioButton
+                                android:id="@+id/radioButtonMale"
+                                android:layout_width="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_height="wrap_content"
+                                android:textSize="20sp"
+                                android:text="@string/male" />
+                            <RadioButton
+                                android:id="@+id/radioButtonFemale"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:textSize="20sp"
+                                android:text="@string/female" />
+                        </RadioGroup>
+
 
                     </LinearLayout>
 
@@ -263,130 +257,6 @@
 
 
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/textViewTitleChangePassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="10dp"
-                android:text="@string/change_password_title"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="@id/layoutFieldGender"
-                app:layout_constraintTop_toBottomOf="@id/layoutFieldGender" />
-
-            <LinearLayout
-                android:id="@+id/layoutFieldOldPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:orientation="horizontal"
-                app:layout_constraintLeft_toLeftOf="@id/textViewTitleChangePassword"
-                app:layout_constraintStart_toStartOf="@id/textViewTitleChangePassword"
-                app:layout_constraintTop_toBottomOf="@id/textViewTitleChangePassword"
-                android:background="@drawable/border_set"
-                android:padding="5dp">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:contentDescription="@string/icon_password_description"
-                    app:srcCompat="@drawable/ic_password"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <EditText
-                    android:id="@+id/editTextOldPassword"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="@string/old_password_hint"
-                    android:inputType="textPassword"
-                    android:background="@android:color/transparent"
-                    android:autofillHints="" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/layoutFieldNewPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:orientation="horizontal"
-                app:layout_constraintLeft_toLeftOf="@id/layoutFieldOldPassword"
-                app:layout_constraintStart_toStartOf="@id/layoutFieldOldPassword"
-                app:layout_constraintTop_toBottomOf="@id/layoutFieldOldPassword"
-                android:background="@drawable/border_set"
-                android:padding="5dp">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:contentDescription="@string/icon_password_description"
-                    app:srcCompat="@drawable/ic_password"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <EditText
-                    android:id="@+id/editTextNewPassword"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="@string/new_password_hint"
-                    android:inputType="textPassword"
-                    android:background="@android:color/transparent"
-                    android:autofillHints="" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/layoutFieldConfirmPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:orientation="horizontal"
-                app:layout_constraintLeft_toLeftOf="@id/layoutFieldNewPassword"
-                app:layout_constraintStart_toStartOf="@id/layoutFieldNewPassword"
-                app:layout_constraintTop_toBottomOf="@id/layoutFieldNewPassword"
-                android:background="@drawable/border_set"
-                android:padding="5dp">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:contentDescription="@string/icon_password_description"
-                    app:srcCompat="@drawable/ic_password"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <EditText
-                    android:id="@+id/editTextConfirmPassword"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="@string/confirm_password_hint"
-                    android:inputType="textPassword"
-                    android:background="@android:color/transparent"
-                    android:autofillHints="" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/layoutTrim"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:orientation="horizontal"
-                app:layout_constraintLeft_toLeftOf="@id/layoutFieldNewPassword"
-                app:layout_constraintStart_toStartOf="@id/layoutFieldNewPassword"
-                app:layout_constraintTop_toBottomOf="@id/layoutFieldNewPassword"
-                android:background="@drawable/border_set"
-                android:padding="5dp">
-
-
-
-
-
-            </LinearLayout>
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

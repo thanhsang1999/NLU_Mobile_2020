@@ -88,7 +88,7 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
                         linearLayoutContent.setBackgroundResource(R.drawable.background_checked_list_item_linear);
                         imageViewCheck.setImageResource(R.drawable.ic_checked_list);
                         HomeActivity homeActivity =  (HomeActivity) context;
-                        homeActivity.showActionMode();
+                        
                     }
 
                     return true;

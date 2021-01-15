@@ -5,12 +5,16 @@ public class Account {
     private String fullname;
     private String email;
     private String password;
+    private Date dateOfBirth;
+    private boolean gender;
 
-    public Account(String username, String fullname, String email, String password) {
+    public Account(String username, String fullname, String email, String password, Date dateOfBirth, boolean gender) {
         this.username = username;
         this.fullname = fullname;
         this.email = email;
         this.password = password;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
     }
 
     public String getUsername() {
@@ -43,5 +47,33 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public boolean isGender() {
+        return gender;
+    }
+
+    public void setGender(boolean gender) {
+        this.gender = gender;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "username='" + username + '\'' +
+                ", fullname='" + fullname + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", gender=" + gender +
+                '}';
     }
 }

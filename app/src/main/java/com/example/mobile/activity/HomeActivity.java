@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
@@ -17,6 +18,8 @@ import androidx.fragment.app.FragmentManager;
 import com.example.mobile.ConnectionDatabaseLocalMobile;
 import com.example.mobile.ExitConfirmDialogFragment;
 import com.example.mobile.R;
+import com.example.mobile.model.ModelLogin;
+import com.facebook.AccessToken;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import androidx.navigation.NavController;
@@ -38,8 +41,11 @@ public class HomeActivity extends AppCompatActivity {
     Toolbar toolbar;
     public static FloatingActionButton fab;
     NavController navController;
+    NavigationView nav_view;
     ImageView profile;
     ActionMode actionMode;
+    TextView footer_item_login,footer_item_changePass,footer_item_logout;
+    AccessToken accessToken;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +83,7 @@ public class HomeActivity extends AppCompatActivity {
 
         navigationView.setCheckedItem(R.id.nav_home);
 
-
+//        layAccessToken();
 
     }
     private void navigationBackPressed(){
@@ -113,6 +119,10 @@ public class HomeActivity extends AppCompatActivity {
         navFooter1 = findViewById(R.id.footer_item_1);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         profile= findViewById(R.id.profile);
+        footer_item_login= findViewById(R.id.footer_item_login);
+        footer_item_logout= findViewById(R.id.footer_item_logout);
+        footer_item_changePass= findViewById(R.id.footer_item_changePass);
+        nav_view= findViewById(R.id.nav_view);
 
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,7 +134,7 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-
+// phần ở dưới
     private void NavigationBottom() {
         navFooter1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,7 +200,11 @@ public class HomeActivity extends AppCompatActivity {
             actionModeCallback = null;
         }
     };
-    public void showActionMode(){
-        actionMode = startSupportActionMode(actionModeCallback);
-    }
+
+//        public void layAccessToken(){
+//            ModelLogin modelLogin = new ModelLogin();
+//            AccessToken accessToken = modelLogin.LayTokenFacebook();
+//            Log.d("token", accessToken.toString());
+//        }
+
 }

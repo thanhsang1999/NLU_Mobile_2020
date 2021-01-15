@@ -20,6 +20,8 @@
 
 
     <!--    Profile Activity-->
+    <string name="old_password_title">Old Password</string>
+    <string name="new_password_title">New Password</string>
     <string name="old_password_hint">Old password</string>
     <string name="new_password_hint">New password</string>
     <string name="female">Female</string>
@@ -31,6 +33,10 @@
     <string name="date_of_birth_hint">Date Of Birth</string>
     <string name="change_password_title">Change password</string>
     <string name="change_password_hint">Change password</string>
+    <string name="save_pass">Save</string>
+    <string name="exit">Exit</string>
+    <string name="change_pass_title">Change password</string>
+    <string name="change_pass_sub_tiltle">Change your password</string>
     <!--    LogIn Activity-->
     <string name="login_tiltle">Login</string>
     <string name="login_sub_tiltle">Please sign in continute.</string>

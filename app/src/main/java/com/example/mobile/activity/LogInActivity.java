@@ -1,10 +1,12 @@
 package com.example.mobile.activity;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +17,15 @@ import android.widget.Toast;
 
 import com.example.mobile.ConnectionWebService;
 import com.example.mobile.R;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
+import java.util.Arrays;
 
 public class LogInActivity extends AppCompatActivity {
 
@@ -27,9 +38,14 @@ public class LogInActivity extends AppCompatActivity {
     private Button btn_skip;
     private TextView textViewForgot;
     private TextView textViewSignUp;
+    private LoginButton login_button;
+
+    CallbackManager callbackManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        FacebookSdk.sdkInitialize(getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
         matchIdElement();
@@ -113,6 +129,14 @@ public class LogInActivity extends AppCompatActivity {
                 finish();
             }
         });
+        callbackManager = CallbackManager.Factory.create();
+        login_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginManager.getInstance().logInWithReadPermissions(LogInActivity.this, Arrays.asList("public_profile"));
+            loginFacebook();
+            }
+        });
     }
 
     public void matchIdElement() {
@@ -125,6 +149,7 @@ public class LogInActivity extends AppCompatActivity {
         backArrow = findViewById(R.id.backArrow);
         spinner.setVisibility(View.GONE);
         textViewSignUp = findViewById(R.id.textViewSignUp);
+        login_button = findViewById(R.id.login_button);
     }
 
     public void loading(View view) {
@@ -134,5 +159,30 @@ public class LogInActivity extends AppCompatActivity {
     public void loading_complete(View view) {
         spinner.setVisibility(View.INVISIBLE);
     }
+    private void loginFacebook(){
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.d("a","thành công");
+                Intent intent = new Intent(LogInActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
 
+            @Override
+            public void onCancel() {
+                Log.d("a","thoát");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.d("a","lỗi");
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode,resultCode,data);
+    }
 }

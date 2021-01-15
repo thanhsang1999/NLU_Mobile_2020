@@ -31,6 +31,24 @@
                 android:clickable="true"
                 android:orientation="vertical">
             <TextView
+                android:drawableLeft="@drawable/ic_login"
+                android:drawablePadding="20dp"
+                android:id="@+id/footer_item_login"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:textAppearance="@style/NavigationDrawerStyle"
+                android:text="Đăng nhập" />
+            <TextView
+                android:drawableLeft="@drawable/ic_change_pass"
+                android:drawablePadding="20dp"
+                android:id="@+id/footer_item_changePass"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:textAppearance="@style/NavigationDrawerStyle"
+                android:text="Đổi mật khẩu" />
+            <TextView
                     android:drawableLeft="@drawable/ic_trash"
                     android:drawablePadding="20dp"
                     android:id="@+id/footer_item_1"
@@ -48,6 +66,15 @@
                     android:gravity="center_vertical"
                     android:textAppearance="@style/NavigationDrawerStyle"
                     android:text="Cài Đặt" />
+            <TextView
+                android:drawableLeft="@drawable/ic_logout"
+                android:drawablePadding="20dp"
+                android:id="@+id/footer_item_logout"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:textAppearance="@style/NavigationDrawerStyle"
+                android:text="Đăng xuất" />
         </LinearLayout>
     </com.google.android.material.navigation.NavigationView>
 
