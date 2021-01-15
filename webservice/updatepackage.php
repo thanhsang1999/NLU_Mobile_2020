@@ -1,6 +1,6 @@
 <?php
 	require 'db.php';
-	require 'class_package.php';
+	
 	require 'getidaccount.php';
 	
 	$i1 =$_POST['id'];
@@ -12,15 +12,17 @@
 	$i2 = getIdAccount($s2, $connect);
 	
 	
-	$query = "INSERT INTO tblpackage(id,id_account, title, color, last_edit) values (?,?,?,?,?)";
+	$query = "UPDATE tblpackage SET title =?, color =?, last_edit =? WHERE id=? AND id_account=?";
 	$prepare_statement = $connect->prepare($query);
 	
 	
 	
-	$prepare_statement->bind_param("iisss",$i1, $i2,$s3,$s4,$s5) ;
+	$prepare_statement->bind_param("sssii",$s3,$s4,$s5,$i1, $i2) ;
 	$array = array();
 	if($prepare_statement->execute()){
-		echo "OK";
+		$ret=$connect -> affected_rows;
+		if($ret==1)
+		echo "OK";else echo "row effect" . $ret . $i1;
 	}else{
 		echo "Error";
 	}

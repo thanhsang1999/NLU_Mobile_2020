@@ -3,10 +3,13 @@ package com.example.mobile.ui.slideshow;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,7 +36,7 @@ public class NoteFragment extends Fragment implements IFragmentCanAddNote {
     private HomeViewModel homeViewModel;
 
     RecyclerView recyclerView;
-    TextView titlePackage;
+    EditText titlePackage;
     View root;
     Package currentPackage;
 
@@ -87,8 +90,20 @@ public class NoteFragment extends Fragment implements IFragmentCanAddNote {
         HomeActivity.fab.show();
 
         recyclerView = root.findViewById(R.id.recyclerViewHome);
-        titlePackage = root.findViewById(R.id.textViewNamePackage);
+        titlePackage = root.findViewById(R.id.editTextNamePackage);
         titlePackage.setText(currentPackage.getName());
+        titlePackage.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    Log.d("tilepackage", "update");
+                    currentPackage.setName(titlePackage.getText().toString());
+                    connectionDatabaseLocalMobile.updatePackage(currentPackage, true);
+                    connectionDatabaseLocalMobile.sync();
+
+                }
+            }
+        });
     }
     public <T> void startActivity(android.content.Context context, Class<T> classActivity, int idNotebook,int index){
         if(idNotebook==0){

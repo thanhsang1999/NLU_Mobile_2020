@@ -123,13 +123,18 @@ public class NoteDAO  extends PackageDAO {
         values.put("id_package", idPackage);
         values.put("remind", Tool.DateToString(n.getRemind()));
         values.put("last_edit", Tool.DateToString(n.getDateEdit()));
+        if(n.getId()!=0){
+            values.put("id", n.getId());
+        }
 
         boolean success=this.sqLiteDatabase.insert("notebook", null, values) != -1;
         int ret=updatePackageDateEdit(idPackage, n.getDateEdit());
 
         Log.e("Insert Notebook", "" + success);
         Log.e("Update PackageEditTime", "" + (ret==1));
-        Notebook notebook=getNotebooksLast(1).get(0);
+        Notebook notebook=n;
+        if(n.getId()==0)
+         notebook=getNotebooksLast(1).get(0);
         if(success){
 
             if(!isSyns)return notebook;
@@ -141,12 +146,6 @@ public class NoteDAO  extends PackageDAO {
             if(insert_sync(sync)){
                 Log.e("insert","n sync");
             }
-//
-//            new Thread(()->{
-//                ConnectionWebService connectionWebService= new ConnectionWebService(this.activity);
-//                connectionWebService.insert_package(p2, getAccount());
-//            }).start();
-
         }
         int countI=1;
         for(byte[] b:n.getImages()){

@@ -280,6 +280,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                         if(ConnectionDatabaseLocalMobile.this.isRunning==false)ConnectionDatabaseLocalMobile.this.close();
                     });
                     String key= sync.getTableName();
+                    String keyAction= sync.getAction();
                     switch (key){
                         case "tblpackage":
                             myWorker.setParams(new HashMap<String,String>(){{
@@ -289,15 +290,27 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                                     Log.e("Error","idpackage not found");
                                 }
                                 Account account= packageDAO.getAccount();
+                                Log.e("id",p.getId()+"");
                                 put("id", p.getId()+"");
                                 put("color", p.getColor()+"");
                                 put("title", p.getName());
-                                Log.e("Date", Tool.DateToString( p.getLastEdit()));
+
                                 put("last_edit", Tool.DateToString( p.getLastEdit()));
                                 put("username", account.getUsername());
                             }});
-                            if(sync.getAction().equals("insert"))
-                                PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "addpackage.php");
+
+                            switch (keyAction){
+                                case "insert":
+                                    PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "addpackage.php");
+                                    break;
+                                case "update":
+                                    PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "updatepackage.php");
+                                    break;
+                                default:
+                                    break;
+                            }
+
+
 
                             break;
                         case "tblnotebook":
@@ -324,9 +337,14 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                                 put("has_remind", "false");
 
                             }});
-                            if(sync.getAction().equals("insert"))
-                                PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "addnotebook.php");
 
+                            switch (keyAction){
+                                case "insert":
+                                    PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "addnotebook.php");
+                                break;
+                                default:
+                                    break;
+                            }
                             break;
 
                         case "tblimage":
@@ -345,9 +363,13 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
 
 
                             }});
-                            if(sync.getAction().equals("insert"))
-                                PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "addimagenotebook.php");
-
+                            switch (keyAction){
+                                case "insert":
+                                    PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "addimagenotebook.php");
+                                break;
+                                default:
+                                break;
+                            }
 
                             break;
 

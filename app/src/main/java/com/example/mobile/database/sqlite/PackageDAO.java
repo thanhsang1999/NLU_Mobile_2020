@@ -188,4 +188,28 @@ public class PackageDAO  extends AccountDAO {
         }
         return notebooks;
     }
+
+    public void updatePackage(Package currentPackage, boolean isSync) {
+        currentPackage.setLastEdit(new Date());
+        ContentValues values = new ContentValues();
+        values.put("last_edit",Tool.DateToString(currentPackage.getLastEdit()));
+        values.put("title",currentPackage.getName());
+
+        int ret = this.sqLiteDatabase.update("tblpackage", values, "id=?", new String[]{currentPackage.getId()+""});
+
+        if(ret==1){
+            Log.e("update Package", "Ok");
+
+            if(!isSync)return;
+            MySync sync=new MySync();
+            sync.setAction("update");
+            sync.setIdRow(currentPackage.getId());
+            sync.setTableName("tblpackage");
+            sync.setTime(Tool.DateToString(currentPackage.getLastEdit()));
+            if(insert_sync(sync)){
+                Log.e("insert","up sync");
+            }
+
+        }
+    }
 }
