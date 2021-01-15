@@ -2,6 +2,8 @@ package com.example.mobile.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -25,6 +27,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.mobile.ExitConfirmDialogFragment;
 import com.example.mobile.IFragmentCanAddNote;
 import com.example.mobile.R;
+import com.example.mobile.database.sqlite.NoteDAO;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Tool;
 import com.example.mobile.ui.home.HomeFragment;
@@ -55,6 +58,7 @@ public class HomeActivity extends AppCompatActivity {
     ImageView profile;
     public ActionMode actionMode;
     HomeFragment homeFragment;
+    NoteDAO sqlite;
 
 
     @Override
@@ -171,7 +175,7 @@ public class HomeActivity extends AppCompatActivity {
                 finish();
             }
         });
-
+        sqlite = new NoteDAO(this);
     }
 
 
@@ -225,16 +229,35 @@ public class HomeActivity extends AppCompatActivity {
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.menu_delete:
-                        ArrayList<Notebook> notebooks = homeFragment.listNotebook;
-//                        Tool.SetAllUnChecked(notebooks);
-                        homeFragment.adapterHomeRecyclerView.multiSelect=false;
-                        removeNoteAtHomeFragment(notebooks);
-                        actionMode.finish();
-                        // Hoàng làm database chỗ nãy
-                        // TODO
+                        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+                        builder.setTitle("Xóa Notebook");
+                        builder.setMessage("Bạn có muốn xóa notebook không ?");
+                        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // OK
+                                ArrayList<Notebook> notebooks = homeFragment.listNotebook;
+                                homeFragment.adapterHomeRecyclerView.multiSelect=false;
+                                removeNoteAtHomeFragment(notebooks);
+                                actionMode.finish();
+                            }
+                        });
+                        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+//                                ArrayList<Notebook> notebooks = homeFragment.listNotebook;
+//                                Tool.SetAllUnChecked(notebooks);
+                                homeFragment.adapterHomeRecyclerView.multiSelect=false;
+//                                removeNoteAtHomeFragment(notebooks);
+                                actionMode.finish();
+                            }
+                        });
+                        builder.show();
+
                         return true;
                     case R.id.menu_share:
-                        Toast.makeText(HomeActivity.this, "Share", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(HomeActivity.this,ShareNotebookActivity.class);
+                        startActivity(intent);
                         mode.finish();
                         return true;
                     default:
@@ -270,6 +293,7 @@ private void LoadDataFragmentHome(){
         ArrayList<Notebook> notebooks2 = new ArrayList<>(notebooks);
         for (Notebook item: notebooks2) {
             if (item.getChecked()){
+                sqlite.DeleteNotebook(item.getId());
                 notebooks.remove(item);
             }
         }

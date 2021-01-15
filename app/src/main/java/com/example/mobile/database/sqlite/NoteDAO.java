@@ -305,6 +305,11 @@ public class NoteDAO  extends PackageDAO {
         return notebook;
 
     }
+    public boolean DeleteNotebook(int id){
+        this.sqLiteDatabase.delete("notebook","id=?",new String[]{String.valueOf(id)});
+        this.sqLiteDatabase.delete("images_note","id_notebook=?",new String[]{String.valueOf(id)});
+        return true;
+    }
 
 
 }

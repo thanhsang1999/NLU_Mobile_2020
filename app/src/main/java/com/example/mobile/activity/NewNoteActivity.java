@@ -419,8 +419,8 @@ public class NewNoteActivity extends AppCompatActivity {
     }
     private void setPic() {
         // Get the dimensions of the View
-        int targetW = 1920;
-        int targetH = 1080;
+        int targetW = 1280;
+        int targetH = 720;
 
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
