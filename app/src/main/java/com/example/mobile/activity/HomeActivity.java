@@ -252,7 +252,8 @@ public class HomeActivity extends AppCompatActivity {
 
                         return true;
                     case R.id.menu_share:
-                        Toast.makeText(HomeActivity.this, "Share", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(HomeActivity.this,ShareNotebookActivity.class);
+                        startActivity(intent);
                         mode.finish();
                         return true;
                     default:
