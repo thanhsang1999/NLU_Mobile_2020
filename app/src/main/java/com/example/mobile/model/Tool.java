@@ -46,6 +46,15 @@ public class Tool {
         formatter.setTimeZone(TimeZone.getTimeZone(prime));
         return formatter.format(date);
     }
+    public static String DateToStringHCM(Date date){
+        if(date==null){
+
+            return null;
+        }
+        SimpleDateFormat formatter = new SimpleDateFormat(paterm);
+        formatter.setTimeZone(TimeZone.getTimeZone(myloace));
+        return formatter.format(date);
+    }
     public static String DateToStringPrint(Date date){
         if(date==null){
 

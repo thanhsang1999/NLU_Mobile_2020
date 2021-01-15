@@ -11,7 +11,7 @@
  Target Server Version : 100408
  File Encoding         : 65001
 
- Date: 15/01/2021 02:11:37
+ Date: 15/01/2021 17:50:23
 */
 
 SET NAMES utf8mb4;
@@ -46,7 +46,7 @@ CREATE TABLE `tblimage`  (
   `image` mediumblob NULL,
   `id_package` int(11) NOT NULL,
   `id_notebook` int(11) NOT NULL,
-  PRIMARY KEY (`id`, `id_package`, `id_notebook`) USING BTREE,
+  PRIMARY KEY (`id`, `id_account`) USING BTREE,
   INDEX `id_account`(`id_account`) USING BTREE,
   CONSTRAINT `tblimage_ibfk_1` FOREIGN KEY (`id_account`) REFERENCES `tblaccount` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
@@ -63,7 +63,7 @@ CREATE TABLE `tblnotebook`  (
   `last_edit` datetime(0) NULL DEFAULT NULL,
   `remind` datetime(0) NULL DEFAULT NULL,
   `id_package` int(11) NOT NULL,
-  PRIMARY KEY (`id`, `id_account`, `id_package`) USING BTREE,
+  PRIMARY KEY (`id`, `id_account`) USING BTREE,
   INDEX `id_account`(`id_account`) USING BTREE,
   CONSTRAINT `tblnotebook_ibfk_1` FOREIGN KEY (`id_account`) REFERENCES `tblaccount` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 54 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
@@ -75,7 +75,7 @@ INSERT INTO `tblnotebook` VALUES (46, 1, '1', '', '2021-01-14 18:12:49', NULL, 1
 INSERT INTO `tblnotebook` VALUES (47, 1, '2', '', '2021-01-14 18:15:11', NULL, 15);
 INSERT INTO `tblnotebook` VALUES (48, 1, '3', '', '2021-01-14 18:16:04', NULL, 15);
 INSERT INTO `tblnotebook` VALUES (52, 1, '4', '', '2021-01-14 18:19:18', NULL, 15);
-INSERT INTO `tblnotebook` VALUES (53, 1, '1', '', '2021-01-14 18:19:27', NULL, 14);
+INSERT INTO `tblnotebook` VALUES (53, 1, '11', '1', '2021-01-15 10:27:24', NULL, 14);
 
 -- ----------------------------
 -- Table structure for tblpackage
@@ -95,7 +95,7 @@ CREATE TABLE `tblpackage`  (
 -- ----------------------------
 -- Records of tblpackage
 -- ----------------------------
-INSERT INTO `tblpackage` VALUES (14, 1, 'color_blue_green', '1', '2021-01-14 15:31:26');
+INSERT INTO `tblpackage` VALUES (14, 1, 'color_blue_green', '21121', '2021-01-15 10:18:18');
 INSERT INTO `tblpackage` VALUES (15, 1, 'color_red', '2', '2021-01-14 17:49:01');
 
 -- ----------------------------

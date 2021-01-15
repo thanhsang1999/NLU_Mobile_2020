@@ -145,6 +145,7 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
                         AdapterHomeRecyclerView.this.context.startActivity(AdapterHomeRecyclerView.this.context.getActivity(), NewNoteActivity.class,notebook.getId(), getAdapterPosition());
 
                         Toast.makeText(context.getContext(), "select "+getAdapterPosition()+"id"+notebook.getId(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context.getContext(), "select "+Tool.DateToStringHCM(notebook.getDateEdit()), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
