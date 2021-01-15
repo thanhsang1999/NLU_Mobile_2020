@@ -178,7 +178,8 @@ public class NewNoteActivity extends AppCompatActivity {
                         returnIntent.putExtra("index",index);
                         setResult(Activity.RESULT_OK,returnIntent);
                     }else{
-                        int rs=sqLite.updateNotebook(notebook,idPackage);
+                        int rs=sqLite.updateNotebook(notebook,idPackage,true);
+                        sqLite.sync();
 
                         if(rs==1){
                             Intent returnIntent = new Intent();

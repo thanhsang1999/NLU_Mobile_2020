@@ -20,7 +20,9 @@
 	$prepare_statement->bind_param("iisss",$i1, $i2,$s3,$s4,$s5) ;
 	$array = array();
 	if($prepare_statement->execute()){
-		echo "OK";
+		$ret=$connect -> affected_rows;
+		if($ret==1)
+		echo "OK";else echo "row effect" . $ret;
 	}else{
 		echo "Error";
 	}

@@ -162,7 +162,7 @@ public class NoteDAO  extends PackageDAO {
 //        }).start();
         return getNotebooksLast(1).get(0);
     }
-    public int updateNotebook(Notebook notebook, int idPackage){
+    public int updateNotebook(Notebook notebook, int idPackage,boolean isSync){
         ContentValues values = new ContentValues();
         values.put("last_edit",Tool.DateToString(new Date()));
         notebook.setDateEdit(new Date());
@@ -181,7 +181,7 @@ public class NoteDAO  extends PackageDAO {
             sync.setTableName("tblnotebook");
             sync.setTime(Tool.DateToString(notebook.getDateEdit()));
             if(insert_sync(sync)){
-                Log.e("update","n sync");
+                Log.e("sync","un");
             }
         }
 

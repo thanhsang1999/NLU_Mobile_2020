@@ -22,7 +22,7 @@
 	if($prepare_statement->execute()){
 		$ret=$connect -> affected_rows;
 		if($ret==1)
-		echo "OK";else echo "row effect" . $ret . $i1;
+		echo "OK";else echo "row effect" . $ret;
 	}else{
 		echo "Error";
 	}

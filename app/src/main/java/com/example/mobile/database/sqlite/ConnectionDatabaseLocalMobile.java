@@ -342,6 +342,9 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                                 case "insert":
                                     PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "addnotebook.php");
                                 break;
+                                case "update":
+                                    PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "updatenotebook.php");
+                                    break;
                                 default:
                                     break;
                             }
