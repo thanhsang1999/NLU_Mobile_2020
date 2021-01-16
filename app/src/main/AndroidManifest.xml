@@ -36,7 +36,7 @@
                 <data android:scheme="458503071977813" />
             </intent-filter>
         </activity>
-        <activity android:name=".ForgotPassActivity" />
+        <activity android:name=".activity.ForgotPassActivity" />
         <activity android:name=".activity.WellComeActivity" />
         <activity
             android:name=".activity.NewNoteActivity"
@@ -48,7 +48,6 @@
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.TmpHomeActivity" />
-        <activity android:name=".activity.ForgotActivity" />
         <activity android:name=".activity.SignUpActivity" />
         <activity android:name=".activity.LogInActivity" />
         <activity android:name=".activity.ProfileActivity" />

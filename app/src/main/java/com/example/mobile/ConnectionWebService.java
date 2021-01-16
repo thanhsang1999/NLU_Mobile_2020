@@ -13,6 +13,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.mobile.activity.ForgotPassActivity;
 import com.example.mobile.activity.HomeActivity;
 import com.example.mobile.activity.LogInActivity;
 import com.example.mobile.activity.LogoActivity;
@@ -38,7 +39,7 @@ public class ConnectionWebService {
         connectionDatabaseLocalMobile= new ConnectionDatabaseLocalMobile(activity);
         this.activity = activity;
     }
-
+    //quên mật khẩu
     public void forgotPassword(final String email) {
 
         if (activity instanceof ForgotPassActivity) {
@@ -94,7 +95,7 @@ public class ConnectionWebService {
                     params.put("newpw", newpw);
                     params.put("email", email);
 
-//                    SendMailSSL.sendMail(email, newpw);
+//                   SendMailSSL.sendMail(email, newpw);
 
                     return params;
                 }
@@ -104,7 +105,7 @@ public class ConnectionWebService {
             requestQueue.add(stringRequest);
         }
     }
-
+    //đăng nhập
     public void login(final String username, final String password) {
         if (activity instanceof LogInActivity) {
             final LogInActivity logInActivity = (LogInActivity) activity;
@@ -131,6 +132,7 @@ public class ConnectionWebService {
                         }
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
+
                             Account account = new Account(jsonObject.getString("Username"),
                                     jsonObject.getString("Fullname"), jsonObject.getString("Email"), jsonObject.getString("Password")
                             );
@@ -184,6 +186,7 @@ public class ConnectionWebService {
 
 
     }
+    //kiểm tra mạng
     public void alive() {
         if (activity instanceof LogoActivity) {
 
@@ -226,7 +229,7 @@ public class ConnectionWebService {
 
 
     }
-
+    //đăng ký
     public void insert_account(final Account account) {
         if (activity instanceof SignUpActivity) {
 
@@ -301,6 +304,7 @@ public class ConnectionWebService {
         }
 
     }
+    //thêm package mới
     public void insert_package(Package p, Account account){
 
         if(account==null)return;
@@ -375,7 +379,7 @@ public class ConnectionWebService {
         requestQueue.add(stringRequest);
 
     }
-
+    //lấy data
     private void getdata(String url) {
 
         RequestQueue requestQueue = Volley.newRequestQueue(activity);
@@ -394,8 +398,6 @@ public class ConnectionWebService {
         requestQueue.add(jsonArrayRequest);
 
     }
-
-
     //random password
     public static String randomPW() {
 
@@ -414,6 +416,7 @@ public class ConnectionWebService {
 //        System.out.println(generatedString);
         return generatedString;
     }
+    //
     public boolean QuerySQL(String string){
         RequestQueue requestQueue = Volley.newRequestQueue(activity);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, addressHome+urlQuery, new Response.Listener<String>() {

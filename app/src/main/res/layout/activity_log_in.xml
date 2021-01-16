@@ -234,14 +234,21 @@
         app:layout_constraintTop_toBottomOf="@+id/layout_btn"
         android:baselineAligned="false">
 
-        <com.facebook.login.widget.LoginButton
+        <Button
             android:id="@+id/login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp"
-            />
+            android:background="@drawable/ic_button_login_fb"
+            android:text="LOGIN FACEBOOK"
+            android:textColor="@color/whitePrimary"
+            android:textSize="18dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.668"
+            app:layout_constraintStart_toEndOf="@+id/button"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.905" />
+
 
     </LinearLayout>
     <LinearLayout

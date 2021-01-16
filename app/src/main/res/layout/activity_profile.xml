@@ -21,6 +21,7 @@
         android:textAlignment="center"
         >
         <ImageView
+            android:id="@+id/image"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="center"
@@ -151,13 +152,13 @@
                     tools:ignore="VectorDrawableCompat" />
 
                 <EditText
-                    android:id="@+id/editTextPassword"
+                    android:id="@+id/editTextEmail"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="@string/email_hint"
-                    android:inputType="textPassword"
+                    android:inputType="textEmailAddress"
                     android:background="@android:color/transparent"
                     android:autofillHints="" />
             </LinearLayout>
@@ -229,24 +230,16 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         >
-                        <RadioGroup
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                            <RadioButton
-                                android:id="@+id/radioButtonMale"
-                                android:layout_width="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_height="wrap_content"
-                                android:textSize="20sp"
-                                android:text="@string/male" />
-                            <RadioButton
-                                android:id="@+id/radioButtonFemale"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:textSize="20sp"
-                                android:text="@string/female" />
-                        </RadioGroup>
+                        <EditText
+                            android:id="@+id/editTextGender"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:autofillHints=""
+                            android:background="@android:color/transparent"
+                            android:ems="10"
+                            android:hint="@string/fullname_hint"
+                            android:inputType="textPersonName" />
 
 
                     </LinearLayout>
@@ -285,14 +278,15 @@
 
 
             android:background="@drawable/button"
-            android:text="@string/btn_save"
+            android:text="@string/login"
             android:textSize="22sp"
             android:textAllCaps="false"
             android:textColor="@color/whitePrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.906" />
+            app:layout_constraintVertical_bias="0.906"
+            />
 
 
 

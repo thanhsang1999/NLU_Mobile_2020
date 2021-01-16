@@ -1,5 +1,7 @@
 package com.example.mobile.model;
 
+import android.content.Context;
+
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 
@@ -21,4 +23,6 @@ public class ModelLogin {
     public void HuyTokenTracker(){
         accessTokenTracker.stopTracking();
     }
+
+
 }

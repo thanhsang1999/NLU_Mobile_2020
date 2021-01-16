@@ -38,7 +38,7 @@ public class LogInActivity extends AppCompatActivity {
     private Button btn_skip;
     private TextView textViewForgot;
     private TextView textViewSignUp;
-    private LoginButton login_button;
+    private Button login_button;
 
     CallbackManager callbackManager;
 
@@ -116,7 +116,7 @@ public class LogInActivity extends AppCompatActivity {
         textViewForgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LogInActivity.this, ForgotActivity.class);
+                Intent intent = new Intent(LogInActivity.this, ForgotPassActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -133,7 +133,8 @@ public class LogInActivity extends AppCompatActivity {
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginManager.getInstance().logInWithReadPermissions(LogInActivity.this, Arrays.asList("public_profile"));
+                LoginManager.getInstance().logInWithReadPermissions(LogInActivity.this,
+                        Arrays.asList("public_profile","email","user_birthday","user_gender"));
             loginFacebook();
             }
         });

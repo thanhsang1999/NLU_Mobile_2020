@@ -1,6 +1,8 @@
 package com.example.mobile.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -11,15 +13,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.appcompat.view.ActionMode;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.mobile.ChangePassActivity;
 import com.example.mobile.ConnectionDatabaseLocalMobile;
 import com.example.mobile.ExitConfirmDialogFragment;
 import com.example.mobile.R;
 import com.example.mobile.model.ModelLogin;
 import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import androidx.navigation.NavController;
@@ -29,6 +37,9 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Date;
 
@@ -46,14 +57,24 @@ public class HomeActivity extends AppCompatActivity {
     ActionMode actionMode;
     TextView footer_item_login,footer_item_changePass,footer_item_logout;
     AccessToken accessToken;
+    String tenNguoiDung = "";
+//    HomeActivity homeActivity = new HomeActivity();
+//    SharedPreferences sharedPreferences;
+//    SharedPreferences.Editor editor;
+//    private static final String MY_SHARED_PREFERENCES = "MY_SHARED_PREFERENCES";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_home);
 
         init();
 
         setSupportActionBar(toolbar);
+
+        AccessToken accessToken = layTenFacebook();
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,6 +83,55 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        footer_item_changePass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AccessToken accessToken = layTenFacebook();
+                if(accessToken==null){
+                    Intent intent = new Intent(HomeActivity.this, ChangePassActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else{
+
+                }
+
+            }
+        });
+        footer_item_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AccessToken accessToken = layTenFacebook();
+                if(accessToken==null){
+                    Intent intent = new Intent(HomeActivity.this, LogInActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else{
+                   //Giờ test lại thử, này để trống thôi là ok
+                }
+
+            }
+        });
+        footer_item_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(accessToken!=null){
+                    LoginManager.getInstance().logOut();
+                    footer_item_logout.setVisibility(View.GONE);
+                    footer_item_changePass.setVisibility(View.GONE);
+                    footer_item_login.setText("Đăng nhập");// rồi á
+
+                }
+
+            }
+        });
+//        facebook
+        layTenFacebook();
+
+//        sharedPreferences = getApplicationContext().getSharedPreferences("name", Context.MODE_PRIVATE);
+//        footer_item_login.setText(sharedPreferences.getString(MY_SHARED_PREFERENCES, ""));
+
+
 
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -73,6 +143,9 @@ public class HomeActivity extends AppCompatActivity {
                 .setDrawerLayout(drawer)
                 .build();
 
+        //xử lý nav bottom
+
+
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         NavigationBottom();
@@ -83,7 +156,6 @@ public class HomeActivity extends AppCompatActivity {
 
         navigationView.setCheckedItem(R.id.nav_home);
 
-//        layAccessToken();
 
     }
     private void navigationBackPressed(){
@@ -134,7 +206,7 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-// phần ở dưới
+
     private void NavigationBottom() {
         navFooter1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,8 +230,35 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
+
+        accessToken = layTenFacebook();
+        if(accessToken != null) {
+            GraphRequest graphRequest = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
+                        @Override
+                        public void onCompleted(JSONObject object, GraphResponse response) {
+                            try {
+                                tenNguoiDung = object.getString("name");
+                                footer_item_login.setText(tenNguoiDung);
+                                footer_item_logout.setVisibility(View.VISIBLE);
+                                footer_item_changePass.setVisibility(View.VISIBLE);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+            );
+
+        Bundle parameter = new Bundle();
+        parameter.putString("fields","name");
+        graphRequest.setParameters(parameter);
+        graphRequest.executeAsync();
+        }
+
+
         return true;
     }
+
+
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -200,11 +299,16 @@ public class HomeActivity extends AppCompatActivity {
             actionModeCallback = null;
         }
     };
+// xử lý lấy tên người dùng facebook
+        //lấy tokeen
+        public AccessToken layTenFacebook(){
+            ModelLogin modelLogin = new ModelLogin();
+            AccessToken accessToken = modelLogin.LayTokenFacebook();
 
-//        public void layAccessToken(){
-//            ModelLogin modelLogin = new ModelLogin();
-//            AccessToken accessToken = modelLogin.LayTokenFacebook();
-//            Log.d("token", accessToken.toString());
-//        }
+            return accessToken;
+        }
 
+
+
+//end xử lý lấy tên người dùng facebook
 }

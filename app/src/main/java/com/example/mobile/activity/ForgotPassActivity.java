@@ -1,4 +1,4 @@
-package com.example.mobile;
+package com.example.mobile.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.example.mobile.ConnectionWebService;
+import com.example.mobile.R;
 
 
 public class ForgotPassActivity extends AppCompatActivity {
