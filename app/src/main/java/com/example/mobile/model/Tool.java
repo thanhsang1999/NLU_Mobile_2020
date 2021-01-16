@@ -23,12 +23,27 @@ public class Tool {
     private final static String myloace ="Asia/Ho_Chi_Minh";
     private static String paterm ="yyyy-MM-dd HH:mm:ss";
     public static Date StringToDate(String str){
-        if(str==null){
+        if(str==null||str.toLowerCase().equals("null")){
 
             return null;
         }
         Date tmpDate = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat(paterm);
+        formatter.setTimeZone(TimeZone.getTimeZone(prime));
+        try {
+            tmpDate = formatter.parse(str);
+        } catch (ParseException e) {
+            Log.e("Error", e.getMessage());
+        }
+        return tmpDate;
+    }
+    public static Date StringToDateFacebook(String str){
+        if(str==null||str.toLowerCase().equals("null")){
+
+            return null;
+        }
+        Date tmpDate = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         formatter.setTimeZone(TimeZone.getTimeZone(prime));
         try {
             tmpDate = formatter.parse(str);

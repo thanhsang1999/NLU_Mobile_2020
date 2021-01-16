@@ -11,7 +11,7 @@
  Target Server Version : 100408
  File Encoding         : 65001
 
- Date: 16/01/2021 17:09:29
+ Date: 16/01/2021 20:29:30
 */
 
 SET NAMES utf8mb4;
@@ -29,14 +29,16 @@ CREATE TABLE `tblaccount`  (
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `outside` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `id_outside` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `dateofbirth` date NULL DEFAULT NULL,
+  `gender` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tblaccount
 -- ----------------------------
-INSERT INTO `tblaccount` VALUES (1, 'abc123', '123', 'tanhoang99.999@gmail.com', 'aA@123', NULL, NULL);
-INSERT INTO `tblaccount` VALUES (3, 'thiendaopk1@gmail.com', 'Trí Thiện', 'thiendaopk1@gmail.com', NULL, 'facebook', '2755863414664627');
+INSERT INTO `tblaccount` VALUES (1, 'abc123', '123', 'tanhoang99.999@gmail.com', 'aA@123', NULL, NULL, '2021-01-16', NULL);
+INSERT INTO `tblaccount` VALUES (6, 'thiendaopk1@gmail.com', 'Trí Thiện', 'thiendaopk1@gmail.com', NULL, 'facebook', '2755863414664627', '0007-08-18', 'male');
 
 -- ----------------------------
 -- Table structure for tblimage
@@ -69,7 +71,7 @@ CREATE TABLE `tblnotebook`  (
   PRIMARY KEY (`id`, `id_account`) USING BTREE,
   INDEX `id_account`(`id_account`) USING BTREE,
   CONSTRAINT `tblnotebook_ibfk_1` FOREIGN KEY (`id_account`) REFERENCES `tblaccount` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 54 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 56 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tblnotebook
@@ -79,6 +81,7 @@ INSERT INTO `tblnotebook` VALUES (47, 1, '2', '', '2021-01-14 18:15:11', NULL, 1
 INSERT INTO `tblnotebook` VALUES (48, 1, '3', '', '2021-01-14 18:16:04', NULL, 15);
 INSERT INTO `tblnotebook` VALUES (52, 1, '4', '', '2021-01-14 18:19:18', NULL, 15);
 INSERT INTO `tblnotebook` VALUES (53, 1, '11', '1', '2021-01-15 10:27:24', NULL, 14);
+INSERT INTO `tblnotebook` VALUES (54, 1, '1', '', '2021-01-16 10:24:54', NULL, 16);
 
 -- ----------------------------
 -- Table structure for tblpackage
@@ -93,13 +96,14 @@ CREATE TABLE `tblpackage`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `id_account`(`id_account`) USING BTREE,
   CONSTRAINT `tblpackage_ibfk_1` FOREIGN KEY (`id_account`) REFERENCES `tblaccount` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tblpackage
 -- ----------------------------
 INSERT INTO `tblpackage` VALUES (14, 1, 'color_blue_green', '21121', '2021-01-15 10:18:18');
 INSERT INTO `tblpackage` VALUES (15, 1, 'color_red', '2', '2021-01-14 17:49:01');
+INSERT INTO `tblpackage` VALUES (16, 1, 'color_green', '3', '2021-01-16 10:24:49');
 
 -- ----------------------------
 -- Triggers structure for table tblaccount

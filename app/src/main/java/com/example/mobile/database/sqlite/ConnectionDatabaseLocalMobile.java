@@ -67,6 +67,8 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                 "email TEXT," +
                 "password TEXT," +
                 "gender TEXT," +
+                "outside TEXT," +
+                "id_outside TEXT," +
                 "dateofbirth TEXT" +
 
                 ");";
@@ -229,7 +231,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
     }
     public Account getAccount() {
 
-        String columnName[] = {"username", "fullname", "email", "password"};
+        String columnName[] = {"username", "fullname", "email", "password","gender","dateofbirth","outside","id_outside"};
 
         Cursor cursor = this.sqLiteDatabase.query("tblaccounts",
                 columnName, null, null, null, null, null
@@ -242,7 +244,10 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                     try {
 
                         Account account = new Account(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
-
+                        account.setGender(cursor.getString(4));
+                        account.setDateOfBirth(Tool.StringToDate(cursor.getString(5)));
+                        account.setOutside(cursor.getString(6));
+                        account.setIdOutSide(cursor.getString(7));
                         Log.e("Account", account.getUsername());
                         return account;
                     } catch (Exception e) {
@@ -253,6 +258,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
             }
 
         }
+        Log.e("GetAccount", "Null");
 
 
         return null;

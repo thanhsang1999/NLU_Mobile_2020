@@ -540,9 +540,8 @@ public class ConnectionWebService {
 
     }
 
-    public void loginOutside(String outside) {
+    public void loginOutside(String outside, Account account) {
         String url = Config.getURL() + "loginoutside.php";
-        String idS=Profile.getCurrentProfile().getId();
 
 
 
@@ -565,33 +564,9 @@ public class ConnectionWebService {
                         String msg = "Đăng ký tài khoản mới với outside.";
                         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
                         Log.e("loginOutside", msg);
-                        ModelLogin modelLogin= new ModelLogin();
-                        AccessToken accessToken = modelLogin.LayTokenFacebook();
-                        if(accessToken != null) {
-                            GraphRequest graphRequest = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
-                                        @Override
-                                        public void onCompleted(JSONObject object, GraphResponse response) {
-                                            try {
-                                                Account account= new Account(object.getString("email"),object.getString("name"), object.getString("email"),"");
-                                                account.setDateOfBirth(Tool.StringToDate(object.getString("birthday").replaceAll("/","-")+" 00:00:00"));
 
-                                                account.setGender( object.getString("gender"));
-                                                account.setIdOutSide(Profile.getCurrentProfile().getId());
-                                                signUpOutside(outside, account);
-
-
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    }
-                            );
-
-                            Bundle parameter = new Bundle();
-                            parameter.putString("fields","name,email,birthday,gender");
-                            graphRequest.setParameters(parameter);
-                            graphRequest.executeAsync();
-                        }
+                        //
+                        signUpOutside(outside, account);
                         return;
 
 
@@ -602,6 +577,11 @@ public class ConnectionWebService {
                         Account account = new Account(jsonObject.getString("Username"),
                                 jsonObject.getString("Fullname"), jsonObject.getString("Email"), jsonObject.getString("Password")
                         );
+                        account.setOutside(jsonObject.getString("Outside"));
+                        account.setIdOutSide(jsonObject.getString("IdOutside"));
+                        account.setDateOfBirth(Tool.StringToDate(jsonObject.getString("DateOfBirth")));
+                        account.setGender(jsonObject.getString("Gender"));
+
                         String msg = "Đăng nhập thành công.";
 
                         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
@@ -641,7 +621,7 @@ public class ConnectionWebService {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("id_outside", idS);
+                params.put("id_outside", Profile.getCurrentProfile().getId());
                 params.put("outside", outside);
                 return params;
             }
@@ -712,11 +692,14 @@ public class ConnectionWebService {
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
                     params.put("username", account.getUsername());
-
                     params.put("fullname", account.getFullname());
                     params.put("email", account.getEmail());
                     params.put("outside", outside);
                     params.put("id_outside", account.getIdOutSide());
+                    Log.e("Gender", account.getGender());
+                    params.put("gender", account.getGender());
+                    Log.e("dateofbirth", Tool.DateToString(account.getDateOfBirth()));
+                    params.put("dateofbirth", Tool.DateToString(account.getDateOfBirth()));
 
                     return params;
                 }

@@ -18,12 +18,21 @@ import android.widget.Toast;
 import com.example.mobile.ConnectionWebService;
 import com.example.mobile.R;
 import com.example.mobile.model.Account;
+import com.example.mobile.model.ModelLogin;
+import com.example.mobile.model.Tool;
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 
@@ -134,7 +143,7 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 LoginManager.getInstance().logInWithReadPermissions(LogInActivity.this,
-                        Arrays.asList("public_profile","email","user_birthday","user_gender"));
+                        Arrays.asList("public_profile", "email", "user_birthday", "user_gender"));
                 loginFacebook();
             }
         });
@@ -160,22 +169,50 @@ public class LogInActivity extends AppCompatActivity {
     public void loading_complete(View view) {
         spinner.setVisibility(View.INVISIBLE);
     }
-    private void loginFacebook(){
+
+    private void loginFacebook() {
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d("a","thành công");
-                connectionWebService.loginOutside(Account.OUTSIDE_FACEBOOK);
+                Log.d("a", "thành công");
+                ModelLogin modelLogin = new ModelLogin();
+                AccessToken accessToken = modelLogin.LayTokenFacebook();
+                if (accessToken != null) {
+                    GraphRequest graphRequest = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
+                                @Override
+                                public void onCompleted(JSONObject object, GraphResponse response) {
+                                    try {
+                                        Account account = new Account(object.getString("email"), object.getString("name"), object.getString("email"), null);
+                                        account.setDateOfBirth(Tool.StringToDateFacebook(object.getString("birthday")));
+                                        Log.e("dob",object.getString("birthday"));
+                                        account.setGender(object.getString("gender"));
+                                        account.setIdOutSide(Profile.getCurrentProfile().getId());
+
+                                        LogInActivity.this.connectionWebService.loginOutside(Account.OUTSIDE_FACEBOOK, account);
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                    );
+
+                    Bundle parameter = new Bundle();
+                    parameter.putString("fields", "name,email,birthday,gender");
+                    graphRequest.setParameters(parameter);
+                    graphRequest.executeAsync();
+                }
+
             }
 
             @Override
             public void onCancel() {
-                Log.d("a","thoát");
+                Log.d("a", "thoát");
             }
 
             @Override
             public void onError(FacebookException error) {
-                Log.d("a","lỗi");
+                Log.d("a", "lỗi");
             }
         });
     }
@@ -183,7 +220,7 @@ public class LogInActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode,resultCode,data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
 }

@@ -59,6 +59,7 @@ public class Account {
     }
 
     public void setDateOfBirth(Date dateOfBirth) {
+        if(dateOfBirth==null)return;
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -68,6 +69,7 @@ public class Account {
     }
 
     public void setGender(String gender) {
+        if(gender==null) return;
         gender = gender.toLowerCase();
         if(!gender.equals(GENDER_FEMALE)&&!gender.equals(GENDER_MALE)){
             Log.e("GENDER","SET ERROR");
@@ -82,8 +84,9 @@ public class Account {
     }
 
     public void setOutside(String outside) {
+        if(outside==null)return;
         outside = outside.toLowerCase();
-        if(outside!=OUTSIDE_FACEBOOK){
+        if(!outside.equals(OUTSIDE_FACEBOOK)){
             Log.e("OUTSIDE","SET ERROR");
             return;
         }
