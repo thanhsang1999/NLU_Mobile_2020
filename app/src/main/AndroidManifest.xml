@@ -1,19 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.mobile">
+          package="com.example.mobile">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-feature
+            android:name="android.hardware.camera"
+            android:required="true"/>
 
     <application
-        android:name=".sharepreference.MyApplication"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:networkSecurityConfig="@xml/network_security_config"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme"
+            android:usesCleartextTraffic="true">
+
         <activity android:name=".ChangePassActivity"></activity>
 
         <meta-data
@@ -36,40 +48,63 @@
                 <data android:scheme="458503071977813" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.ForgotPassActivity" />
-        <activity android:name=".activity.WellComeActivity" />
-        <activity
-            android:name=".activity.NewNoteActivity"
-            android:label="@string/title_activity_new_note"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activity.HomeActivity"
-            android:hardwareAccelerated="false"
-            android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.TmpHomeActivity" />
-        <activity android:name=".activity.SignUpActivity" />
-        <activity android:name=".activity.LogInActivity" />
-        <activity android:name=".activity.ProfileActivity" />
-        <activity
-            android:name=".activity.LogoActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+
+        <activity android:name=".activity.ShareNotebookActivity"
+                  android:windowSoftInputMode="adjustPan"
+        >
+
+        </activity>
+
+        <provider
+                android:name="androidx.core.content.FileProvider"
+                android:authorities="com.example.mobile.fileprovider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/file_paths"/>
+        </provider>
+
+        <meta-data
+                android:name="com.facebook.sdk.ApplicationId"
+                android:value="@string/facebook_app_id"/>
+
+
+        <activity android:name=".activity.WellComeActivity"/>
+        <activity
+                android:name=".activity.NewNoteActivity"
+                android:label="@string/title_activity_new_note"
+                android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+                android:name=".activity.HomeActivity"
+                android:hardwareAccelerated="false"
+                android:label="@string/title_activity_home"
+                android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".activity.TmpHomeActivity"/>
+        <activity android:name=".activity.SignUpActivity"/>
+        <activity android:name=".activity.LogInActivity"/>
+        <activity android:name=".activity.ProfileActivity"/>
+
+        <activity
+                android:name=".activity.LogoActivity"
+                android:label="@string/app_name"
+                android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
         <receiver
-            android:name=".utils.AlertReceiver"
-            android:directBootAware="true"
-            android:enabled="true"
-            android:exported="true">
+                android:name=".utils.AlertReceiver"
+                android:directBootAware="true"
+                android:enabled="true"
+                android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
     </application>

@@ -1,6 +1,11 @@
 <?php
-	$connect = mysqli_connect("192.168.1.17","root","", "mobile");
+	$connect = mysqli_connect("localhost","root","", "mobile");
 	mysqli_query($connect, "SET NAMES 'utf8'");
+	
+	
+	
+	
+	mysqli_query($connect,"SET time_zone='UTC';");
 	
 	
 	

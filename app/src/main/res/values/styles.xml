@@ -6,6 +6,10 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowActionModeOverlay">true</item>
+
+        <item name="android:actionModeBackground">@color/bluePrimary</item>
+        <item name="android:actionModeCloseDrawable">@drawable/ic_back_white</item>
+
     </style>
     <style name="NavigationDrawerStyle">
         <item name="android:textSize">15sp</item>
@@ -18,9 +22,12 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="titleTextColor">@color/bluePrimary</item>
+    </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
     <style name="CustomDialogTheme" parent="android:Theme.Dialog">
@@ -28,5 +35,7 @@
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
-
+    <style name="AppTheme.NewNote">
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
 </resources>

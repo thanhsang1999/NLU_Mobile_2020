@@ -24,15 +24,14 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 
-import com.example.mobile.ConnectionDatabaseLocalMobile;
 import com.example.mobile.activity.HomeActivity;
-import com.example.mobile.model.DateStringConverter;
+import com.example.mobile.database.sqlite.PackageDAO;
 import com.example.mobile.model.Package;
 import com.example.mobile.R;
-import com.example.mobile.ui.home.HomeFragment;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,13 +44,13 @@ public class PackageItemAdapter extends BaseAdapter {
     private final List<Package> _items;
     HomeActivity activity;
     SlideshowFragment fragment;
-    ConnectionDatabaseLocalMobile c;
+    PackageDAO c;
     public PackageItemAdapter(Fragment fragment, List<Package> aPackages){
-        c= new ConnectionDatabaseLocalMobile(fragment.getActivity());
+        c= new PackageDAO(fragment.getActivity());
         this._items = new ArrayList<>();
         Package p=new Package();
         p.setName("Create Note");
-        p.setLastEdit(new DateStringConverter());
+        p.setLastEdit(new Date());
         p.setColor("create_package");
         this._items.add(p);
         this._items.addAll(aPackages);
@@ -259,9 +258,11 @@ public class PackageItemAdapter extends BaseAdapter {
                                 Package p= new Package();
                                 p.setColor(drawablePackage.getContentDescription().toString());
                                 p.setName(titlePackage.getText().toString());
-                                p.setLastEdit(new DateStringConverter());
-                                _items.add(p);
-                                c.insert_package(p);
+                                p.setLastEdit(new Date());
+
+                                c.insert_package(p,true);
+                                c.sync();
+                                _items.add(c.getLastPackage());
                                 notifyDataSetChanged();
                                 dialog.cancel();
                             }
@@ -327,14 +328,15 @@ public class PackageItemAdapter extends BaseAdapter {
             viewHolder.textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    FragmentManager fragmentManager=PackageItemAdapter.this.activity.getSupportFragmentManager();
-                    Fragment homeFragment=new HomeFragment();
+
+                    NavController navController=NavHostFragment.findNavController(PackageItemAdapter.this.fragment);
                     Bundle bundle= new Bundle();
                     bundle.putParcelable("currentPackage", book);
-                    homeFragment.setArguments(bundle);
-                    fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, homeFragment).setReorderingAllowed(true).commit();
-                    activity.navigationView.setCheckedItem(R.id.nav_home);
-                    //PackageItemAdapter.this.activi
+                    navController.navigate(R.id.action_package_to_notes,bundle);
+
+
+
+
                 }
             });
 

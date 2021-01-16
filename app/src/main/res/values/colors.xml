@@ -11,6 +11,7 @@
     <color name="blackSecond">#34495e</color>
     <color name="whitePrimary">#fff</color>
     <color name="graySearch">#E4E4E5</color>
+    <color name="whitecustom1">#ecf0f1</color>
 
     <color name="btnSave">#7B1E58</color>
     <color name="bgItemListView">#F9F9F9</color>

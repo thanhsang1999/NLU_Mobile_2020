@@ -5,7 +5,12 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.mobile.activity.LogInActivity;
@@ -46,9 +51,28 @@ public class ExitConfirmDialogFragment extends DialogFragment {
                         ExitConfirmDialogFragment.this.getActivity().finish();
                     }
                 });
-
-        return alertDialog.create();
+        AlertDialog arlertDialog=alertDialog.create();
+        arlertDialog.setCanceledOnTouchOutside(true);
+        return arlertDialog;
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return super.onCreateView(inflater, container, savedInstanceState);
 
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
+    }
 }

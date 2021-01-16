@@ -3,7 +3,10 @@ package com.example.mobile.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Package implements Parcelable {
@@ -11,15 +14,11 @@ public class Package implements Parcelable {
     String color;
     String name;
 
-    DateStringConverter lastEdit;
+    Date lastEdit;
     List<Notebook> notebooks;
 
 
-    protected Package(Parcel in) {
-        id = in.readInt();
-        color = in.readString();
-        name = in.readString();
-    }
+
     public Package(){
 
     }
@@ -49,15 +48,16 @@ public class Package implements Parcelable {
     }
 
     public void setName(String name) {
+        if(name==null)this.name="";
         this.name = name;
     }
 
 
-    public DateStringConverter getLastEdit() {
+    public Date getLastEdit() {
         return lastEdit;
     }
 
-    public void setLastEdit(DateStringConverter lastEdit) {
+    public void setLastEdit(Date lastEdit) {
         this.lastEdit = lastEdit;
     }
 
@@ -87,5 +87,12 @@ public class Package implements Parcelable {
         dest.writeInt(id);
         dest.writeString(color);
         dest.writeString(name);
+
+    }
+    protected Package(Parcel in) {
+        id = in.readInt();
+        color = in.readString();
+        name = in.readString();
+
     }
 }

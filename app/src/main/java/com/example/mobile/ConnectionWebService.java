@@ -19,8 +19,17 @@ import com.example.mobile.activity.LogInActivity;
 import com.example.mobile.activity.LogoActivity;
 import com.example.mobile.activity.SignUpActivity;
 import com.example.mobile.activity.WellComeActivity;
+import com.example.mobile.database.sqlite.AccountDAO;
+import com.example.mobile.database.sqlite.ConnectionDatabaseLocalMobile;
+import com.example.mobile.database.sqlite.NoteDAO;
+import com.example.mobile.database.sqlite.PackageDAO;
 import com.example.mobile.model.Account;
+import com.example.mobile.model.MyImage;
+import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Package;
+import com.example.mobile.model.Tool;
+import com.example.mobile.webservice.ultils.MyWorker;
+import com.example.mobile.webservice.ultils.PrepareConnectionWebService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,11 +41,11 @@ import java.util.Random;
 
 public class ConnectionWebService {
     private Activity activity;
-    private ConnectionDatabaseLocalMobile connectionDatabaseLocalMobile;
+    private AccountDAO connectionDatabaseLocalMobile;
     private String addressHome = "https://mobilenlu2020.000webhostapp.com";
     private String urlQuery = "/home/query.php";
     public ConnectionWebService(Activity activity) {
-        connectionDatabaseLocalMobile= new ConnectionDatabaseLocalMobile(activity);
+        connectionDatabaseLocalMobile= new AccountDAO(activity);
         this.activity = activity;
     }
     //quên mật khẩu
@@ -121,7 +130,7 @@ public class ConnectionWebService {
 
 
                     try {
-//                    Log.e("Error", response.toString());
+                    Log.e("Error", response.toString());
                         JSONArray jsonArray = new JSONArray(response.toString());
                         if (jsonArray.length() != 1) {
                             String msg = "Tài khoản không hợp lệ.";
@@ -142,6 +151,8 @@ public class ConnectionWebService {
                             Log.e("Success", msg);
                             connectionDatabaseLocalMobile.earse();
                             connectionDatabaseLocalMobile.insert_account(account);
+
+                            ConnectionWebService.this.takeData();
                             Intent intent = new Intent(activity, HomeActivity.class);
 
                             activity.startActivity(intent);
@@ -368,8 +379,8 @@ public class ConnectionWebService {
                 params.put("id", p.getId()+"");
                 params.put("color", p.getColor()+"");
                 params.put("title", p.getName());
-                Log.e("Date", p.getLastEdit().getText());
-                params.put("last_edit", p.getLastEdit().getText());
+                Log.e("Date", Tool.DateToString( p.getLastEdit()));
+                params.put("last_edit", Tool.DateToString( p.getLastEdit()));
                 params.put("username", account.getUsername());
                 return params;
             }
@@ -441,6 +452,157 @@ public class ConnectionWebService {
         };
         requestQueue.add(stringRequest);
         return false;
+
+    }
+    public void takeData(){
+        takeDataPackage();
+        takeDataNotebook();
+        this.connectionDatabaseLocalMobile.close();
+
+
+    }
+
+
+    public void takeDataPackage(){
+        PackageDAO packageDAO= new PackageDAO(ConnectionWebService.this.activity);
+        MyWorker myWorker= new MyWorker();
+        myWorker.setActivity(this.activity);
+        myWorker.setError(()->{
+            String msg = "Kết nối mạng bị lỗi.";
+            Log.e("Error", myWorker.getErrorMessengr());
+
+        });
+        myWorker.setSuccess(()->{
+
+
+            try {
+                Log.e("Return", myWorker.getResponse());
+                JSONArray jsonArray = new JSONArray(myWorker.getResponse());
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    Package p = new Package();
+                    p.setId(jsonObject.getInt("Id"));
+                    p.setColor(jsonObject.getString("Color"));
+                    p.setName(jsonObject.getString("Title"));
+                    p.setLastEdit(Tool.StringToDate(jsonObject.getString("LastEdit")));
+                    packageDAO.insert_package(p,false);
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.e("JSONException", e.getMessage());
+            }
+            packageDAO.close();
+
+
+
+        });
+
+
+        myWorker.setParams(new HashMap<String,String>(){{
+
+            Account account= packageDAO.getAccount();
+            put("username", account.getUsername());
+        }});
+
+        PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "getpackages.php");
+
+    }
+    public void takeDataNotebook(){
+        NoteDAO packageDAO= new NoteDAO(ConnectionWebService.this.activity);
+        MyWorker myWorker= new MyWorker();
+        myWorker.setActivity(this.activity);
+        myWorker.setError(()->{
+            String msg = "Kết nối mạng bị lỗi.";
+            Log.e("Error", myWorker.getErrorMessengr());
+
+        });
+        myWorker.setSuccess(()->{
+
+
+            try {
+                Log.e("Return", myWorker.getResponse());
+                JSONArray jsonArray = new JSONArray(myWorker.getResponse());
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    Notebook p = new Notebook();
+                    p.setId(jsonObject.getInt("Id"));
+                    p.setTitle(jsonObject.getString("Title"));
+                    p.setContent(jsonObject.getString("Content"));
+                    p.setDateEdit(Tool.StringToDate(jsonObject.getString("LastEdit")));
+                    p.id_package= jsonObject.getInt("IdPackage");
+                    packageDAO.insertNotebook(p, p.id_package,false);
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.e("JSONException", e.getMessage());
+            }
+            packageDAO.close();
+
+
+
+        });
+
+
+        myWorker.setParams(new HashMap<String,String>(){{
+
+            Account account= packageDAO.getAccount();
+            put("username", account.getUsername());
+
+        }});
+
+        PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "getnotebooks.php");
+
+    }
+    public void takeDataImage(){
+        NoteDAO packageDAO= new NoteDAO(ConnectionWebService.this.activity);
+        MyWorker myWorker= new MyWorker();
+        myWorker.setActivity(this.activity);
+        myWorker.setError(()->{
+            String msg = "Kết nối mạng bị lỗi.";
+            Log.e("Error", myWorker.getErrorMessengr());
+
+        });
+        myWorker.setSuccess(()->{
+
+
+            try {
+                Log.e("Return", myWorker.getResponse());
+                JSONArray jsonArray = new JSONArray(myWorker.getResponse());
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    MyImage p = new MyImage();
+                    p.setId(jsonObject.getInt("Id"));
+                    p.setImage(Tool.getByteFromBase64(jsonObject.getString("Image")));
+
+                    p.setLastEdit(Tool.StringToDate(jsonObject.getString("LastEdit")));
+                    p.idNotebook=jsonObject.getInt("IdNotebook");
+                    packageDAO.insertImage(p.idNotebook, p.getImage(),p.getLastEdit(),false);
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.e("JSONException", e.getMessage());
+            }
+            packageDAO.close();
+
+
+
+        });
+
+
+        myWorker.setParams(new HashMap<String,String>(){{
+
+            Account account= packageDAO.getAccount();
+            put("username", account.getUsername());
+
+        }});
+
+        PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "getnotebooks.php");
 
     }
 

@@ -46,6 +46,7 @@ public class ProfileActivity extends AppCompatActivity {
     String gender = "";
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,7 +145,7 @@ public void profileFacebook(){
         editTextEmail = findViewById(R.id.editTextEmail);
         btn_dOB = findViewById(R.id.btn_dOB);
         btn_save = findViewById(R.id.btn_save);
-        radioGroupGender = findViewById(R.id.radioGroupGender);
+//        radioGroupGender = findViewById(R.id.radioGroupGender);
         backArrow = findViewById(R.id.backArrow);
         image = findViewById(R.id.image);
         editTextGender = findViewById(R.id.editTextGender);
@@ -156,5 +157,6 @@ public void profileFacebook(){
         AccessToken accessToken = modelLogin.LayTokenFacebook();
 
         return accessToken;
+
     }
 }

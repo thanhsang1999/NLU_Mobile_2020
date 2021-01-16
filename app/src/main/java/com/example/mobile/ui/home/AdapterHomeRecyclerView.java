@@ -1,7 +1,9 @@
 package com.example.mobile.ui.home;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,21 +15,24 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.activity.HomeActivity;
 import com.example.mobile.R;
+import com.example.mobile.activity.NewNoteActivity;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Package;
 import com.example.mobile.model.Tool;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRecyclerView.ViewHolder> {
 
 
-    List<Notebook> notebooks;
-    Context context;
-    Boolean multiSelect = false;
-    Package currentPackage;
-    public AdapterHomeRecyclerView(Package p, Context context) {
-        currentPackage= p;
-        this.notebooks = p.getNotebooks();
+    ArrayList<Notebook> notebooks;
+    HomeFragment context;
+    public Boolean multiSelect = false;
+
+    public AdapterHomeRecyclerView( ArrayList<Notebook> notebooks, HomeFragment context) {
+
+        this.notebooks = notebooks;
         this.context = context;
     }
 
@@ -44,13 +49,15 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
     @Override
     public void onBindViewHolder(@NonNull  AdapterHomeRecyclerView.ViewHolder holder, int position) {
         Notebook notebook = notebooks.get(position);
-        String stringColorPackage = currentPackage.getColor();
+        String stringColorPackage = notebook.getColorPackage();
         if (notebook.getChecked()&&multiSelect){
             holder.linearLayoutMain.setBackgroundResource(R.drawable.background_checked_list_item_linear);
             holder.linearLayoutContent.setBackgroundResource(R.drawable.background_checked_list_item_linear);
             holder.imageViewCheck.setImageResource(R.drawable.ic_checked_list);
         }else {
-            holder.imageViewCheck.setImageResource(Tool.getDrawableByName(context,"ic_"+stringColorPackage));
+            holder.imageViewCheck.setImageResource(Tool.getDrawableByName(context.getContext(),"ic_"+stringColorPackage));
+            holder.linearLayoutMain.setBackgroundResource(R.drawable.background_list_item_linear);
+            holder.linearLayoutContent.setBackgroundResource(R.drawable.background_list_item_linear);
         }
         holder.textViewTitle.setText(notebook.getTitle());
         holder.textViewContent.setText(notebook.getContent());
@@ -76,7 +83,6 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
             textViewDateEdit = itemView.findViewById(R.id.textViewDateEdit);
             linearLayoutMain = itemView.findViewById(R.id.linearLayoutMain);
             linearLayoutContent = itemView.findViewById(R.id.linearLayoutContent);
-
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -84,11 +90,19 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
                     if (!notebook.getChecked()){
                         multiSelect=true;
                         notebook.setChecked(true);
+                        // thay doi ngoai hinh
                         linearLayoutMain.setBackgroundResource(R.drawable.background_checked_list_item_linear);
                         linearLayoutContent.setBackgroundResource(R.drawable.background_checked_list_item_linear);
                         imageViewCheck.setImageResource(R.drawable.ic_checked_list);
-                        HomeActivity homeActivity =  (HomeActivity) context;
-                        
+
+                        //Show activity
+                        Activity activity= context.getActivity();
+                        if(activity instanceof  HomeActivity){
+                            HomeActivity homeActivity =  (HomeActivity) activity;
+                            homeActivity.showActionMode();
+                        }else{
+                            Log.e("adapterhome","not acepti homeac");
+                        }
                     }
 
                     return true;
@@ -101,11 +115,23 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
                     if (Tool.FindCheckedInArrayList(notebooks)){
                         if (multiSelect){
                             if (notebook.getChecked()){
+                                // trả về chưa check
                                 notebook.setChecked(false);
-                                String stringColorPackage = currentPackage.getColor();
+                                // thay đổi ngoại hình
+                                String stringColorPackage = notebook.getColorPackage();
                                 linearLayoutMain.setBackgroundResource(R.drawable.background_list_item_linear);
                                 linearLayoutContent.setBackgroundResource(R.drawable.background_list_item_linear);
-                                imageViewCheck.setImageResource(Tool.getDrawableByName(context,"ic_"+stringColorPackage));
+                                imageViewCheck.setImageResource(Tool.getDrawableByName(context.getContext(),"ic_"+stringColorPackage));
+                                if (!Tool.FindCheckedInArrayList(notebooks)){
+                                    Activity activity= context.getActivity();
+                                    if(activity instanceof  HomeActivity){
+                                        HomeActivity homeActivity =  (HomeActivity) activity;
+                                        homeActivity.actionMode.finish();
+                                        multiSelect=!multiSelect;
+                                    }else{
+                                        Log.e("adapterhome","destroyActionMode");
+                                    }
+                                }
                             }else{
                                 notebook.setChecked(true);
                                 linearLayoutMain.setBackgroundResource(R.drawable.background_checked_list_item_linear);
@@ -115,7 +141,11 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
                         }
                     }else {
                         multiSelect = false;
-                            Toast.makeText(context, "select "+getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                        // qua chinh sua new note
+                        AdapterHomeRecyclerView.this.context.startActivity(AdapterHomeRecyclerView.this.context.getActivity(), NewNoteActivity.class,notebook.getId(), getAdapterPosition());
+
+                        Toast.makeText(context.getContext(), "select "+getAdapterPosition()+"id"+notebook.getId(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context.getContext(), "select "+Tool.DateToStringHCM(notebook.getDateEdit()), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
