@@ -52,6 +52,57 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewSubTitle">
 
 
+
+
+        //textViewEmail
+        <TextView
+            android:id="@+id/textViewEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginLeft="30dp"
+            android:text="@string/email_title"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        //layoutFieldEmail
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/layoutFieldEmail"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewEmail"
+            android:background="@drawable/border_set"
+
+            android:padding="5dp">
+            //textViewEmail
+            //iconEmail
+            <ImageView
+                android:id="@+id/iconEmail"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:contentDescription="@string/icon_email_description"
+                app:srcCompat="@drawable/ic_password"
+                tools:ignore="VectorDrawableCompat"
+                />
+            //editTextEmail
+            <EditText
+                android:id="@+id/editTextEmail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:hint="@string/email_hint"
+                android:background="@android:color/transparent"
+                android:autofillHints="" />
+
+        </LinearLayout>
+        //textViewOldPassword
         <TextView
             android:id="@+id/textViewOldPassword"
             android:layout_width="wrap_content"
@@ -60,9 +111,10 @@
             android:layout_marginLeft="30dp"
             android:text="@string/old_password_title"
             android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            app:layout_constraintStart_toStartOf="@+id/layoutFieldEmail"
+            app:layout_constraintTop_toBottomOf="@+id/layoutFieldEmail"
+            />
+        //layoutFieldEMail
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -70,15 +122,16 @@
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:orientation="horizontal"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/textViewOldPassword"
+            app:layout_constraintStart_toStartOf="@+id/textViewOldPassword"
             app:layout_constraintTop_toBottomOf="@+id/textViewOldPassword"
             android:background="@drawable/border_set"
 
             android:padding="5dp">
+            //textViewOldPassword
 
             <ImageView
-                android:id="@+id/iconOldPassword"
+                android:id="@+id/icon_Mail"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:contentDescription="@string/icon_password_description"
@@ -87,7 +140,7 @@
                 />
 
             <EditText
-                android:id="@+id/editTextUserName"
+                android:id="@+id/editTextMail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -103,14 +156,13 @@
             android:id="@+id/textViewTitleNewPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="4dp"
             android:text="@string/new_password_title"
             android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="@+id/layoutFieldOldPassword"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutFieldOldPassword" />
-
+        //
         <LinearLayout
             android:id="@+id/linearLayoutNewPassword"
             android:layout_width="match_parent"
@@ -144,16 +196,16 @@
                 android:autofillHints="" />
 
         </LinearLayout>
+
         <TextView
             android:id="@+id/textViewTitleConfirmPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="4dp"
             android:text="@string/new_password_title"
             android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="@+id/linearLayoutNewPassword"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutNewPassword" />
 
         <LinearLayout
