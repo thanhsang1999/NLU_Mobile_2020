@@ -322,6 +322,34 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
 
 
                             break;
+                            case "tblaccount":
+                            myWorker.setParams(new HashMap<String,String>(){{
+                                AccountDAO packageDAO= new AccountDAO(ConnectionDatabaseLocalMobile.this.activity);
+
+                                Account account= packageDAO.getAccount();
+
+
+                                put("gender", account.getGender());
+                                put("dateofbirth", Tool.DateToString(account.getDateOfBirth()));
+
+                                put("fullname", account.getFullname());
+                                put("username", account.getUsername());
+                                put("email", account.getEmail());
+                                Log.e("username", account.getUsername());
+                            }});
+
+                            switch (keyAction){
+
+                                case "update":
+                                    PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "updateaccount.php");
+                                    break;
+                                default:
+                                    break;
+                            }
+
+
+
+                            break;
                         case "tblnotebook":
                             myWorker.setParams(new HashMap<String,String>(){{
                                 NoteDAO noteDAO= new NoteDAO(ConnectionDatabaseLocalMobile.this.activity);

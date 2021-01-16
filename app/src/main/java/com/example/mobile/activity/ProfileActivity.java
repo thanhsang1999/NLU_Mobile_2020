@@ -80,7 +80,15 @@ public class ProfileActivity extends AppCompatActivity {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(radioGroupGender.getCheckedRadioButtonId()==R.id.radioButtonFemale)
+                account.setGender(Account.GENDER_FEMALE);else
+                if(radioGroupGender.getCheckedRadioButtonId()==R.id.radioButtonMale)
+                    account.setGender(Account.GENDER_MALE);
+                account.setFullname(editTextFullName.getText().toString());
+                account.setDateOfBirth(Tool.StringToDateVN(btn_dOB.getText().toString()));
+                account.setEmail(editTextEmail.getText().toString());
                 accountDAO.updateAccount(account);
+                accountDAO.sync();
                 Intent intent = new Intent(ProfileActivity.this,HomeActivity.class);
                 startActivity(intent);
                 finish();
@@ -108,7 +116,7 @@ public class ProfileActivity extends AppCompatActivity {
         editTextFullName.setText(account.getFullname());
         textViewTitle.setText(account.getUsername());
         if(account.getDateOfBirth()!=null)
-        btn_dOB.setText(Tool.DateToStringPrint(account.getDateOfBirth()));
+        btn_dOB.setText(Tool.DateToStringVN(account.getDateOfBirth()));
 
         if(account.getGender()!=null)
         if(account.getGender().equals(Account.GENDER_FEMALE)){

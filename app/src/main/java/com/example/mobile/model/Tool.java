@@ -37,6 +37,21 @@ public class Tool {
         }
         return tmpDate;
     }
+    public static Date StringToDateShort(String str){
+        if(str==null||str.toLowerCase().equals("null")){
+
+            return null;
+        }
+        Date tmpDate = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        formatter.setTimeZone(TimeZone.getTimeZone(prime));
+        try {
+            tmpDate = formatter.parse(str);
+        } catch (ParseException e) {
+            Log.e("Error", e.getMessage());
+        }
+        return tmpDate;
+    }
     public static Date StringToDateFacebook(String str){
         if(str==null||str.toLowerCase().equals("null")){
 
@@ -52,12 +67,37 @@ public class Tool {
         }
         return tmpDate;
     }
+    public static Date StringToDateVN(String str){
+        if(str==null||str.toLowerCase().equals("null")){
+
+            return null;
+        }
+        Date tmpDate = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        formatter.setTimeZone(TimeZone.getTimeZone(prime));
+        try {
+            tmpDate = formatter.parse(str);
+        } catch (ParseException e) {
+            Log.e("Error", e.getMessage());
+        }
+        return tmpDate;
+    }
+
     public static String DateToString(Date date){
         if(date==null){
 
             return null;
         }
         SimpleDateFormat formatter = new SimpleDateFormat(paterm);
+        formatter.setTimeZone(TimeZone.getTimeZone(prime));
+        return formatter.format(date);
+    }
+    public static String DateToStringVN(Date date){
+        if(date==null){
+
+            return null;
+        }
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         formatter.setTimeZone(TimeZone.getTimeZone(prime));
         return formatter.format(date);
     }

@@ -579,7 +579,7 @@ public class ConnectionWebService {
                         );
                         account.setOutside(jsonObject.getString("Outside"));
                         account.setIdOutSide(jsonObject.getString("IdOutside"));
-                        account.setDateOfBirth(Tool.StringToDate(jsonObject.getString("DateOfBirth")));
+                        account.setDateOfBirth(Tool.StringToDateShort(jsonObject.getString("DateOfBirth")));
                         account.setGender(jsonObject.getString("Gender"));
 
                         String msg = "Đăng nhập thành công.";
