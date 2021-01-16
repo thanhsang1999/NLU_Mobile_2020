@@ -2,7 +2,9 @@ package com.example.mobile;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -24,17 +26,23 @@ import com.example.mobile.database.sqlite.ConnectionDatabaseLocalMobile;
 import com.example.mobile.database.sqlite.NoteDAO;
 import com.example.mobile.database.sqlite.PackageDAO;
 import com.example.mobile.model.Account;
+import com.example.mobile.model.ModelLogin;
 import com.example.mobile.model.MyImage;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Package;
 import com.example.mobile.model.Tool;
 import com.example.mobile.webservice.ultils.MyWorker;
 import com.example.mobile.webservice.ultils.PrepareConnectionWebService;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -315,81 +323,7 @@ public class ConnectionWebService {
         }
 
     }
-    //thêm package mới
-    public void insert_package(Package p, Account account){
-
-        if(account==null)return;
-        String url = Config.getURL() + "addpackage.php";
-
-
-
-        final RequestQueue requestQueue = Volley.newRequestQueue(activity);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                String msg = "";
-                if (response.toString().trim().equals("OK")) {
-                    msg = "Gửi package lên webservice thành công";
-                    Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
-                    Log.e("Success", msg);
-
-
-                    Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(activity, HomeActivity.class);
-
-
-                } else if (response.toString().trim().equals("Error")) {
-                    msg = "Gửi package lên webservice không thành công";
-                    Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
-
-
-                    Log.e("Error", msg.toString());
-
-                    Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
-
-                } else{
-                    msg = "Database bị lỗi";
-
-
-
-                    Log.e("Error", msg.toString());
-                    Log.e("PHP Return", response.toString());
-
-                }
-
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                String msg = "Kết nối mạng bị lỗi.";
-                Log.e("Error", error.toString());
-
-                Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
-
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-
-                params.put("id", p.getId()+"");
-                params.put("color", p.getColor()+"");
-                params.put("title", p.getName());
-                Log.e("Date", Tool.DateToString( p.getLastEdit()));
-                params.put("last_edit", Tool.DateToString( p.getLastEdit()));
-                params.put("username", account.getUsername());
-                return params;
-            }
-
-
-        };
-        requestQueue.add(stringRequest);
-
-    }
+    
     //lấy data
     private void getdata(String url) {
 
@@ -606,4 +540,191 @@ public class ConnectionWebService {
 
     }
 
+    public void loginOutside(String outside) {
+        String url = Config.getURL() + "loginoutside.php";
+        String idS=Profile.getCurrentProfile().getId();
+
+
+
+        RequestQueue requestQueue = Volley.newRequestQueue(activity);
+
+        StringRequest jsonArrayRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    Log.e("Return", response.toString());
+                    JSONArray jsonArray = new JSONArray(response.toString());
+                    if (jsonArray.length() > 1) {
+                        String msg = "Tài khoản không hợp lệ.";
+                        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+                        Log.e("Error", msg);
+                        return;
+                    }
+                    if (jsonArray.length() == 0) {
+                        String msg = "Đăng ký tài khoản mới với outside.";
+                        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+                        Log.e("loginOutside", msg);
+                        ModelLogin modelLogin= new ModelLogin();
+                        AccessToken accessToken = modelLogin.LayTokenFacebook();
+                        if(accessToken != null) {
+                            GraphRequest graphRequest = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
+                                        @Override
+                                        public void onCompleted(JSONObject object, GraphResponse response) {
+                                            try {
+                                                Account account= new Account(object.getString("email"),object.getString("name"), object.getString("email"),"");
+                                                account.setDateOfBirth(Tool.StringToDate(object.getString("birthday").replaceAll("/","-")+" 00:00:00"));
+
+                                                account.setGender( object.getString("gender"));
+                                                account.setIdOutSide(Profile.getCurrentProfile().getId());
+                                                signUpOutside(outside, account);
+
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }
+                            );
+
+                            Bundle parameter = new Bundle();
+                            parameter.putString("fields","name,email,birthday,gender");
+                            graphRequest.setParameters(parameter);
+                            graphRequest.executeAsync();
+                        }
+                        return;
+
+
+                    }
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                        Account account = new Account(jsonObject.getString("Username"),
+                                jsonObject.getString("Fullname"), jsonObject.getString("Email"), jsonObject.getString("Password")
+                        );
+                        String msg = "Đăng nhập thành công.";
+
+                        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+                        Log.e("Success", msg);
+                        connectionDatabaseLocalMobile.earse();
+                        connectionDatabaseLocalMobile.insert_account(account);
+
+                        ConnectionWebService.this.takeData();
+                        Intent intent = new Intent(activity, HomeActivity.class);
+
+                        activity.startActivity(intent);
+                        activity.finish();
+
+
+
+
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                String msg = "Kết nối mạng bị lỗi.";
+                Log.e("Error", error.toString());
+
+                Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("id_outside", idS);
+                params.put("outside", outside);
+                return params;
+            }
+
+
+        };
+        requestQueue.add(jsonArrayRequest);
+    }
+    //đăng ký
+    public void signUpOutside(String outside, Account account) {
+        if (activity instanceof LogInActivity) {
+
+            final LogInActivity signUpActivity = (LogInActivity) activity;
+            signUpActivity.loading(null);
+            String url = Config.getURL() + "signupoutside.php";
+
+
+            final RequestQueue requestQueue = Volley.newRequestQueue(activity);
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    String msg = "";
+                    if (response.toString().trim().equals("OK")) {
+                        msg = "Đăng ký thành công";
+                        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+                        Log.e("Success", msg);
+
+                        signUpActivity.loading_complete(null);
+                        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+                        connectionDatabaseLocalMobile.earse();
+                        connectionDatabaseLocalMobile.insert_account(account);
+                        Intent intent = new Intent(activity, HomeActivity.class);
+
+                        activity.startActivity(intent);
+                        activity.finish();
+
+                    } else if (response.toString().trim().equals("Error")) {
+                        msg = "Đăng ký không thành công";
+                        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+                        Log.e("Error", msg.toString());
+                        signUpActivity.loading_complete(null);
+                        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+
+                    } else{
+                        msg = "Database bị lỗi.";
+                        Log.e("Error", response.toString());
+                        signUpActivity.loading_complete(null);
+                        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+
+                    }
+
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    String msg = "Kết nối mạng bị lỗi.";
+                    Log.e("Error", error.toString());
+                    signUpActivity.loading_complete(null);
+                    Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+
+                }
+            }) {
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("username", account.getUsername());
+
+                    params.put("fullname", account.getFullname());
+                    params.put("email", account.getEmail());
+                    params.put("outside", outside);
+                    params.put("id_outside", account.getIdOutSide());
+
+                    return params;
+                }
+
+
+            };
+            requestQueue.add(stringRequest);
+        }
+
+    }
 }

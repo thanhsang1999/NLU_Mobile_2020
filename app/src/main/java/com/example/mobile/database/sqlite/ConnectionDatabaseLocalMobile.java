@@ -65,7 +65,10 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                 "username TEXT," +
                 "fullname TEXT," +
                 "email TEXT," +
-                "password TEXT" +
+                "password TEXT," +
+                "gender TEXT," +
+                "dateofbirth TEXT" +
+
                 ");";
         sqLiteDatabase.execSQL(sqlCreateTableAccount);
         String sqlCreateTriggerInsertAccount = "CREATE TRIGGER IF NOT EXISTS trigger_username BEFORE INSERT ON tblaccounts \n" +

@@ -17,13 +17,13 @@ import android.widget.Toast;
 
 import com.example.mobile.ConnectionWebService;
 import com.example.mobile.R;
+import com.example.mobile.model.Account;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 
 import java.util.Arrays;
 
@@ -135,7 +135,7 @@ public class LogInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 LoginManager.getInstance().logInWithReadPermissions(LogInActivity.this,
                         Arrays.asList("public_profile","email","user_birthday","user_gender"));
-            loginFacebook();
+                loginFacebook();
             }
         });
     }
@@ -165,8 +165,7 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d("a","thành công");
-                Intent intent = new Intent(LogInActivity.this, HomeActivity.class);
-                startActivity(intent);
+                connectionWebService.loginOutside(Account.OUTSIDE_FACEBOOK);
             }
 
             @Override

@@ -11,7 +11,7 @@
  Target Server Version : 100408
  File Encoding         : 65001
 
- Date: 15/01/2021 17:50:23
+ Date: 16/01/2021 17:09:29
 */
 
 SET NAMES utf8mb4;
@@ -27,13 +27,16 @@ CREATE TABLE `tblaccount`  (
   `fullname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `outside` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `id_outside` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tblaccount
 -- ----------------------------
-INSERT INTO `tblaccount` VALUES (1, 'abc123', '123', 'tanhoang99.999@gmail.com', 'aA@123');
+INSERT INTO `tblaccount` VALUES (1, 'abc123', '123', 'tanhoang99.999@gmail.com', 'aA@123', NULL, NULL);
+INSERT INTO `tblaccount` VALUES (3, 'thiendaopk1@gmail.com', 'Trí Thiện', 'thiendaopk1@gmail.com', NULL, 'facebook', '2755863414664627');
 
 -- ----------------------------
 -- Table structure for tblimage

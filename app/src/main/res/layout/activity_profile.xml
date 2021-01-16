@@ -231,7 +231,7 @@
                             android:autofillHints=""
                             android:background="@android:color/transparent"
                             android:ems="10"
-                            android:hint="@string/fullname_hint"
+                            android:hint="@string/gender_hint"
                             android:inputType="textPersonName" />
 
 
