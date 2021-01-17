@@ -4,7 +4,7 @@
 	require 'getidaccount.php';
 	
 	
-	$s1 =$_POST['id'];
+	$i1 =$_POST['id_account'];
 	//$s1 = 'abc123';
 	
 	
