@@ -440,7 +440,8 @@ public class ConnectionWebService {
         myWorker.setParams(new HashMap<String,String>(){{
 
             Account account= packageDAO.getAccount();
-            put("id", account.getId()+"");
+            Log.e("Id", account.getId()+"");
+            put("id_account", account.getId()+"");
 
         }});
 
