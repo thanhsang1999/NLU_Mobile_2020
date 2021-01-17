@@ -45,6 +45,7 @@ import com.example.mobile.database.sqlite.NoteDAO;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Tool;
 import com.example.mobile.utils.ExactThreadHelper;
+import com.example.mobile.utils.ImageUltils;
 import com.example.mobile.utils.MyNotificationHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.jetbrains.annotations.NotNull;
@@ -54,6 +55,8 @@ import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -87,7 +90,7 @@ public class NewNoteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_note);
-        lstBitmap= new ArrayList<>();
+
         idPackage=getIntent().getExtras().getInt("idPackage");
         idNotebook=getIntent().getExtras().getInt("idNotebook");
         index=getIntent().getExtras().getInt("index");
@@ -117,9 +120,7 @@ public class NewNoteActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(NewNoteActivity.this,LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        for(byte[] b:notebook.getImages()){
-            lstBitmap.add(Tool.getBitmapFromByte(b));
-        }
+        lstBitmap= ImageUltils.getListBitmapFromListPath(notebook.getImages());
         newNoteAdapter = new NewNoteAdapter(NewNoteActivity.this,lstBitmap);
         recyclerView.setAdapter(newNoteAdapter);
     }
@@ -369,11 +370,13 @@ public class NewNoteActivity extends AppCompatActivity {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),imageUri);
                 lstBitmap.add(bitmap);
-                notebook.getImages().add(Tool.getByteFromBitmap(bitmap));
+                String path = imageUri.getPath(); // "/mnt/sdcard/FileName.mp3"
+                File file = new File(new URI(path));
+                notebook.getImages().add(file.getAbsolutePath());
 
 
                 newNoteAdapter.notifyDataSetChanged();
-            } catch (IOException e) {
+            } catch (IOException | URISyntaxException e) {
                 e.printStackTrace();
             }
 
@@ -444,7 +447,7 @@ public class NewNoteActivity extends AppCompatActivity {
         Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
         Bitmap bitmap1 = Bitmap.createBitmap(bitmap, 0, 0, targetW, targetH,
                 matrix, true);
-        notebook.getImages().add(Tool.getByteFromBitmap(bitmap1));
+        notebook.getImages().add(currentPhotoPath);
         lstBitmap.add(bitmap1);
     }
 }

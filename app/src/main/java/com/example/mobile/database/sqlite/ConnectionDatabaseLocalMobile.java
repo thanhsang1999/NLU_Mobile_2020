@@ -104,7 +104,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
         String sqlCreateTableImage = "CREATE TABLE IF NOT EXISTS images_note ("+
                 "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"+
                 "id_notebook integer," +
-                "image blob,"+
+                "image TEXT,"+
                 "last_edit TEXT);";
         sqLiteDatabase.execSQL(sqlCreateTableImage);
 

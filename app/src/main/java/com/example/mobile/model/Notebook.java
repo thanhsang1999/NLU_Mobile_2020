@@ -21,7 +21,7 @@ public class Notebook implements Parcelable {
     private Date remind;
     private boolean checked;
     private String colorPackage;
-    List<byte[]> images;
+    List<String> images;
     public int id_package;
 
     public Notebook() {
@@ -145,11 +145,11 @@ public class Notebook implements Parcelable {
 
     }
 
-    public List<byte[]> getImages() {
+    public List<String> getImages() {
         return images;
     }
 
-    public void setImages(List<byte[]> images) {
+    public void setImages(List<String> images) {
         this.images = images;
     }
 }

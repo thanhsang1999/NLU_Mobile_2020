@@ -1,21 +1,23 @@
 package com.example.mobile.model;
 
+import android.graphics.Bitmap;
+
 import java.util.Date;
 
 public class MyImage {
     private int id;
     public int idNotebook;
 
-    private byte[] image;
+    private String image;
     private Date lastEdit;
 
 
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
