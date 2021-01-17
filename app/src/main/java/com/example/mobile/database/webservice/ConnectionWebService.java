@@ -20,9 +20,11 @@ import com.example.mobile.activity.LogInActivity;
 import com.example.mobile.activity.SignUpActivity;
 import com.example.mobile.database.sqlite.AccountDAO;
 import com.example.mobile.database.sqlite.NoteDAO;
+import com.example.mobile.database.sqlite.NoteSharedDAO;
 import com.example.mobile.database.sqlite.PackageDAO;
 import com.example.mobile.model.Account;
 import com.example.mobile.model.MyImage;
+import com.example.mobile.model.NoteShared;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Package;
 import com.example.mobile.model.Tool;
@@ -343,7 +345,9 @@ public class ConnectionWebService {
     public void takeData(){
         takeDataPackage();
         takeDataNotebook();
-        this.accountDAO.close();
+        takeDataMyNoteShared();
+        //takeDataImage();
+
 
 
     }
@@ -436,11 +440,61 @@ public class ConnectionWebService {
         myWorker.setParams(new HashMap<String,String>(){{
 
             Account account= packageDAO.getAccount();
-            put("username", account.getUsername());
+            put("id", account.getId()+"");
 
         }});
 
         PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "getnotebooks.php");
+
+    }
+    public void takeDataMyNoteShared(){
+        NoteSharedDAO packageDAO= new NoteSharedDAO(ConnectionWebService.this.activity);
+        MyWorker myWorker= new MyWorker();
+        myWorker.setActivity(this.activity);
+        myWorker.setError(()->{
+            String msg = "Kết nối mạng bị lỗi.";
+            Log.e("Error", myWorker.getErrorMessengr());
+
+        });
+        myWorker.setSuccess(()->{
+
+
+            try {
+                Log.e("GetNoteshared", myWorker.getResponse());
+                JSONArray jsonArray = new JSONArray(myWorker.getResponse());
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    NoteShared p = new NoteShared();
+                    p.setId(jsonObject.getInt("Id"));
+                    p.setTitle(jsonObject.getString("Title"));
+                    p.setContent(jsonObject.getString("Content"));
+                    p.setDateEdit(Tool.StringToDate(jsonObject.getString("LastEdit")));
+                    Account account= new Account(jsonObject.getInt("IdAccount"));
+                    p.setAccount(account);
+                    packageDAO.insertNoteShared(p,false);
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.e("JSONException", e.getMessage());
+            }
+            packageDAO.close();
+
+
+
+        });
+
+
+        myWorker.setParams(new HashMap<String,String>(){{
+
+            Account account= packageDAO.getAccount();
+            Log.e("id", account.getId()+"");
+            put("id", account.getId()+"");
+
+        }});
+
+        PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "getnoteshareds.php");
 
     }
     public void takeDataImage(){

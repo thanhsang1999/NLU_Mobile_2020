@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.example.mobile.R;
 import com.example.mobile.activity.HomeActivity;
 import com.example.mobile.activity.SeeNoteActivity;
@@ -29,6 +31,7 @@ public class ReceiveFragment extends Fragment {
 
     public AdapterReceive adapterReceive;
     NoteSharedDAO noteSharedDAO;
+    SwipeRefreshLayout swiperefresh;
 
 
     public ArrayList<NoteShared> notebooks;
@@ -58,6 +61,16 @@ public class ReceiveFragment extends Fragment {
     private void initReceive() {
         recyclerView = root.findViewById(R.id.recyclerViewReceive);
         HomeActivity.fab.hide();
+        swiperefresh=root.findViewById(R.id.swiperefresh);
+        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                notebooks.clear();
+                notebooks.addAll(noteSharedDAO.getNoteSharedLast(-1));
+                adapterReceive.notifyDataSetChanged();
+                swiperefresh.setRefreshing(false);
+            }
+        });
     }
 
     public void startActivitySeeNote(NoteShared notebook) {

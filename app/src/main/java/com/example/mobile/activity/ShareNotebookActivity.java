@@ -91,6 +91,7 @@ public class ShareNotebookActivity extends AppCompatActivity {
             case android.R.id.home:
                 if(infoShares.size()==1){
                     setResult(Activity.RESULT_CANCELED);
+                    Log.e("Back", "Cancel");
 
                 } else{
                     NoteSharedDAO noteSharedDAO= new NoteSharedDAO(this);

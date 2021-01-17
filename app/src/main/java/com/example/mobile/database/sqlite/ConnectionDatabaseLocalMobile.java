@@ -199,12 +199,12 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
         values.put("name_table", sync.getTableName());
         values.put("time", sync.getTime());
         values.put("action_sync", sync.getAction());
-        boolean rs = this.sqLiteDatabase.insert("tblsync", null, values) == 1;
-        Log.e("rs", rs+"");
-        if(rs){
+        long ret = this.sqLiteDatabase.insert("tblsync", null, values) ;
+        Log.e("rs", ret+"");
+        if(Long.compare(ret,1)==0){
             Log.e("Insert Sync", "Ok" );
         }
-        return rs;
+        return Long.compare(ret,1)==0;
     }
     public boolean deleteSync(MySync mySync){
         String table = "tblsync";
@@ -218,7 +218,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
         String columnName[] = {"id", "id_row", "name_table", "time","action_sync"};
 
         Cursor cursor = this.sqLiteDatabase.query("tblsync",
-                columnName, null, null, null, null, "time asc"
+                columnName, null, null, null, null, "id asc"
         );
 
         if (cursor != null) {
@@ -311,6 +311,8 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                     });
                     String key= sync.getTableName();
                     String keyAction= sync.getAction();
+                    Log.e("TableName", key);
+                    Log.e("ActionSync", keyAction);
                     switch (key){
                         case "tblpackage":
                             myWorker.setParams(new HashMap<String,String>(){{
@@ -379,7 +381,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                                 put("id_account", account.getId()+"");
                                 Log.e("id", sync.getIdRow()+"");
                                 Log.e("id_account", account.getId()+"");
-                                Log.e("ActionSync", keyAction);
+
                                 if(!keyAction.equals("delete")){
                                     Notebook p= noteDAO.getNotebook(sync.getIdRow());
                                     if(p.getId()==0){
@@ -427,12 +429,15 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                                 if(p.getId()==0){
                                     Log.e("Error","idnoteshared not found");
                                 }
-                                Account account= noteDAO.getAccount();
+
                                 put("id", p.getId()+"");
+                                Log.e("id", p.getId()+"");
+
                                 put("title", p.getTitle());
                                 put("content", p.getContent());
                                 put("last_edit", Tool.DateToString( p.getDateEdit()));
-                                put("id_account", account.getId()+"");
+                                put("id_account", p.getAccount().getId()+"");
+                                put("username", p.getAccount().getUsername()+"");
                                 if(p.getRemind()!=null){
                                     put("has_remind", "true");
                                     put("remind", Tool.DateToString( p.getRemind()));

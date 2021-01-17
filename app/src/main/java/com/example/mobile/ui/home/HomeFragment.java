@@ -172,13 +172,14 @@ public class HomeFragment extends Fragment implements IFragmentShowNote {
 
             }
             intent.putIntegerArrayListExtra("lstShared",lstShared);
-            this.getActivity().startActivityForResult(intent, HomeActivity.SHARE_NOTEBOOK);
+            ((HomeActivity)this.getActivity()).startActivityForResult(intent, HomeActivity.SHARE_NOTEBOOK);
         }
 
 
     };
     @Override
     public void updateApdaterAfterShared(){
+        Log.e("Run", "updateApdaterAfterShared");
         for (int i=listNotebook.size()-1;i>=0;i--) {
             if(listNotebook.get(i).getChecked()==true)
                listNotebook.remove(i);

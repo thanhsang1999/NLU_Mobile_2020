@@ -255,6 +255,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
         sqlite = new NoteDAO(this);
+//        sqlite.
     }
 
 
@@ -386,9 +387,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-                Tool.SetAllUnChecked(homeFragment.listNotebook);
-                homeFragment.adapterHomeRecyclerView.notifyDataSetChanged();
-                actionMode = null;
+
             }
         });
     }
@@ -444,7 +443,11 @@ private void LoadDataFragmentHome(){
                 }
 
             }
-            if (requestCode == NEW_NOTEBOOK && resultCode == Activity.RESULT_OK ) {
+
+
+        }
+        if (requestCode == SHARE_NOTEBOOK  ) {
+            if(resultCode == Activity.RESULT_OK){
                 if(currentFragment instanceof IFragmentShowNote){
                     IFragmentShowNote iFragmentCanAddNote=(IFragmentShowNote) currentFragment;
                     iFragmentCanAddNote.updateApdaterAfterShared();
@@ -453,10 +456,13 @@ private void LoadDataFragmentHome(){
                 }
             }
             if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
+                Tool.SetAllUnChecked(homeFragment.listNotebook);
+                homeFragment.adapterHomeRecyclerView.notifyDataSetChanged();
+                actionMode = null;
             }
 
         }
+
     };
 // xử lý lấy tên người dùng facebook
         //lấy tokeen

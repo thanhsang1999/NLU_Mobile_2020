@@ -29,13 +29,15 @@ public class NoteSharedDAO extends  NoteDAO {
 
     public boolean insertNoteShared(Integer integer, boolean isSync) {
         Notebook notebook = this.getNotebook(integer);
+        Account account=getAccount();
         ContentValues values = new ContentValues();
         values.put("title", notebook.getTitle());
         values.put("content", notebook.getContent());
         values.put("remind", Tool.DateToString(notebook.getRemind()));
         values.put("last_edit", Tool.DateToString(notebook.getDateEdit()));
         values.put("id", notebook.getId());
-
+        values.put("id_account", account.getId());
+        values.put("username", account.getUsername());
         boolean success=this.sqLiteDatabase.insert("tblnoteshared", null, values) != -1;
 
 
@@ -53,6 +55,25 @@ public class NoteSharedDAO extends  NoteDAO {
                 Log.e("insert","ns sync");
             }
             this.deleteNotebook(notebook.getId(), false, true);
+            return true;
+        }
+        return false;
+
+    }
+    public boolean insertNoteShared(NoteShared noteShared, boolean isSync) {
+
+        ContentValues values = new ContentValues();
+        values.put("title", noteShared.getTitle());
+        values.put("content", noteShared.getContent());
+        values.put("remind", Tool.DateToString(noteShared.getRemind()));
+        values.put("last_edit", Tool.DateToString(noteShared.getDateEdit()));
+        values.put("id", noteShared.getId());
+        values.put("id_account", noteShared.getAccount().getId());
+        values.put("username", noteShared.getAccount().getUsername());
+        boolean success=this.sqLiteDatabase.insert("tblnoteshared", null, values)>0;
+        if(success){
+
+
             return true;
         }
         return false;
