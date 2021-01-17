@@ -193,6 +193,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
         values.put("time", sync.getTime());
         values.put("action_sync", sync.getAction());
         boolean rs = this.sqLiteDatabase.insert("tblsync", null, values) == 1;
+        Log.e("rs", rs+"");
         if(rs){
             Log.e("Insert Sync", "Ok" );
         }
@@ -260,6 +261,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                         account.setDateOfBirth(Tool.StringToDate(cursor.getString(5)));
                         account.setOutside(cursor.getString(6));
                         account.setIdOutSide(cursor.getString(7));
+                        account.setId(cursor.getInt(8));
                         Log.e("Account", account.getUsername());
                         return account;
                     } catch (Exception e) {
@@ -365,34 +367,79 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                         case "tblnotebook":
                             myWorker.setParams(new HashMap<String,String>(){{
                                 NoteDAO noteDAO= new NoteDAO(ConnectionDatabaseLocalMobile.this.activity);
-                                Notebook p= noteDAO.getNotebook(sync.getIdRow());
-                                if(p.getId()==0){
-                                    Log.e("Error","idnotebook not found");
-                                }
                                 Account account= noteDAO.getAccount();
-                                put("id", p.getId()+"");
-                                put("id_package", p.id_package+"");
+                                put("id", sync.getIdRow()+"");
+                                put("id_account", account.getId()+"");
+                                Log.e("id", sync.getIdRow()+"");
+                                Log.e("id_account", account.getId()+"");
+                                Log.e("ActionSync", keyAction);
+                                if(!keyAction.equals("delete")){
+                                    Notebook p= noteDAO.getNotebook(sync.getIdRow());
+                                    if(p.getId()==0){
+                                        Log.e("Error","idnotebook not found");
+                                    }
 
-                                put("title", p.getTitle());
-                                put("content", p.getContent());
+                                    put("id", p.getId()+"");
+                                    put("id_package", p.id_package+"");
 
-                                put("last_edit", Tool.DateToString( p.getDateEdit()));
+                                    put("title", p.getTitle());
+                                    put("content", p.getContent());
 
-                                put("username", account.getUsername());
-                                if(p.getRemind()!=null){
-                                    put("has_remind", "true");
-                                    put("remind", Tool.DateToString( p.getRemind()));
-                                }else
-                                put("has_remind", "false");
+                                    put("last_edit", Tool.DateToString( p.getDateEdit()));
+
+                                    put("id_account", account.getId()+"");
+                                    if(p.getRemind()!=null){
+                                        put("has_remind", "true");
+                                        put("remind", Tool.DateToString( p.getRemind()));
+                                    }else
+                                        put("has_remind", "false");
+
+                                }
+
 
                             }});
 
                             switch (keyAction){
                                 case "insert":
                                     PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "addnotebook.php");
-                                break;
+                                    break;
+                                case "delete":
+                                    PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "deletenotebook.php");
+                                    break;
                                 case "update":
                                     PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "updatenotebook.php");
+                                    break;
+                                default:
+                                    break;
+                            }
+                            break;
+                        case "tblnoteshared":
+                            myWorker.setParams(new HashMap<String,String>(){{
+                                NoteSharedDAO noteDAO= new NoteSharedDAO(ConnectionDatabaseLocalMobile.this.activity);
+                                Notebook p= noteDAO.getNoteShared(sync.getIdRow());
+                                if(p.getId()==0){
+                                    Log.e("Error","idnoteshared not found");
+                                }
+                                Account account= noteDAO.getAccount();
+                                put("id", p.getId()+"");
+                                put("title", p.getTitle());
+                                put("content", p.getContent());
+                                put("last_edit", Tool.DateToString( p.getDateEdit()));
+                                put("id_account", account.getId()+"");
+                                if(p.getRemind()!=null){
+                                    put("has_remind", "true");
+                                    put("remind", Tool.DateToString( p.getRemind()));
+                                }else
+                                    put("has_remind", "false");
+
+                            }});
+
+                            switch (keyAction){
+                                case "insert":
+                                    PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "addnoteshared.php");
+                                    break;
+                                case "update":
+                                    PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "updatenoteshared.php");
                                     break;
                                 default:
                                     break;

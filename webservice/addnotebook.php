@@ -1,10 +1,10 @@
 <?php
 	require 'db.php';
 	
-	require 'getidaccount.php';
+	
 	
 	$i1 =$_POST['id'];
-	$s2 =$_POST['username'];	
+	$i2 =$_POST['id_account'];	
 	$i3 =$_POST['id_package'];
 	$s4 =$_POST['title'];
 	$s5 =$_POST['content'];
@@ -15,7 +15,7 @@
 		$s7 =$_POST['remind'];
 	else 
 	$s7=null;
-	$i2 = getIdAccount($s2, $connect);
+	
 	
 	
 	$query = "INSERT INTO tblnotebook(id,id_account,id_package, title, content, last_edit,remind) values (?,?,?,?,?,?,?)";

@@ -48,6 +48,7 @@ public class AccountDAO extends ConnectionDatabaseLocalMobile {
         values.put("id_outside", account.getIdOutSide());
         values.put("outside", account.getOutside());
         Log.e("Account", account.getUsername());
+        if(account.getId()!=0)values.put("id", account.getId());
         return this.sqLiteDatabase.insert("tblaccounts", null, values) != -1;
     }
     public boolean updateAccount(Account account){

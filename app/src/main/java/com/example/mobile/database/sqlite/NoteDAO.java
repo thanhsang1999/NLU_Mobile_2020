@@ -310,6 +310,26 @@ public class NoteDAO  extends PackageDAO {
         this.sqLiteDatabase.delete("images_note","id_notebook=?",new String[]{String.valueOf(id)});
         return true;
     }
+    public boolean deleteNotebook(int id, boolean deleteImage, boolean isSync){
+        int ret=this.sqLiteDatabase.delete("notebook","id=?",new String[]{String.valueOf(id)});
+        if(deleteImage)
+        this.sqLiteDatabase.delete("images_note","id_notebook=?",new String[]{String.valueOf(id)});
+        Log.e("ret", ret+"");
+        if(ret==1){
+            if(!isSync)return true;
+
+            MySync sync=new MySync();
+            sync.setAction("delete");
+            sync.setIdRow(id);
+            sync.setTableName("tblnotebook");
+            sync.setTime(Tool.DateToString(new Date()));
+            if(insert_sync(sync)){
+                Log.e("insert","dn sync");
+            }
+            return true;
+        }
+        return false;
+    }
 
 
 }

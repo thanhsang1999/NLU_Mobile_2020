@@ -412,7 +412,8 @@ private void LoadDataFragmentHome(){
         ArrayList<Notebook> notebooks2 = new ArrayList<>(notebooks);
         for (Notebook item: notebooks2) {
             if (item.getChecked()){
-                sqlite.DeleteNotebook(item.getId());
+                sqlite.deleteNotebook(item.getId(), true, true);
+                sqlite.sync();
                 notebooks.remove(item);
             }
         }

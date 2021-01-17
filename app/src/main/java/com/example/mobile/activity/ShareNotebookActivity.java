@@ -87,12 +87,16 @@ public class ShareNotebookActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
-                if(infoShares.size()==0)
-                this.finish();else{
+                if(infoShares.size()==0){
+                    this.finish();
+                } else{
                     NoteSharedDAO noteSharedDAO= new NoteSharedDAO(this);
-                    for (InfoShare i:infoShares
-                         ) {
-                        noteSharedDAO.shared(i, lstShared);
+                    for (int indexNotebook=0;indexNotebook<lstShared.size();indexNotebook++){
+                        noteSharedDAO.insertNoteShared(lstShared.get(indexNotebook),true);
+                        for (InfoShare i:infoShares) {
+                            noteSharedDAO.shared(i, lstShared);
+                        }
+
                     }
 
                 }
