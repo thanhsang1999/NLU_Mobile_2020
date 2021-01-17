@@ -59,7 +59,7 @@ public class SeeNoteActivity extends AppCompatActivity {
         editTextContent = findViewById(R.id.editTextContent);
         recyclerView = findViewById(R.id.recyclerViewImage);
 
-        editTextAuthor.setText("sang");
+        editTextAuthor.setText("Chủ sở hữu: Sang");
         editTextAuthor.setFocusable(false);
         editTextTitle.setText(notebook.getTitle());
         editTextTitle.setFocusable(false);
