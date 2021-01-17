@@ -10,7 +10,7 @@
                         android:icon="@drawable/ic_main"
                         android:title="Chính" />
                 <item
-                        android:id="@+id/nav_gallery"
+                        android:id="@+id/nav_important"
                         android:icon="@drawable/ic_important"
                         android:title="Quang Trọng" />
                 <item

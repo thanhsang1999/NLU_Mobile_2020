@@ -1,11 +1,10 @@
 package com.example.mobile.activity;
 
-import android.content.Context;
-import android.content.Intent;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
@@ -150,7 +149,7 @@ public class HomeActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,R.id.nav_receive)
+                R.id.nav_home, R.id.nav_important, R.id.nav_slideshow,R.id.nav_receive)
                 .setDrawerLayout(drawer)
                 .build();
 
