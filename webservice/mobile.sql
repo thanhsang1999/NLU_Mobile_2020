@@ -11,7 +11,7 @@
  Target Server Version : 100408
  File Encoding         : 65001
 
- Date: 18/01/2021 02:51:56
+ Date: 18/01/2021 04:39:47
 */
 
 SET NAMES utf8mb4;
@@ -94,7 +94,7 @@ CREATE TABLE `tblnotebook`  (
   PRIMARY KEY (`id`, `id_account`) USING BTREE,
   INDEX `id_account`(`id_account`) USING BTREE,
   CONSTRAINT `tblnotebook_ibfk_1` FOREIGN KEY (`id_account`) REFERENCES `tblaccount` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 64 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 81 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tblnotebook
@@ -117,8 +117,22 @@ CREATE TABLE `tblnoteshared`  (
   `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `last_edit` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `remind` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of tblnoteshared
+-- ----------------------------
+INSERT INTO `tblnoteshared` VALUES (72, 41, '', '123', '2021-01-17 20:37:26', NULL, 'thiendaopk1@gmail.com');
+INSERT INTO `tblnoteshared` VALUES (73, 41, '', '123', '2021-01-17 20:42:16', NULL, 'thiendaopk1@gmail.com');
+INSERT INTO `tblnoteshared` VALUES (74, 41, '', '123', '2021-01-17 20:44:00', NULL, 'thiendaopk1@gmail.com');
+INSERT INTO `tblnoteshared` VALUES (75, 41, '', '123', '2021-01-17 20:48:40', NULL, 'thiendaopk1@gmail.com');
+INSERT INTO `tblnoteshared` VALUES (76, 41, '', '123', '2021-01-17 20:55:07', NULL, 'thiendaopk1@gmail.com');
+INSERT INTO `tblnoteshared` VALUES (77, 41, '', '123', '2021-01-17 20:58:04', NULL, 'thiendaopk1@gmail.com');
+INSERT INTO `tblnoteshared` VALUES (78, 41, '', '123', '2021-01-17 21:01:32', NULL, 'thiendaopk1@gmail.com');
+INSERT INTO `tblnoteshared` VALUES (79, 41, '', '123', '2021-01-17 21:01:48', NULL, 'thiendaopk1@gmail.com');
+INSERT INTO `tblnoteshared` VALUES (80, 41, '', '123', '2021-01-17 21:05:55', NULL, 'thiendaopk1@gmail.com');
 
 -- ----------------------------
 -- Table structure for tblpackage
