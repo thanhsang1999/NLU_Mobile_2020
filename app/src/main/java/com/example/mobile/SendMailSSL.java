@@ -1,4 +1,5 @@
 package com.example.mobile;
+
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -13,7 +14,7 @@ import javax.mail.internet.MimeMessage;
 
 
 public class SendMailSSL {
-    ConnectionWebService ConnectionWebService;
+    com.example.mobile.database.webservice.ConnectionWebService ConnectionWebService;
 
     public static void send(String email, String content) {
 

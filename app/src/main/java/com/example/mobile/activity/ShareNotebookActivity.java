@@ -3,6 +3,7 @@ package com.example.mobile.activity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
 import com.example.mobile.adapter.ShareNoteAdapter;
 import com.example.mobile.database.sqlite.NoteSharedDAO;
+import com.example.mobile.database.webservice.AccountServiceHelper;
+import com.example.mobile.model.Account;
 import com.example.mobile.model.InfoShare;
 
 import java.util.ArrayList;
@@ -28,6 +31,7 @@ public class ShareNotebookActivity extends AppCompatActivity {
     List<InfoShare> infoShares;
     ShareNoteAdapter shareNoteAdapter;
     List<Integer> lstShared;
+    NoteSharedDAO noteSharedDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +49,9 @@ public class ShareNotebookActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
 
         infoShares = new ArrayList<>();
-
+        noteSharedDAO= new NoteSharedDAO(this);
+        Account account=noteSharedDAO.getAccount();
+        infoShares.add(new InfoShare(account.getUsername(),account.getEmail()));
 
         recyclerViewShare = findViewById(R.id.recyclerViewShare);
 
@@ -64,9 +70,14 @@ public class ShareNotebookActivity extends AppCompatActivity {
         editTextShare.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                //TODO
-                infoShares.add(new InfoShare("demo","anonkill19994@gmail.com"));
-                shareNoteAdapter.notifyDataSetChanged();
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+                    AccountServiceHelper accountServiceHelper= new AccountServiceHelper(ShareNotebookActivity.this);
+                    accountServiceHelper.getUsernameAndEmail(editTextShare.getText().toString().trim(),shareNoteAdapter);
+                    editTextShare.setText("");
+                }
+
+
                 return false;
             }
         });

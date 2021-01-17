@@ -15,7 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mobile.ConnectionWebService;
+import com.example.mobile.database.webservice.ConnectionWebService;
 import com.example.mobile.R;
 import com.example.mobile.model.Account;
 

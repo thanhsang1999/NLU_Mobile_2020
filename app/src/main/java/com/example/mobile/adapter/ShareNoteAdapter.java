@@ -68,4 +68,8 @@ public class ShareNoteAdapter extends RecyclerView.Adapter<ShareNoteAdapter.View
             });
         }
     }
+
+    public List<InfoShare> getInfoShares() {
+        return infoShares;
+    }
 }

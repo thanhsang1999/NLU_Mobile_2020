@@ -17,7 +17,11 @@
 	$prepare_statement->execute();
 	$data = $prepare_statement->get_result();
 	while($row = $data->fetch_assoc()){
-		$account=new Account($row['id'],$row['username'], $row['fullname'],$row['email'],$row['password']);
+		$account=new Account($row['id']);
+		$account -> Username= $row['username'];
+		$account -> Fullname= $row['fullname'];
+		$account -> Email= $row['email'];
+		$account -> Password= $row['password'];
 		$account->Gender = $row['gender'];
 		$account->DateOfBirth = $row['dateofbirth'];
 		$account->Outside = $row['outside'];

@@ -1,6 +1,6 @@
 <?php
 	require 'db.php';
-	require 'class_account.php';
+	
 	$query1 = "INSERT INTO tblaccount(username, fullname, email, password) values (?,?,?,?)";
 	$prepare_statement1 = $connect->prepare($query1);
 	

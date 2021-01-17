@@ -1,10 +1,8 @@
-package com.example.mobile;
+package com.example.mobile.database.webservice;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -15,45 +13,38 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.mobile.Config;
 import com.example.mobile.activity.ForgotPassActivity;
 import com.example.mobile.activity.HomeActivity;
 import com.example.mobile.activity.LogInActivity;
-import com.example.mobile.activity.LogoActivity;
 import com.example.mobile.activity.SignUpActivity;
-import com.example.mobile.activity.WellComeActivity;
 import com.example.mobile.database.sqlite.AccountDAO;
-import com.example.mobile.database.sqlite.ConnectionDatabaseLocalMobile;
 import com.example.mobile.database.sqlite.NoteDAO;
 import com.example.mobile.database.sqlite.PackageDAO;
 import com.example.mobile.model.Account;
-import com.example.mobile.model.ModelLogin;
 import com.example.mobile.model.MyImage;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Package;
 import com.example.mobile.model.Tool;
 import com.example.mobile.webservice.ultils.MyWorker;
 import com.example.mobile.webservice.ultils.PrepareConnectionWebService;
-import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.Profile;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
 public class ConnectionWebService {
-    private Activity activity;
-    private AccountDAO connectionDatabaseLocalMobile;
+    protected Activity activity;
+    protected AccountDAO accountDAO;
     private String addressHome = "https://mobilenlu2020.000webhostapp.com";
     private String urlQuery = "/home/query.php";
     public ConnectionWebService(Activity activity) {
-        connectionDatabaseLocalMobile= new AccountDAO(activity);
+        accountDAO = new AccountDAO(activity);
         this.activity = activity;
     }
     //quên mật khẩu
@@ -157,8 +148,8 @@ public class ConnectionWebService {
                             logInActivity.loading_complete(null);
                             Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
                             Log.e("Success", msg);
-                            connectionDatabaseLocalMobile.earse();
-                            connectionDatabaseLocalMobile.insert_account(account);
+                            accountDAO.earse();
+                            accountDAO.insert_account(account);
 
                             ConnectionWebService.this.takeData();
                             Intent intent = new Intent(activity, HomeActivity.class);
@@ -205,49 +196,7 @@ public class ConnectionWebService {
 
 
     }
-    //kiểm tra mạng
-    public void alive() {
-        if (activity instanceof LogoActivity) {
 
-            String url = Config.getURL() + "alive.php";
-
-
-            RequestQueue requestQueue = Volley.newRequestQueue(activity);
-
-            StringRequest jsonArrayRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-
-                    if(response.toString().equals("alive")){
-                        Log.e("Connection", "OK");
-                        Intent intent = new Intent(activity, WellComeActivity.class);
-                        activity.startActivity(intent);
-                        activity.finish();
-                    }
-
-
-
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-                    String msg = "Kết nối mạng bị lỗi.";
-                    Log.e("Error", error.toString());
-
-                    Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(activity, HomeActivity.class);
-                    activity.startActivity(intent);
-                    activity.finish();
-
-
-                }
-            });
-            requestQueue.add(jsonArrayRequest);
-        }
-
-
-    }
     //đăng ký
     public void insert_account(final Account account) {
         if (activity instanceof SignUpActivity) {
@@ -271,9 +220,9 @@ public class ConnectionWebService {
 
                         signUpActivity.loading_complete(null);
                         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
-                        connectionDatabaseLocalMobile.earse();
+                        accountDAO.earse();
                         account.setId(Integer.parseInt(response.toString().trim()));
-                        connectionDatabaseLocalMobile.insert_account(account);
+                        accountDAO.insert_account(account);
                         Intent intent = new Intent(activity, HomeActivity.class);
 
                         activity.startActivity(intent);
@@ -394,7 +343,7 @@ public class ConnectionWebService {
     public void takeData(){
         takeDataPackage();
         takeDataNotebook();
-        this.connectionDatabaseLocalMobile.close();
+        this.accountDAO.close();
 
 
     }
@@ -589,8 +538,8 @@ public class ConnectionWebService {
 
                         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
                         Log.e("Success", msg);
-                        connectionDatabaseLocalMobile.earse();
-                        connectionDatabaseLocalMobile.insert_account(account);
+                        accountDAO.earse();
+                        accountDAO.insert_account(account);
 
                         ConnectionWebService.this.takeData();
                         Intent intent = new Intent(activity, HomeActivity.class);
@@ -656,9 +605,9 @@ public class ConnectionWebService {
 
                         signUpActivity.loading_complete(null);
                         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
-                        connectionDatabaseLocalMobile.earse();
+                        accountDAO.earse();
                         account.setId(Integer.parseInt(msg));
-                        connectionDatabaseLocalMobile.insert_account(account);
+                        accountDAO.insert_account(account);
                         Intent intent = new Intent(activity, HomeActivity.class);
 
                         activity.startActivity(intent);

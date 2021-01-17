@@ -5,7 +5,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.example.mobile.ConnectionWebService;
 import com.example.mobile.model.MySync;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Package;

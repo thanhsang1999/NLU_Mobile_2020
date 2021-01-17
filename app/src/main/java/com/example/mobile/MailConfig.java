@@ -1,7 +1,7 @@
 package com.example.mobile;
 
 public class MailConfig {
-    ConnectionWebService ConnectionWebService;
+    com.example.mobile.database.webservice.ConnectionWebService ConnectionWebService;
 
     public static final String HOST_NAME = "smtp.gmail.com";
 

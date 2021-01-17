@@ -39,7 +39,7 @@
             <EditText
                     android:textColorHint="@color/whitecustom1"
                     android:textColor="@color/whitecustom1"
-                    android:inputType="text"
+                    android:inputType="textPersonName"
                     android:padding="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
