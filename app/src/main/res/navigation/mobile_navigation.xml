@@ -18,7 +18,11 @@
         tools:layout="@layout/fragment_gallery"
 
         />
-
+    <fragment
+            android:id="@+id/nav_receive"
+            android:name="com.example.mobile.ui.receive.ReceiveFragment"
+            tools:layout="@layout/fragment_receive"
+            android:label="Receive"/>
     <fragment
         android:id="@+id/nav_slideshow"
         android:name="com.example.mobile.ui.slideshow.SlideshowFragment"
@@ -37,4 +41,5 @@
         tools:layout="@layout/fragment_notes"
 
     />
+
 </navigation>

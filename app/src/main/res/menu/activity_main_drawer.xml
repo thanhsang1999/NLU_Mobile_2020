@@ -18,7 +18,7 @@
                         android:icon="@drawable/ic_all"
                         android:title="Tất Cả" />
                 <item
-                        android:id="@+id/nav_slideshow2"
+                        android:id="@+id/nav_receive"
                         android:icon="@drawable/ic_recive"
                         android:title="Được Nhận" />
                 <item

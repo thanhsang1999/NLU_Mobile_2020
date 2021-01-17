@@ -105,5 +105,6 @@
     <string name="picker_description">picker_description</string>
     <string name="packer_hint"></string>
     <string name="package_color_default">color_blue_green</string>
+    <string name="menu_receive">Receive</string>
 
 </resources>
