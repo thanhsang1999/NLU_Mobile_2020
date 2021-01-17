@@ -20,6 +20,7 @@ import com.example.mobile.model.Account;
 import com.example.mobile.model.DateStringConverter;
 import com.example.mobile.model.MyImage;
 import com.example.mobile.model.MySync;
+import com.example.mobile.model.NoteShared;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Package;
 import com.example.mobile.model.Tool;
@@ -117,11 +118,13 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
         String sqlCreateTableNoteshared = "CREATE TABLE IF NOT EXISTS tblnoteshared ("+
                 "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"+
                 "id_account integer," +
+                "username TEXT,"+
                 "title TEXT,"+
+                "last_edit TEXT,"+
                 "content TEXT,"+
                 "remind TEXT);";
         sqLiteDatabase.execSQL(sqlCreateTableNoteshared);
-        String sqlCreateTableAccessshared = "CREATE TABLE IF NOT EXISTS tblnoteshared ("+
+        String sqlCreateTableAccessshared = "CREATE TABLE IF NOT EXISTS tblaccessnoteshared ("+
                 "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"+
                 "id_note_shared integer," +
                 "id_account TEXT);";
@@ -137,10 +140,14 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
         String sql2 = "DELETE FROM tblpackage";
         String sql3 = "DELETE FROM notebook";
         String sql4 = "DELETE FROM tblsync";
+        String sql5 = "DELETE FROM tblnoteshared";
+        String sql6 = "DELETE FROM tblaccessnoteshared";
         sqLiteDatabase.execSQL(sql);
         sqLiteDatabase.execSQL(sql2);
         sqLiteDatabase.execSQL(sql3);
         sqLiteDatabase.execSQL(sql4);
+        sqLiteDatabase.execSQL(sql5);
+        sqLiteDatabase.execSQL(sql6);
         prepare();
 
 
@@ -416,7 +423,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                         case "tblnoteshared":
                             myWorker.setParams(new HashMap<String,String>(){{
                                 NoteSharedDAO noteDAO= new NoteSharedDAO(ConnectionDatabaseLocalMobile.this.activity);
-                                Notebook p= noteDAO.getNoteShared(sync.getIdRow());
+                                NoteShared p= noteDAO.getNoteShared(sync.getIdRow());
                                 if(p.getId()==0){
                                     Log.e("Error","idnoteshared not found");
                                 }

@@ -1,5 +1,7 @@
 package com.example.mobile.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -87,8 +89,9 @@ public class ShareNotebookActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
-                if(infoShares.size()==0){
-                    this.finish();
+                if(infoShares.size()==1){
+                    setResult(Activity.RESULT_CANCELED);
+
                 } else{
                     NoteSharedDAO noteSharedDAO= new NoteSharedDAO(this);
                     for (int indexNotebook=0;indexNotebook<lstShared.size();indexNotebook++){
@@ -98,8 +101,13 @@ public class ShareNotebookActivity extends AppCompatActivity {
                         }
 
                     }
+                    noteSharedDAO.sync();
+
+                    setResult(Activity.RESULT_OK);
+
 
                 }
+                this.finish();
                 return true;
             default:
                 return false;

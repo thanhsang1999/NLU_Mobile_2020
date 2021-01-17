@@ -80,7 +80,7 @@ public class HomeFragment extends Fragment implements IFragmentShowNote {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(root.getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
         listNotebook= connectionDatabaseLocalMobile.getNotebooksLast(-1);
-        Log.e("HomeFragment","Run");
+        //Log.e("HomeFragment","Run");
         adapterHomeRecyclerView = new AdapterHomeRecyclerView(listNotebook,HomeFragment.this);
         recyclerView.setAdapter(adapterHomeRecyclerView);
         return root;
@@ -130,7 +130,7 @@ public class HomeFragment extends Fragment implements IFragmentShowNote {
             intent.putExtra("index",-1);
 
 
-            this.getActivity().startActivityForResult(intent,HomeActivity.HOME_FRAGMENT);
+            this.getActivity().startActivityForResult(intent,HomeActivity.NEW_NOTEBOOK);
         }else{
             Intent intent = new Intent(context, NewNoteActivity.class);
 
@@ -138,7 +138,7 @@ public class HomeFragment extends Fragment implements IFragmentShowNote {
             intent.putExtra("idNotebook",idNotebook);
             intent.putExtra("index",index);
 
-            this.getActivity().startActivityForResult(intent,HomeActivity.HOME_FRAGMENT);
+            this.getActivity().startActivityForResult(intent,HomeActivity.NEW_NOTEBOOK);
         }
 
     }
@@ -166,18 +166,26 @@ public class HomeFragment extends Fragment implements IFragmentShowNote {
             Log.e("Start activity","shared note");
             Intent intent = new Intent(this.getActivity(), ShareNotebookActivity.class);
             ArrayList<Integer> lstShared= new ArrayList<>();
-            for (Notebook n:listNotebook
-                 ) {
+            for (Notebook n:listNotebook) {
                 if(n.getChecked()==true)
                 lstShared.add(n.getId());
 
             }
             intent.putIntegerArrayListExtra("lstShared",lstShared);
-            startActivity(intent);
+            this.getActivity().startActivityForResult(intent, HomeActivity.SHARE_NOTEBOOK);
         }
 
 
     };
+    @Override
+    public void updateApdaterAfterShared(){
+        for (int i=listNotebook.size()-1;i>=0;i--) {
+            if(listNotebook.get(i).getChecked()==true)
+               listNotebook.remove(i);
+
+        }
+        adapterHomeRecyclerView.notifyDataSetChanged();
+    }
 
 
 

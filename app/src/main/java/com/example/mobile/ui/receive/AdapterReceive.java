@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
+import com.example.mobile.model.NoteShared;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Tool;
 import org.jetbrains.annotations.NotNull;
@@ -17,9 +18,9 @@ import java.util.List;
 
 public class AdapterReceive extends RecyclerView.Adapter<AdapterReceive.ViewHolder> {
     ReceiveFragment context;
-    List<Notebook> notebooks;
+    List<NoteShared> notebooks;
 
-    public AdapterReceive(ReceiveFragment context, List<Notebook> notebooks) {
+    public AdapterReceive(ReceiveFragment context, List<NoteShared> notebooks) {
         this.context = context;
         this.notebooks = notebooks;
     }
@@ -35,7 +36,7 @@ public class AdapterReceive extends RecyclerView.Adapter<AdapterReceive.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull AdapterReceive.ViewHolder holder, int position) {
-        Notebook notebook = notebooks.get(position);
+            NoteShared notebook = notebooks.get(position);
             holder.imageViewCheck.setImageResource(R.drawable.ic_color_blue_deep);
             holder.linearLayoutMain.setBackgroundResource(R.drawable.background_list_item_linear);
             holder.linearLayoutContent.setBackgroundResource(R.drawable.background_list_item_linear);
@@ -66,7 +67,7 @@ public class AdapterReceive extends RecyclerView.Adapter<AdapterReceive.ViewHold
                 @Override
                 public void onClick(View v) {
                     // qua chinh sua new note
-                    Notebook notebook = notebooks.get(getAdapterPosition());
+                    NoteShared notebook = notebooks.get(getAdapterPosition());
                     context.startActivitySeeNote(notebook);
                 }
             });
@@ -74,7 +75,7 @@ public class AdapterReceive extends RecyclerView.Adapter<AdapterReceive.ViewHold
     }
 
 
-    public List<Notebook> getNotebooks() {
+    public List<NoteShared> getNotebooks() {
         return notebooks;
     }
 }

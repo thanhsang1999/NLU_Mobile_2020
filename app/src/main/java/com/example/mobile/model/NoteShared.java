@@ -1,30 +1,26 @@
 package com.example.mobile.model;
 
 
-import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 
-public class Notebook implements Parcelable {
+public class NoteShared implements Parcelable {
     private int id;
     private String title;
     private String content;
     private Date dateEdit;
     private Date remind;
     private boolean checked;
-    private String colorPackage;
+    private Account account;
     List<byte[]> images;
-    public int id_package;
 
-    public Notebook() {
+
+    public NoteShared() {
 
         this.checked=false;
         this.images= new ArrayList<>();
@@ -34,15 +30,15 @@ public class Notebook implements Parcelable {
 
 
 
-    public static final Creator<Notebook> CREATOR = new Creator<Notebook>() {
+    public static final Creator<NoteShared> CREATOR = new Creator<NoteShared>() {
         @Override
-        public Notebook createFromParcel(Parcel in) {
-            return new Notebook(in);
+        public NoteShared createFromParcel(Parcel in) {
+            return new NoteShared(in);
         }
 
         @Override
-        public Notebook[] newArray(int size) {
-            return new Notebook[size];
+        public NoteShared[] newArray(int size) {
+            return new NoteShared[size];
         }
     };
 
@@ -98,13 +94,7 @@ public class Notebook implements Parcelable {
         this.remind = remind;
     }
 
-    public String getColorPackage() {
-        return colorPackage;
-    }
 
-    public void setColorPackage(String colorPackage) {
-        this.colorPackage = colorPackage;
-    }
 
     @Override
     public int describeContents() {
@@ -121,12 +111,12 @@ public class Notebook implements Parcelable {
         dest.writeByte((byte) ((remind == null) ? 0 : 1));
         if(remind!=null)
         dest.writeLong(remind.getTime());
-        dest.writeString(colorPackage);
+
 
 
 
     }
-    protected Notebook(Parcel in) {
+    protected NoteShared(Parcel in) {
         id = in.readInt();
         title = in.readString();
         content = in.readString();
@@ -137,7 +127,7 @@ public class Notebook implements Parcelable {
 
             remind=new Date(in.readLong());
         }
-        colorPackage=in.readString();
+
         images= new ArrayList<>();
 
 
@@ -151,5 +141,13 @@ public class Notebook implements Parcelable {
 
     public void setImages(List<byte[]> images) {
         this.images = images;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }
