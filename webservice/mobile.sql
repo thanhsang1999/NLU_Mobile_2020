@@ -11,7 +11,7 @@
  Target Server Version : 100408
  File Encoding         : 65001
 
- Date: 18/01/2021 04:39:47
+ Date: 18/01/2021 05:53:34
 */
 
 SET NAMES utf8mb4;
@@ -99,6 +99,7 @@ CREATE TABLE `tblnotebook`  (
 -- ----------------------------
 -- Records of tblnotebook
 -- ----------------------------
+INSERT INTO `tblnotebook` VALUES (1, 41, '1', '', '2021-01-17 22:50:12', NULL, 1);
 INSERT INTO `tblnotebook` VALUES (46, 1, '1', '', '2021-01-14 18:12:49', NULL, 15);
 INSERT INTO `tblnotebook` VALUES (47, 1, '2', '', '2021-01-14 18:15:11', NULL, 15);
 INSERT INTO `tblnotebook` VALUES (48, 1, '3', '', '2021-01-14 18:16:04', NULL, 15);
@@ -144,7 +145,7 @@ CREATE TABLE `tblpackage`  (
   `color` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `last_edit` datetime(0) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
+  PRIMARY KEY (`id`, `id_account`) USING BTREE,
   INDEX `id_account`(`id_account`) USING BTREE,
   CONSTRAINT `tblpackage_ibfk_1` FOREIGN KEY (`id_account`) REFERENCES `tblaccount` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
