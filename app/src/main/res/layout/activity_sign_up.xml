@@ -90,15 +90,15 @@
                 tools:ignore="VectorDrawableCompat" />
 
             <EditText
-                android:id="@+id/editTextFullName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:ems="10"
-                android:hint="@string/username_hint"
-                android:inputType="textPersonName"
-                android:autofillHints="" />
+                    android:id="@+id/editTextFullName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:ems="10"
+                    android:hint="@string/fullname_hint"
+                    android:inputType="textPersonName"
+                    android:autofillHints=""/>
 
         </LinearLayout>
 
@@ -134,15 +134,15 @@
                 tools:ignore="VectorDrawableCompat" />
 
             <EditText
-                android:id="@+id/editTextUserName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:ems="10"
-                android:hint="@string/fullname_hint"
-                android:inputType="textPersonName"
-                android:autofillHints="" />
+                    android:id="@+id/editTextUserName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:ems="10"
+                    android:hint="@string/username_hint"
+                    android:inputType="textPersonName"
+                    android:autofillHints=""/>
 
         </LinearLayout>
 
