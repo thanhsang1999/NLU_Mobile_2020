@@ -23,6 +23,11 @@ public class Account {
         this.password = password;
 
     }
+    public Account(int id ) {
+        this.id= id;
+
+
+    }
 
     public int getId() {
         return id;

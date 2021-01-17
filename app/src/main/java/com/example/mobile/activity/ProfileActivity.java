@@ -118,7 +118,7 @@ public class ProfileActivity extends AppCompatActivity {
         if(account.getDateOfBirth()!=null)
         btn_dOB.setText(Tool.DateToStringVN(account.getDateOfBirth()));
 
-        if(account.getGender()!=null)
+
         if(account.getGender().equals(Account.GENDER_FEMALE)){
             radioGroupGender.check(R.id.radioButtonFemale);
         } else  if(account.getGender().equals(Account.GENDER_MALE)) radioGroupGender.check(R.id.radioButtonMale);

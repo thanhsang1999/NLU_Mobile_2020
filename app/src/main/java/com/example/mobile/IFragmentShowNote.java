@@ -9,5 +9,6 @@ public interface IFragmentShowNote {
     public  void startActivityNewNote(android.content.Context context, int idNotebook, int index);
     public  void startActivityShareNote();
     public void updateApdater(Notebook notebook,int index);
+    public void updateApdaterAfterShared();
 
 }

@@ -4,9 +4,9 @@
 	require 'getidaccount.php';
 	
 	
-	$s1 =$_POST['username'];
+	$s1 =$_POST['id'];
 	//$s1 = 'abc123';
-	$i1 = getIdAccount($s1, $connect);
+	
 	
 	
 	$query = "SELECT id,id_package, title, content, last_edit,remind FROM tblnotebook WHERE id_account=?";

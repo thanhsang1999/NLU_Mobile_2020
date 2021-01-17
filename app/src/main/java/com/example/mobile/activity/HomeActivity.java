@@ -254,6 +254,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
         sqlite = new NoteDAO(this);
+//        sqlite.
     }
 
 
@@ -385,9 +386,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-                Tool.SetAllUnChecked(homeFragment.listNotebook);
-                homeFragment.adapterHomeRecyclerView.notifyDataSetChanged();
-                actionMode = null;
+
             }
         });
     }
@@ -421,18 +420,16 @@ private void LoadDataFragmentHome(){
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        FragmentManager fragmentManager= getSupportFragmentManager();
+        Fragment currentFragment=fragmentManager.findFragmentById(R.id.nav_host_fragment).getChildFragmentManager().getFragments().get(0);
 
 
-
-        if (requestCode == NOTE_FRAGMENT || requestCode==HOME_FRAGMENT) {
+        if (requestCode == NEW_NOTEBOOK ) {
 
             if(resultCode == Activity.RESULT_OK){
                 Notebook notebook = data.getParcelableExtra("notebook");
                 int index = data.getIntExtra("index",-1);
-                Fragment currentFragment=null;
-                FragmentManager fragmentManager= getSupportFragmentManager();
 
-                currentFragment=fragmentManager.findFragmentById(R.id.nav_host_fragment).getChildFragmentManager().getFragments().get(0);
 
                 if(notebook!=null){
 
@@ -445,11 +442,26 @@ private void LoadDataFragmentHome(){
                 }
 
             }
+
+
+        }
+        if (requestCode == SHARE_NOTEBOOK  ) {
+            if(resultCode == Activity.RESULT_OK){
+                if(currentFragment instanceof IFragmentShowNote){
+                    IFragmentShowNote iFragmentCanAddNote=(IFragmentShowNote) currentFragment;
+                    iFragmentCanAddNote.updateApdaterAfterShared();
+
+
+                }
+            }
             if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
+                Tool.SetAllUnChecked(homeFragment.listNotebook);
+                homeFragment.adapterHomeRecyclerView.notifyDataSetChanged();
+                actionMode = null;
             }
 
         }
+
     };
 // xử lý lấy tên người dùng facebook
         //lấy tokeen
@@ -465,8 +477,9 @@ private void LoadDataFragmentHome(){
 //end xử lý lấy tên người dùng facebook
     //onActivityResult
     public Fragment beforeFragment;
-    public final static int NOTE_FRAGMENT=2;
-    public final static int HOME_FRAGMENT=1;
+
+    public final static int NEW_NOTEBOOK=1;
+    public final static int SHARE_NOTEBOOK=3;
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -484,4 +497,5 @@ private void LoadDataFragmentHome(){
         }
         return super.dispatchTouchEvent(event);
     }
+
 }

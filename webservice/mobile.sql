@@ -11,7 +11,7 @@
  Target Server Version : 100408
  File Encoding         : 65001
 
- Date: 17/01/2021 18:02:41
+ Date: 18/01/2021 04:39:47
 */
 
 SET NAMES utf8mb4;
@@ -43,13 +43,14 @@ CREATE TABLE `tblaccount`  (
   `dateofbirth` date NULL DEFAULT NULL,
   `gender` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 42 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tblaccount
 -- ----------------------------
 INSERT INTO `tblaccount` VALUES (1, 'abc123', '123', 'tanhoang99.999@gmail.com', 'aA@123', NULL, NULL, '2021-01-16', NULL);
 INSERT INTO `tblaccount` VALUES (41, 'thiendaopk1@gmail.com', 'Trí Thiện', 'thiendaopk1@gmail.com', NULL, 'facebook', '2755863414664627', '1905-02-06', 'male');
+INSERT INTO `tblaccount` VALUES (44, 'hoang', 'hoang', 'hoang@gmail.com', 'aA@123', NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for tblimage
@@ -93,7 +94,7 @@ CREATE TABLE `tblnotebook`  (
   PRIMARY KEY (`id`, `id_account`) USING BTREE,
   INDEX `id_account`(`id_account`) USING BTREE,
   CONSTRAINT `tblnotebook_ibfk_1` FOREIGN KEY (`id_account`) REFERENCES `tblaccount` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 56 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 81 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tblnotebook
@@ -116,8 +117,22 @@ CREATE TABLE `tblnoteshared`  (
   `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `last_edit` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `remind` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of tblnoteshared
+-- ----------------------------
+INSERT INTO `tblnoteshared` VALUES (72, 41, '', '123', '2021-01-17 20:37:26', NULL, 'thiendaopk1@gmail.com');
+INSERT INTO `tblnoteshared` VALUES (73, 41, '', '123', '2021-01-17 20:42:16', NULL, 'thiendaopk1@gmail.com');
+INSERT INTO `tblnoteshared` VALUES (74, 41, '', '123', '2021-01-17 20:44:00', NULL, 'thiendaopk1@gmail.com');
+INSERT INTO `tblnoteshared` VALUES (75, 41, '', '123', '2021-01-17 20:48:40', NULL, 'thiendaopk1@gmail.com');
+INSERT INTO `tblnoteshared` VALUES (76, 41, '', '123', '2021-01-17 20:55:07', NULL, 'thiendaopk1@gmail.com');
+INSERT INTO `tblnoteshared` VALUES (77, 41, '', '123', '2021-01-17 20:58:04', NULL, 'thiendaopk1@gmail.com');
+INSERT INTO `tblnoteshared` VALUES (78, 41, '', '123', '2021-01-17 21:01:32', NULL, 'thiendaopk1@gmail.com');
+INSERT INTO `tblnoteshared` VALUES (79, 41, '', '123', '2021-01-17 21:01:48', NULL, 'thiendaopk1@gmail.com');
+INSERT INTO `tblnoteshared` VALUES (80, 41, '', '123', '2021-01-17 21:05:55', NULL, 'thiendaopk1@gmail.com');
 
 -- ----------------------------
 -- Table structure for tblpackage
@@ -137,6 +152,7 @@ CREATE TABLE `tblpackage`  (
 -- ----------------------------
 -- Records of tblpackage
 -- ----------------------------
+INSERT INTO `tblpackage` VALUES (1, 41, 'color_blue', 'Default', '2021-01-17 13:46:38');
 INSERT INTO `tblpackage` VALUES (14, 1, 'color_blue_green', '21121', '2021-01-15 10:18:18');
 INSERT INTO `tblpackage` VALUES (15, 1, 'color_red', '2', '2021-01-14 17:49:01');
 INSERT INTO `tblpackage` VALUES (16, 1, 'color_green', '3', '2021-01-16 10:24:49');

@@ -109,13 +109,13 @@ public class NoteFragment extends Fragment implements IFragmentShowNote {
             Intent intent = new Intent(context, NewNoteActivity.class);
             intent.putExtra("idPackage",this.currentPackage.getId());
             intent.putExtra("index",index);
-            this.getActivity().startActivityForResult(intent,HomeActivity.NOTE_FRAGMENT);
+            this.getActivity().startActivityForResult(intent,HomeActivity.NEW_NOTEBOOK);
         }else{
             Intent intent = new Intent(context, NewNoteActivity.class);
             intent.putExtra("idPackage",this.currentPackage.getId());
             intent.putExtra("idNotebook",idNotebook);
             intent.putExtra("index",index);
-            this.getActivity().startActivityForResult(intent,HomeActivity.NOTE_FRAGMENT);
+            this.getActivity().startActivityForResult(intent,HomeActivity.NEW_NOTEBOOK);
         }
 
     }
@@ -145,6 +145,10 @@ public class NoteFragment extends Fragment implements IFragmentShowNote {
     public  void startActivityShareNote(){
 
     };
+    @Override
+    public void updateApdaterAfterShared(){
+
+    }
 
 
 

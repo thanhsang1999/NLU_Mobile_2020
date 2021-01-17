@@ -12,10 +12,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.example.mobile.R;
 import com.example.mobile.activity.HomeActivity;
 import com.example.mobile.activity.SeeNoteActivity;
 import com.example.mobile.database.sqlite.NoteDAO;
+import com.example.mobile.database.sqlite.NoteSharedDAO;
+import com.example.mobile.model.NoteShared;
 import com.example.mobile.model.Notebook;
 
 import java.util.ArrayList;
@@ -26,18 +30,19 @@ public class ReceiveFragment extends Fragment {
 
 
     public AdapterReceive adapterReceive;
-    NoteDAO noteDAO;
+    NoteSharedDAO noteSharedDAO;
+    SwipeRefreshLayout swiperefresh;
 
 
-    public ArrayList<Notebook> notebooks;
+    public ArrayList<NoteShared> notebooks;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_receive, container, false);
         //TODO
         initReceive();
         // du lieu ao
-        noteDAO = new NoteDAO(this.getActivity());
-        notebooks = noteDAO.getNotebooksLast(-1);
+        noteSharedDAO = new NoteSharedDAO(this.getActivity());
+        notebooks = noteSharedDAO.getNoteSharedLast(-1);
 
         //set thuoc tinh RecyclerView
         recyclerView.setHasFixedSize(true);
@@ -56,9 +61,19 @@ public class ReceiveFragment extends Fragment {
     private void initReceive() {
         recyclerView = root.findViewById(R.id.recyclerViewReceive);
         HomeActivity.fab.hide();
+        swiperefresh=root.findViewById(R.id.swiperefresh);
+        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                notebooks.clear();
+                notebooks.addAll(noteSharedDAO.getNoteSharedLast(-1));
+                adapterReceive.notifyDataSetChanged();
+                swiperefresh.setRefreshing(false);
+            }
+        });
     }
 
-    public void startActivitySeeNote(Notebook notebook) {
+    public void startActivitySeeNote(NoteShared notebook) {
         Intent intent = new Intent(ReceiveFragment.this.getActivity(), SeeNoteActivity.class);
         intent.putExtra("notebook",notebook);
         this.getActivity().startActivity(intent);
