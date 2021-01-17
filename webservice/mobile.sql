@@ -11,11 +11,22 @@
  Target Server Version : 100408
  File Encoding         : 65001
 
- Date: 16/01/2021 20:29:30
+ Date: 17/01/2021 18:02:41
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for tblaccessnoteshared
+-- ----------------------------
+DROP TABLE IF EXISTS `tblaccessnoteshared`;
+CREATE TABLE `tblaccessnoteshared`  (
+  `id` int(11) NOT NULL,
+  `id_account` int(11) NULL DEFAULT NULL,
+  `id_noteshared` int(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for tblaccount
@@ -32,13 +43,13 @@ CREATE TABLE `tblaccount`  (
   `dateofbirth` date NULL DEFAULT NULL,
   `gender` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 42 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tblaccount
 -- ----------------------------
 INSERT INTO `tblaccount` VALUES (1, 'abc123', '123', 'tanhoang99.999@gmail.com', 'aA@123', NULL, NULL, '2021-01-16', NULL);
-INSERT INTO `tblaccount` VALUES (6, 'thiendaopk1@gmail.com', 'Trí Thiện', 'thiendaopk1@gmail.com', NULL, 'facebook', '2755863414664627', '0007-08-18', 'male');
+INSERT INTO `tblaccount` VALUES (41, 'thiendaopk1@gmail.com', 'Trí Thiện', 'thiendaopk1@gmail.com', NULL, 'facebook', '2755863414664627', '1905-02-06', 'male');
 
 -- ----------------------------
 -- Table structure for tblimage
@@ -55,6 +66,17 @@ CREATE TABLE `tblimage`  (
   INDEX `id_account`(`id_account`) USING BTREE,
   CONSTRAINT `tblimage_ibfk_1` FOREIGN KEY (`id_account`) REFERENCES `tblaccount` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for tbllogin
+-- ----------------------------
+DROP TABLE IF EXISTS `tbllogin`;
+CREATE TABLE `tbllogin`  (
+  `id` int(11) NOT NULL,
+  `id_account` int(11) NULL DEFAULT NULL,
+  `id_device` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for tblnotebook
@@ -82,6 +104,20 @@ INSERT INTO `tblnotebook` VALUES (48, 1, '3', '', '2021-01-14 18:16:04', NULL, 1
 INSERT INTO `tblnotebook` VALUES (52, 1, '4', '', '2021-01-14 18:19:18', NULL, 15);
 INSERT INTO `tblnotebook` VALUES (53, 1, '11', '1', '2021-01-15 10:27:24', NULL, 14);
 INSERT INTO `tblnotebook` VALUES (54, 1, '1', '', '2021-01-16 10:24:54', NULL, 16);
+
+-- ----------------------------
+-- Table structure for tblnoteshared
+-- ----------------------------
+DROP TABLE IF EXISTS `tblnoteshared`;
+CREATE TABLE `tblnoteshared`  (
+  `id` int(11) NOT NULL,
+  `id_account` int(11) NULL DEFAULT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `last_edit` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `remind` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for tblpackage

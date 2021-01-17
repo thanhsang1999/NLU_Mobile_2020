@@ -260,7 +260,7 @@ public class SignUpActivity extends AppCompatActivity {
                     Toast.makeText(SignUpActivity.this, msg, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Account account = new Account(username, fullname, email, password);
+                Account account = new Account(0,username, fullname, email, password);
                 ;
                 msg = "Error";
                 try {

@@ -1,7 +1,8 @@
 	
 <?php
 class Account{
-	function Account($username, $fullname, $email, $password){
+	function Account($id,$username, $fullname, $email, $password){
+		$this -> Id= $id;
 		$this -> Username= $username;
 		$this -> Fullname= $fullname;
 		$this -> Email= $email;

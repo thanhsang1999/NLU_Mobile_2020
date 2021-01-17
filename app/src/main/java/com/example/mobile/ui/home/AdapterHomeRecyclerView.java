@@ -2,7 +2,6 @@ package com.example.mobile.ui.home;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +16,9 @@ import com.example.mobile.activity.HomeActivity;
 import com.example.mobile.R;
 import com.example.mobile.activity.NewNoteActivity;
 import com.example.mobile.model.Notebook;
-import com.example.mobile.model.Package;
 import com.example.mobile.model.Tool;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRecyclerView.ViewHolder> {
 
@@ -142,7 +139,7 @@ public class AdapterHomeRecyclerView extends RecyclerView.Adapter<AdapterHomeRec
                     }else {
                         multiSelect = false;
                         // qua chinh sua new note
-                        AdapterHomeRecyclerView.this.context.startActivity(AdapterHomeRecyclerView.this.context.getActivity(), NewNoteActivity.class,notebook.getId(), getAdapterPosition());
+                        AdapterHomeRecyclerView.this.context.startActivityNewNote(AdapterHomeRecyclerView.this.context.getActivity(),notebook.getId(), getAdapterPosition());
 
                         Toast.makeText(context.getContext(), "select "+getAdapterPosition()+"id"+notebook.getId(), Toast.LENGTH_SHORT).show();
                         Toast.makeText(context.getContext(), "select "+Tool.DateToStringHCM(notebook.getDateEdit()), Toast.LENGTH_SHORT).show();

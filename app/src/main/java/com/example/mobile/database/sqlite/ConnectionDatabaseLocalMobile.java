@@ -114,6 +114,18 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                 "name_table TEXT,"+
                 "time TEXT);";
         sqLiteDatabase.execSQL(sqlCreateTableSync);
+        String sqlCreateTableNoteshared = "CREATE TABLE IF NOT EXISTS tblnoteshared ("+
+                "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"+
+                "id_account integer," +
+                "title TEXT,"+
+                "content TEXT,"+
+                "remind TEXT);";
+        sqLiteDatabase.execSQL(sqlCreateTableNoteshared);
+        String sqlCreateTableAccessshared = "CREATE TABLE IF NOT EXISTS tblnoteshared ("+
+                "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"+
+                "id_note_shared integer," +
+                "id_account TEXT);";
+        sqLiteDatabase.execSQL(sqlCreateTableAccessshared);
 
 
 
@@ -231,7 +243,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
     }
     public Account getAccount() {
 
-        String columnName[] = {"username", "fullname", "email", "password","gender","dateofbirth","outside","id_outside"};
+        String columnName[] = {"username", "fullname", "email", "password","gender","dateofbirth","outside","id_outside","id"};
 
         Cursor cursor = this.sqLiteDatabase.query("tblaccounts",
                 columnName, null, null, null, null, null
@@ -243,7 +255,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                 if (cursor.getCount() == 1)
                     try {
 
-                        Account account = new Account(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
+                        Account account = new Account(cursor.getInt(4),cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
                         account.setGender(cursor.getString(4));
                         account.setDateOfBirth(Tool.StringToDate(cursor.getString(5)));
                         account.setOutside(cursor.getString(6));

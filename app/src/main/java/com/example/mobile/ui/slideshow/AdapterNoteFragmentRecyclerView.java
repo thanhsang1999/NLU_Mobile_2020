@@ -2,7 +2,6 @@ package com.example.mobile.ui.slideshow;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
@@ -23,8 +22,6 @@ import com.example.mobile.activity.NewNoteActivity;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Package;
 import com.example.mobile.model.Tool;
-import com.example.mobile.ui.home.AdapterHomeRecyclerView;
-import com.example.mobile.ui.home.HomeFragment;
 
 import java.util.List;
 
@@ -161,7 +158,7 @@ public class AdapterNoteFragmentRecyclerView extends RecyclerView.Adapter<Adapte
                         }
                     }else {
                         multiSelect = false;
-                        AdapterNoteFragmentRecyclerView.this.context.startActivity(AdapterNoteFragmentRecyclerView.this.context.getActivity(), NewNoteActivity.class,notebook.getId(), getAdapterPosition());
+                        AdapterNoteFragmentRecyclerView.this.context.startActivityNewNote(AdapterNoteFragmentRecyclerView.this.context.getActivity(),notebook.getId(), getAdapterPosition());
                             Toast.makeText(context.getContext(), "select "+getAdapterPosition(), Toast.LENGTH_SHORT).show();
                     }
                 }

@@ -2,12 +2,9 @@ package com.example.mobile.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.app.Activity;
-import android.content.Context;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
 import androidx.appcompat.view.ActionMode;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -30,7 +26,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.mobile.ChangePassActivity;
 import com.example.mobile.ExitConfirmDialogFragment;
-import com.example.mobile.IFragmentCanAddNote;
+import com.example.mobile.IFragmentShowNote;
 import com.example.mobile.R;
 import com.example.mobile.model.ModelLogin;
 import com.facebook.AccessToken;
@@ -57,7 +53,6 @@ import androidx.appcompat.widget.Toolbar;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Date;
 import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
@@ -187,10 +182,10 @@ public class HomeActivity extends AppCompatActivity {
                     fragment=fragment.getChildFragmentManager().getFragments().get(0);
                 }
 
-                if(fragment instanceof  IFragmentCanAddNote){
+                if(fragment instanceof IFragmentShowNote){
 
-                    IFragmentCanAddNote iFragmentCanAddNote=(IFragmentCanAddNote)fragment;
-                    iFragmentCanAddNote.startActivity(HomeActivity.this, NewNoteActivity.class, 0, -1);
+                    IFragmentShowNote iFragmentCanAddNote=(IFragmentShowNote)fragment;
+                    iFragmentCanAddNote.startActivityNewNote(HomeActivity.this, 0, -1);
 
 
                 }
@@ -370,8 +365,21 @@ public class HomeActivity extends AppCompatActivity {
 
                         return true;
                     case R.id.menu_share:
-                        Intent intent = new Intent(HomeActivity.this,ShareNotebookActivity.class);
-                        startActivity(intent);
+                        Fragment fragment= HomeActivity.this.getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+
+
+                        if(fragment instanceof NavHostFragment){
+
+                            fragment=fragment.getChildFragmentManager().getFragments().get(0);
+                        }
+
+                        if(fragment instanceof IFragmentShowNote){
+
+                            IFragmentShowNote iFragmentCanAddNote=(IFragmentShowNote)fragment;
+                            iFragmentCanAddNote.startActivityShareNote();
+
+
+                        }
                         mode.finish();
                         return true;
                     default:
@@ -431,8 +439,8 @@ private void LoadDataFragmentHome(){
 
                 if(notebook!=null){
 
-                    if(currentFragment instanceof  IFragmentCanAddNote){
-                        IFragmentCanAddNote iFragmentCanAddNote=(IFragmentCanAddNote) currentFragment;
+                    if(currentFragment instanceof IFragmentShowNote){
+                        IFragmentShowNote iFragmentCanAddNote=(IFragmentShowNote) currentFragment;
                         iFragmentCanAddNote.updateApdater(notebook,index);
 
 

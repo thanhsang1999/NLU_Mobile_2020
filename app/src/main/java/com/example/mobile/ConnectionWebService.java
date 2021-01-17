@@ -150,7 +150,7 @@ public class ConnectionWebService {
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                            Account account = new Account(jsonObject.getString("Username"),
+                            Account account = new Account(jsonObject.getInt("Id"),jsonObject.getString("Username"),
                                     jsonObject.getString("Fullname"), jsonObject.getString("Email"), jsonObject.getString("Password")
                             );
                             String msg = "Đăng nhập thành công.";
@@ -262,8 +262,9 @@ public class ConnectionWebService {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    String msg = "";
-                    if (response.toString().trim().equals("OK")) {
+                    String msg = response.toString().trim();
+                    Log.e("Return ", msg);
+                    if (response.toString().trim().matches("[0-9]+")) {
                         msg = "Đăng ký thành công";
                         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
                         Log.e("Success", msg);
@@ -271,6 +272,7 @@ public class ConnectionWebService {
                         signUpActivity.loading_complete(null);
                         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
                         connectionDatabaseLocalMobile.earse();
+                        account.setId(Integer.parseInt(response.toString().trim()));
                         connectionDatabaseLocalMobile.insert_account(account);
                         Intent intent = new Intent(activity, HomeActivity.class);
 
@@ -286,7 +288,7 @@ public class ConnectionWebService {
 
                     } else{
                         msg = "Database bị lỗi.";
-                        Log.e("Error", response.toString());
+                        Log.e("Error", msg);
                         signUpActivity.loading_complete(null);
                         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
 
@@ -300,6 +302,7 @@ public class ConnectionWebService {
 
                     String msg = "Kết nối mạng bị lỗi.";
                     Log.e("Error", error.toString());
+
                     signUpActivity.loading_complete(null);
                     Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
 
@@ -574,7 +577,7 @@ public class ConnectionWebService {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                        Account account = new Account(jsonObject.getString("Username"),
+                        Account account = new Account(jsonObject.getInt("Id"),jsonObject.getString("Username"),
                                 jsonObject.getString("Fullname"), jsonObject.getString("Email"), jsonObject.getString("Password")
                         );
                         account.setOutside(jsonObject.getString("Outside"));
@@ -644,8 +647,9 @@ public class ConnectionWebService {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    String msg = "";
-                    if (response.toString().trim().equals("OK")) {
+                    String msg = response.toString().trim();
+                    Log.e("Return", msg);
+                    if (msg.matches("[0-9]+")) {
                         msg = "Đăng ký thành công";
                         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
                         Log.e("Success", msg);
@@ -653,6 +657,7 @@ public class ConnectionWebService {
                         signUpActivity.loading_complete(null);
                         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
                         connectionDatabaseLocalMobile.earse();
+                        account.setId(Integer.parseInt(msg));
                         connectionDatabaseLocalMobile.insert_account(account);
                         Intent intent = new Intent(activity, HomeActivity.class);
 

@@ -5,6 +5,7 @@ import android.util.Log;
 import java.util.Date;
 
 public class Account {
+    private int id;
     private String username;
     private String fullname;
     private String email;
@@ -14,12 +15,21 @@ public class Account {
     private String outside;
     private String idOutSide;
 
-    public Account(String username, String fullname, String email, String password ) {
+    public Account(int id,String username, String fullname, String email, String password ) {
+        this.id= id;
         this.username = username;
         this.fullname = fullname;
         this.email = email;
         this.password = password;
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUsername() {

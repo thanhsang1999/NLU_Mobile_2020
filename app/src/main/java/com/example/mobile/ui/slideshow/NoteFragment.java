@@ -3,14 +3,11 @@ package com.example.mobile.ui.slideshow;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,8 +18,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mobile.database.sqlite.ConnectionDatabaseLocalMobile;
-import com.example.mobile.IFragmentCanAddNote;
+import com.example.mobile.IFragmentShowNote;
 import com.example.mobile.R;
 import com.example.mobile.activity.HomeActivity;
 import com.example.mobile.activity.NewNoteActivity;
@@ -31,7 +27,9 @@ import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Package;
 import com.example.mobile.ui.home.HomeViewModel;
 
-public class NoteFragment extends Fragment implements IFragmentCanAddNote {
+import java.util.List;
+
+public class NoteFragment extends Fragment implements IFragmentShowNote {
 
     private HomeViewModel homeViewModel;
 
@@ -105,7 +103,8 @@ public class NoteFragment extends Fragment implements IFragmentCanAddNote {
             }
         });
     }
-    public <T> void startActivity(android.content.Context context, Class<T> classActivity, int idNotebook,int index){
+    @Override
+    public void startActivityNewNote(android.content.Context context, int idNotebook, int index){
         if(idNotebook==0){
             Intent intent = new Intent(context, NewNoteActivity.class);
             intent.putExtra("idPackage",this.currentPackage.getId());
@@ -142,6 +141,10 @@ public class NoteFragment extends Fragment implements IFragmentCanAddNote {
         }
 
     }
+    @Override
+    public  void startActivityShareNote(){
+
+    };
 
 
 

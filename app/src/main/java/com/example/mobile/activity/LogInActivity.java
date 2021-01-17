@@ -182,7 +182,7 @@ public class LogInActivity extends AppCompatActivity {
                                 @Override
                                 public void onCompleted(JSONObject object, GraphResponse response) {
                                     try {
-                                        Account account = new Account(object.getString("email"), object.getString("name"), object.getString("email"), null);
+                                        Account account = new Account(0, object.getString("email"), object.getString("name"), object.getString("email"), null);
                                         account.setDateOfBirth(Tool.StringToDateFacebook(object.getString("birthday")));
                                         Log.e("dob",object.getString("birthday"));
                                         account.setGender(object.getString("gender"));

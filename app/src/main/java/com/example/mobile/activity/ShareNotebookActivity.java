@@ -1,5 +1,6 @@
 package com.example.mobile.activity;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
 import com.example.mobile.adapter.ShareNoteAdapter;
+import com.example.mobile.database.sqlite.NoteSharedDAO;
 import com.example.mobile.model.InfoShare;
 
 import java.util.ArrayList;
@@ -25,11 +27,16 @@ public class ShareNotebookActivity extends AppCompatActivity {
     EditText editTextShare;
     List<InfoShare> infoShares;
     ShareNoteAdapter shareNoteAdapter;
+    List<Integer> lstShared;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share_notebook);
-
+        lstShared=getIntent().getIntegerArrayListExtra("lstShared");
+        if(lstShared==null || lstShared.size()==0){
+            Log.e("Not receice", "noteshared");
+        }
         Toolbar toolbar = findViewById(R.id.toolbarShare);
         toolbar.setTitle("Chia sẻ notebook");
         setSupportActionBar(toolbar);
@@ -38,13 +45,7 @@ public class ShareNotebookActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
 
         infoShares = new ArrayList<>();
-        infoShares.add(new InfoShare("sang","anonkill1999@gmail.com"));
-        infoShares.add(new InfoShare("sang1","anonkill19991@gmail.com"));
-        infoShares.add(new InfoShare("sang2","anonkill19992@gmail.com"));
-        infoShares.add(new InfoShare("sang3","anonkill19994@gmail.com"));
-        infoShares.add(new InfoShare("sang3","anonkill19994@gmail.com"));
-        infoShares.add(new InfoShare("sang3","anonkill19994@gmail.com"));
-        infoShares.add(new InfoShare("sang3","anonkill19994@gmail.com"));
+
 
         recyclerViewShare = findViewById(R.id.recyclerViewShare);
 
@@ -75,7 +76,15 @@ public class ShareNotebookActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
-                this.finish();
+                if(infoShares.size()==0)
+                this.finish();else{
+                    NoteSharedDAO noteSharedDAO= new NoteSharedDAO(this);
+                    for (InfoShare i:infoShares
+                         ) {
+                        noteSharedDAO.shared(i, lstShared);
+                    }
+
+                }
                 return true;
             default:
                 return false;

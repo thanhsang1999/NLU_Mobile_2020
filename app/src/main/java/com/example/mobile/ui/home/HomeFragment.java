@@ -1,6 +1,5 @@
 package com.example.mobile.ui.home;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,25 +15,25 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.mobile.database.sqlite.ConnectionDatabaseLocalMobile;
-import com.example.mobile.IFragmentCanAddNote;
+import com.example.mobile.IFragmentShowNote;
 import com.example.mobile.activity.HomeActivity;
 import com.example.mobile.R;
 import com.example.mobile.activity.NewNoteActivity;
+import com.example.mobile.activity.ShareNotebookActivity;
 import com.example.mobile.database.sqlite.NoteDAO;
 import com.example.mobile.model.Notebook;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment implements IFragmentCanAddNote {
+import javax.security.auth.login.LoginException;
+
+public class HomeFragment extends Fragment implements IFragmentShowNote {
 
     private HomeViewModel homeViewModel;
 
@@ -121,7 +120,8 @@ public class HomeFragment extends Fragment implements IFragmentCanAddNote {
             }
         }).start();
     }
-    public <T> void startActivity(android.content.Context context, Class<T> classActivity, int idNotebook, int index) {
+    @Override
+    public  void startActivityNewNote(android.content.Context context, int idNotebook, int index) {
         Log.e("index",""+index);
         if(idNotebook==0){
             Intent intent = new Intent(context, NewNoteActivity.class);
@@ -160,6 +160,24 @@ public class HomeFragment extends Fragment implements IFragmentCanAddNote {
 
 
     }
+    @Override
+    public  void startActivityShareNote(){
+        if(this.getActivity() instanceof  HomeActivity){
+            Log.e("Start activity","shared note");
+            Intent intent = new Intent(this.getActivity(), ShareNotebookActivity.class);
+            ArrayList<Integer> lstShared= new ArrayList<>();
+            for (Notebook n:listNotebook
+                 ) {
+                if(n.getChecked()==true)
+                lstShared.add(n.getId());
+
+            }
+            intent.putIntegerArrayListExtra("lstShared",lstShared);
+            startActivity(intent);
+        }
+
+
+    };
 
 
 
