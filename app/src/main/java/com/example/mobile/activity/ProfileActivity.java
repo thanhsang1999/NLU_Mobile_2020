@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -116,12 +117,15 @@ public class ProfileActivity extends AppCompatActivity {
         editTextFullName.setText(account.getFullname());
         textViewTitle.setText(account.getUsername());
         if(account.getDateOfBirth()!=null)
+            Log.e("dateofbirth",Tool.DateToStringVN(account.getDateOfBirth()));
         btn_dOB.setText(Tool.DateToStringVN(account.getDateOfBirth()));
 
+        if(account.getGender()!=null){
+            if(account.getGender().equals(Account.GENDER_FEMALE)){
+                radioGroupGender.check(R.id.radioButtonFemale);
+            } else  if(account.getGender().equals(Account.GENDER_MALE)) radioGroupGender.check(R.id.radioButtonMale);
+        } else radioGroupGender.check(R.id.radioButtonMale);
 
-        if(account.getGender().equals(Account.GENDER_FEMALE)){
-            radioGroupGender.check(R.id.radioButtonFemale);
-        } else  if(account.getGender().equals(Account.GENDER_MALE)) radioGroupGender.check(R.id.radioButtonMale);
     }
 
 

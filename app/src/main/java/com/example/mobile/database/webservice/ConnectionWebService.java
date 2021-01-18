@@ -146,6 +146,8 @@ public class ConnectionWebService {
                             Account account = new Account(jsonObject.getInt("Id"),jsonObject.getString("Username"),
                                     jsonObject.getString("Fullname"), jsonObject.getString("Email"), jsonObject.getString("Password")
                             );
+                            account.setDateOfBirth(Tool.StringToDate(jsonObject.getString("DateOfBirth")));
+                            account.setGender(jsonObject.getString("Gender"));
                             String msg = "Đăng nhập thành công.";
                             logInActivity.loading_complete(null);
                             Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
@@ -518,7 +520,7 @@ public class ConnectionWebService {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     MyImage p = new MyImage();
                     p.setId(jsonObject.getInt("Id"));
-                    p.setImage(Tool.getByteFromBase64(jsonObject.getString("Image")));
+                    p.setImage(jsonObject.getString("Image"));
 
                     p.setLastEdit(Tool.StringToDate(jsonObject.getString("LastEdit")));
                     p.idNotebook=jsonObject.getInt("IdNotebook");

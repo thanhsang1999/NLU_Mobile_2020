@@ -2,5 +2,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/menu_delete" android:title="delete" android:icon="@drawable/ic_trash_white" app:showAsAction="always"/>
     <item android:id="@+id/menu_share" android:title="share" android:icon="@drawable/ic_share_white" app:showAsAction="always" />
-    <item android:id="@+id/menu_important" android:title="important" android:icon="@drawable/ic_star" app:showAsAction="always" />
+    <item android:id="@+id/menu_important" android:title="important" android:icon="@drawable/ic_star_minus" app:showAsAction="always" />
 </menu>

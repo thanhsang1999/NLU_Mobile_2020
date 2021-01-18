@@ -41,5 +41,7 @@
         tools:layout="@layout/fragment_notes"
 
     />
+    <fragment android:id="@+id/nav_shared" android:name="com.example.mobile.ui.shared.SharedFragment"
+              android:label="fragment_shared" tools:layout="@layout/fragment_shared"/>
 
 </navigation>

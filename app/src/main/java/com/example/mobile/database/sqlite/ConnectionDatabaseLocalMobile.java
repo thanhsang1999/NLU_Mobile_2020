@@ -468,7 +468,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                                 Account account= noteDAO.getAccount();
                                 put("id", p.getId()+"");
                                 put("id_notebook", p.idNotebook+"");
-                                put("image", Tool.getBase64FromByte(p.getImage()));
+                                put("image", p.getImage());
                                 put("last_edit", Tool.DateToString( p.getLastEdit()));
                                 put("username", account.getUsername());
 
