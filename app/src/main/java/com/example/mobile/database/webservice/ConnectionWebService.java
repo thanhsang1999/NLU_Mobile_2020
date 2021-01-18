@@ -477,6 +477,7 @@ public class ConnectionWebService {
                     p.setContent(jsonObject.getString("Content"));
                     p.setDateEdit(Tool.StringToDate(jsonObject.getString("LastEdit")));
                     Account account= new Account(jsonObject.getInt("IdAccount"));
+                    account.setUsername(jsonObject.getString("Username"));
                     p.setAccount(account);
                     packageDAO.insertNoteShared(p,false);
 

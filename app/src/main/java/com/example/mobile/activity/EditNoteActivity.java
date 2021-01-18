@@ -39,6 +39,7 @@ import com.example.mobile.database.sqlite.NoteDAO;
 import com.example.mobile.model.NoteShared;
 import com.example.mobile.model.Tool;
 import com.example.mobile.utils.ExactThreadHelper;
+import com.example.mobile.utils.ImageUltils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.jetbrains.annotations.NotNull;
 
@@ -339,7 +340,13 @@ public class EditNoteActivity extends AppCompatActivity {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),imageUri);
                 lstBitmap.add(bitmap);
-                notebook.getImages().add(Tool.getByteFromBitmap(bitmap));
+
+                File fileImage= ImageUltils.readFileFromFolderFiles(this,"nodo/"+Tool.DateToString(new Date()));
+                if(!fileImage.exists()){
+                    fileImage.getParentFile().mkdirs();
+                }
+                ImageUltils.saveBitMapToFile(fileImage, bitmap);
+                notebook.getImages().add(fileImage.getAbsolutePath());
 
 
                 newNoteAdapter.notifyDataSetChanged();
@@ -414,7 +421,13 @@ public class EditNoteActivity extends AppCompatActivity {
         Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
         Bitmap bitmap1 = Bitmap.createBitmap(bitmap, 0, 0, targetW, targetH,
                 matrix, true);
-        notebook.getImages().add(Tool.getByteFromBitmap(bitmap1));
+
+        File fileImage= ImageUltils.readFileFromFolderFiles(this,"nodo/"+Tool.DateToString(new Date()));
+        if(!fileImage.exists()){
+            fileImage.getParentFile().mkdirs();
+        }
+        ImageUltils.saveBitMapToFile(fileImage, bitmap);
+        notebook.getImages().add(fileImage.getAbsolutePath());
         lstBitmap.add(bitmap1);
     }
 }

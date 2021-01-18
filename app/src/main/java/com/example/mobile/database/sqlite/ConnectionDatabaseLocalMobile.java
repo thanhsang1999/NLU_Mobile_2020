@@ -121,6 +121,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                 "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"+
                 "id_account integer," +
                 "username TEXT,"+
+
                 "title TEXT,"+
                 "last_edit TEXT,"+
                 "content TEXT,"+
@@ -336,6 +337,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
 
                                 put("last_edit", Tool.DateToString( p.getLastEdit()));
                                 put("username", account.getUsername());
+                                packageDAO.close();
                             }});
 
                             switch (keyAction){
@@ -366,6 +368,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                                 put("username", account.getUsername());
                                 put("email", account.getEmail());
                                 Log.e("username", account.getUsername());
+                                packageDAO.close();
                             }});
 
                             switch (keyAction){
@@ -412,6 +415,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                                         put("has_remind", "false");
 
                                 }
+                                noteDAO.close();
 
 
                             }});
@@ -451,6 +455,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                                     put("remind", Tool.DateToString( p.getRemind()));
                                 }else
                                     put("has_remind", "false");
+                                noteDAO.close();
 
                             }});
 
@@ -484,7 +489,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                                 Log.e("IdAccount", p.getAccount().getId()+"");
                                 put("username", p.getAccount().getUsername()+"");
                                 Log.e("Username", p.getAccount().getUsername()+"");
-
+                                noteDAO.close();
 
                             }});
 
@@ -511,7 +516,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                                 put("image", p.getImage());
                                 put("last_edit", Tool.DateToString( p.getLastEdit()));
                                 put("username", account.getUsername());
-
+                                noteDAO.close();
 
                             }});
                             switch (keyAction){

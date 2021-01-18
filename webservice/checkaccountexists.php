@@ -4,7 +4,7 @@
 	
 	
 	function checkAccountExists($username, $email, $connect){
-		$query = "SELECT id FROM tblaccount WHERE username = ? and email = ?";
+		$query = "SELECT id FROM tblaccount WHERE username = ? or email = ?";
 		$prepare_statement = $connect->prepare($query);
 		$prepare_statement->bind_param("ss",$username, $email) ;
 		$prepare_statement->execute();

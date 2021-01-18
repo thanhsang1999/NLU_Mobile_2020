@@ -381,7 +381,7 @@ public class NewNoteActivity extends AppCompatActivity {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),imageUri);
                 lstBitmap.add(bitmap);
-                String path = imageUri.getPath(); // "/mnt/sdcard/FileName.mp3"
+
                 File fileImage= ImageUltils.readFileFromFolderFiles(this,"nodo/"+Tool.DateToString(new Date()));
               if(!fileImage.exists()){
                   fileImage.getParentFile().mkdirs();

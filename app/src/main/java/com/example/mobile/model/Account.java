@@ -1,10 +1,12 @@
 package com.example.mobile.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import java.util.Date;
 
-public class Account {
+public class Account implements Parcelable {
     private int id;
     private String username;
     private String fullname;
@@ -28,6 +30,20 @@ public class Account {
 
 
     }
+
+
+
+    public static final Creator<Account> CREATOR = new Creator<Account>() {
+        @Override
+        public Account createFromParcel(Parcel in) {
+            return new Account(in);
+        }
+
+        @Override
+        public Account[] newArray(int size) {
+            return new Account[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -129,4 +145,32 @@ public class Account {
     public final  static String  GENDER_FEMALE="female";
     public final  static String  OUTSIDE_FACEBOOK="facebook";
     public final  static String  OUTSIDE_GOOGLE="google";
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(username);
+        dest.writeString(fullname);
+        dest.writeString(email);
+        dest.writeString(password);
+        dest.writeString(gender);
+        dest.writeString(outside);
+        dest.writeString(idOutSide);
+    }
+    protected Account(Parcel in) {
+        id = in.readInt();
+        username = in.readString();
+
+        fullname = in.readString();
+        email = in.readString();
+        password = in.readString();
+        gender = in.readString();
+        outside = in.readString();
+        idOutSide = in.readString();
+    }
 }

@@ -11,7 +11,7 @@
  Target Server Version : 100408
  File Encoding         : 65001
 
- Date: 18/01/2021 23:20:08
+ Date: 19/01/2021 01:02:00
 */
 
 SET NAMES utf8mb4;
@@ -41,6 +41,12 @@ INSERT INTO `tblaccessnoteshared` VALUES (19, 1, 16, 'tanhoang9911.999@gmail.com
 INSERT INTO `tblaccessnoteshared` VALUES (20, 44, 16, 'hoang@gmail.com', 'hoang');
 INSERT INTO `tblaccessnoteshared` VALUES (21, 1, 17, 'tanhoang9911.999@gmail.com', 'abc123');
 INSERT INTO `tblaccessnoteshared` VALUES (22, 44, 17, 'hoang@gmail.com', 'hoang');
+INSERT INTO `tblaccessnoteshared` VALUES (23, 44, 18, 'hoang@gmail.com', 'hoang');
+INSERT INTO `tblaccessnoteshared` VALUES (24, 1, 18, 'tanhoang9911.999@gmail.com', 'abc123');
+INSERT INTO `tblaccessnoteshared` VALUES (25, 1, 19, 'tanhoang9911.999@gmail.com', 'abc123');
+INSERT INTO `tblaccessnoteshared` VALUES (26, 44, 19, 'hoang@gmail.com', 'hoang');
+INSERT INTO `tblaccessnoteshared` VALUES (27, 1, 20, 'tanhoang9911.999@gmail.com', 'abc123');
+INSERT INTO `tblaccessnoteshared` VALUES (28, 44, 20, 'hoang@gmail.com', 'hoang');
 
 -- ----------------------------
 -- Table structure for tblaccount
@@ -120,7 +126,6 @@ CREATE TABLE `tblnotebook`  (
 -- Records of tblnotebook
 -- ----------------------------
 INSERT INTO `tblnotebook` VALUES (71, 41, 'test share', 'test share', '2021-01-18 14:37:03', NULL, 1, 0);
-INSERT INTO `tblnotebook` VALUES (74, 1, '123', '', '2021-01-18 16:17:18', NULL, 17, 0);
 
 -- ----------------------------
 -- Table structure for tblnoteshared
@@ -149,6 +154,9 @@ INSERT INTO `tblnoteshared` VALUES (14, 41, '', '123', '2021-01-18 10:05:31', NU
 INSERT INTO `tblnoteshared` VALUES (15, 1, '', '1', '2021-01-18 13:59:58', NULL, 'abc123');
 INSERT INTO `tblnoteshared` VALUES (16, 1, '', 'bbhbbb', '2021-01-18 14:00:25', NULL, 'abc123');
 INSERT INTO `tblnoteshared` VALUES (17, 1, '', '1234', '2021-01-18 16:18:34', NULL, 'abc123');
+INSERT INTO `tblnoteshared` VALUES (18, 44, '', '12313', '2021-01-18 17:29:03', NULL, 'hoang');
+INSERT INTO `tblnoteshared` VALUES (19, 1, '', '123', '2021-01-18 17:31:57', NULL, 'abc123');
+INSERT INTO `tblnoteshared` VALUES (20, 1, '', 'shared', '2021-01-18 17:32:28', NULL, 'abc123');
 
 -- ----------------------------
 -- Table structure for tblpackage
@@ -169,6 +177,7 @@ CREATE TABLE `tblpackage`  (
 -- Records of tblpackage
 -- ----------------------------
 INSERT INTO `tblpackage` VALUES (1, 41, 'color_blue', 'Default', '2021-01-17 13:46:38');
+INSERT INTO `tblpackage` VALUES (1, 44, 'color_blue', 'Default', '2021-01-18 17:28:54');
 INSERT INTO `tblpackage` VALUES (14, 1, 'color_blue_green', '21121', '2021-01-15 10:18:18');
 INSERT INTO `tblpackage` VALUES (15, 1, 'color_red', '2', '2021-01-14 17:49:01');
 INSERT INTO `tblpackage` VALUES (16, 1, 'color_green', '3', '2021-01-16 10:24:49');

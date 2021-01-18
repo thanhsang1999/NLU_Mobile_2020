@@ -287,7 +287,10 @@ public class NoteSharedDAO extends NoteDAO {
             notebook.setDateEdit(Tool.StringToDate(cursor.getString(3)));
             notebook.setRemind(Tool.StringToDate(cursor.getString(4)));
             Account account = new Account(cursor.getInt(5));
+            //Log.e("Id", account.getId()+"");
             account.setUsername(cursor.getString(6));
+
+            //Log.e("Username", account.getUsername());
             notebook.setAccount(account);
             notebooks.add(notebook);
 

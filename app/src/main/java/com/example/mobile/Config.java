@@ -3,7 +3,7 @@ package com.example.mobile;
 import android.util.Log;
 
 public class Config {
-    public static boolean IS_LOCAL = false;
+    public static boolean IS_LOCAL = true;
 
 //    public static String URL_LOCAL = "http://192.168.0.222:8080/mobile/";//SANG
 //    public static String URL_LOCAL = "http://192.168.43.113:8080/mobile/";//SANG

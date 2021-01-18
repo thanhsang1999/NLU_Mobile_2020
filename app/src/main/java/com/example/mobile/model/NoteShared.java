@@ -17,7 +17,7 @@ public class NoteShared implements Parcelable {
     private Date remind;
     private boolean checked;
     private Account account;
-    List<byte[]> images;
+    List<String> images;
 
 
     public NoteShared() {
@@ -119,6 +119,10 @@ public class NoteShared implements Parcelable {
         dest.writeByte((byte) ((remind == null) ? 0 : 1));
         if(remind!=null)
         dest.writeLong(remind.getTime());
+        dest.writeArray(images.toArray());
+        dest.writeParcelable(this.account,flags);
+
+
 
 
 
@@ -136,18 +140,20 @@ public class NoteShared implements Parcelable {
             remind=new Date(in.readLong());
         }
 
-        images= new ArrayList<>();
+        images=
+        in.readArrayList(String.class.getClassLoader());
+        account=in.readParcelable(Account.class.getClassLoader());
 
 
 
 
     }
 
-    public List<byte[]> getImages() {
+    public List<String> getImages() {
         return images;
     }
 
-    public void setImages(List<byte[]> images) {
+    public void setImages(List<String> images) {
         this.images = images;
     }
 
