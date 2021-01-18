@@ -68,7 +68,7 @@ public class ImportantFragment extends Fragment implements IFragmentShowNote {
         recyclerView.addItemDecoration(dividerItemDecoration);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(root.getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        listNotebook= connectionDatabaseLocalMobile.getNotebooksLast(-1);
+        listNotebook= connectionDatabaseLocalMobile.getNotebooksImportantLast(-1);
         //Log.e("HomeFragment","Run");
         adapterImportant = new AdapterImportant(listNotebook,ImportantFragment.this);
         recyclerView.setAdapter(adapterImportant);
@@ -84,7 +84,7 @@ public class ImportantFragment extends Fragment implements IFragmentShowNote {
             @Override
             public void onRefresh() {
                 listNotebook.clear();
-                listNotebook.addAll(connectionDatabaseLocalMobile.getNotebooksLast(-1));
+                listNotebook.addAll(connectionDatabaseLocalMobile.getNotebooksImportantLast(-1));
                 adapterImportant.notifyDataSetChanged();
                 swiperefresh.setRefreshing(false);
             }
@@ -95,7 +95,7 @@ public class ImportantFragment extends Fragment implements IFragmentShowNote {
                 try {
                     Thread.sleep(1000);
                     listNotebook.clear();
-                    listNotebook.addAll(connectionDatabaseLocalMobile.getNotebooksLast(-1));
+                    listNotebook.addAll(connectionDatabaseLocalMobile.getNotebooksImportantLast(-1));
                     ImportantFragment.this.getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

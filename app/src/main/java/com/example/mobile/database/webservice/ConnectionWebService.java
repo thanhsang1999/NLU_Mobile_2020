@@ -423,6 +423,7 @@ public class ConnectionWebService {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     Notebook p = new Notebook();
                     p.setId(jsonObject.getInt("Id"));
+                    p.setStar(jsonObject.getInt("Star"));
                     p.setTitle(jsonObject.getString("Title"));
                     p.setContent(jsonObject.getString("Content"));
                     p.setDateEdit(Tool.StringToDate(jsonObject.getString("LastEdit")));

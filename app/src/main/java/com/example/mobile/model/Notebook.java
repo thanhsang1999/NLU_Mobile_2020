@@ -21,6 +21,16 @@ public class Notebook implements Parcelable {
     private Date remind;
     private boolean checked;
     private String colorPackage;
+    private int star;
+
+    public int getStar() {
+        return star;
+    }
+
+    public void setStar(int star) {
+        this.star = star;
+    }
+
     List<String> images;
     public int id_package;
 

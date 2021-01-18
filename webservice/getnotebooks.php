@@ -9,7 +9,7 @@
 	
 	
 	
-	$query = "SELECT id,id_package, title, content, last_edit,remind FROM tblnotebook WHERE id_account=?";
+	$query = "SELECT id,id_package, title, content, last_edit,remind, star FROM tblnotebook WHERE id_account=?";
 	$prepare_statement = $connect->prepare($query);
 	$prepare_statement->bind_param("i",$i1) ;
 	$array = array();
@@ -18,6 +18,7 @@
 	
 	while($row = $data->fetch_assoc()){
 		$p=new Notebook($row["id"], $row["id_package"], $row["title"], $row["content"], $row["last_edit"], $row["remind"]);
+		$p-> Star = $row["star"];
 		
 		array_push($array, $p);
 		

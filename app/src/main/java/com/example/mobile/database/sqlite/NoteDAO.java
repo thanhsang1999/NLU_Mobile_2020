@@ -121,6 +121,7 @@ public class NoteDAO  extends PackageDAO {
         values.put("title", n.getTitle());
         values.put("content", n.getContent());
         values.put("id_package", idPackage);
+        values.put("star", n.getStar());
         values.put("remind", Tool.DateToString(n.getRemind()));
         values.put("last_edit", Tool.DateToString(n.getDateEdit()));
         if(n.getId()!=0){
@@ -149,7 +150,7 @@ public class NoteDAO  extends PackageDAO {
         }
         int countI=1;
         for(String b: n.getImages()){
-            insertImage(notebook.getId(),b,notebook.getDateEdit(), true);
+            insertImage(notebook.getId(),b,notebook.getDateEdit(), false);
             Log.e("Insert Image", ""+(countI++));
         }
 
@@ -168,7 +169,7 @@ public class NoteDAO  extends PackageDAO {
         notebook.setDateEdit(new Date());
         values.put("title",notebook.getTitle());
         values.put("content",notebook.getContent());
-
+        values.put("star", notebook.getStar());
 
         int ret = this.sqLiteDatabase.update("notebook", values, "id=?", new String[]{notebook.getId()+""});
         updateImages(notebook.getId(),notebook.getImages(),notebook.getDateEdit());
@@ -256,6 +257,30 @@ public class NoteDAO  extends PackageDAO {
         }
         return notebooks;
     }
+    public ArrayList<Notebook> getNotebooksImportantLast(int limit) {
+        String sqlLimit="";
+        if(limit!=-1){
+            sqlLimit=" limit "+limit;
+        }
+
+        String query = "SELECT notebook.id,notebook.title, notebook.content,notebook.last_edit, tblpackage.color,notebook.remind FROM notebook join tblpackage on notebook.id_package = tblpackage.id where notebook.star=1 order by notebook.last_edit desc"+sqlLimit;
+        ArrayList<Notebook> notebooks = new ArrayList<>();
+        Cursor cursor = GetData(query);
+        while (cursor.moveToNext()){
+            Notebook notebook = new Notebook();
+            notebook.setId(cursor.getInt(0));
+            notebook.setTitle(cursor.getString(1));
+            notebook.setContent(cursor.getString(2));
+            notebook.setDateEdit(Tool.StringToDate(cursor.getString(3)));
+            notebook.setColorPackage(cursor.getString(4));
+            notebook.setRemind(Tool.StringToDate(cursor.getString(5)));
+
+
+            notebooks.add(notebook);
+
+        }
+        return notebooks;
+    }
     public ArrayList<MyImage> getImagesLast(int limit) {
         String sqlLimit="";
         if(limit!=-1){
@@ -282,7 +307,7 @@ public class NoteDAO  extends PackageDAO {
 
     public Notebook getNotebook(int id) {
         Notebook notebook =null;
-        String columnName[] = {"notebook.title", "notebook.content", "notebook.last_edit", "tblpackage.color","notebook.id_package"};
+        String columnName[] = {"notebook.title", "notebook.content", "notebook.last_edit", "tblpackage.color","notebook.id_package","notebook.star"};
         Cursor cursor = this.sqLiteDatabase.query("notebook join tblpackage on notebook.id_package=tblpackage.id",
                 columnName, "notebook.id=?", new String[]{String.valueOf(id)},
                 null, null, null);
@@ -296,6 +321,7 @@ public class NoteDAO  extends PackageDAO {
                     notebook.setColorPackage(cursor.getString(3));
                     notebook.id_package=cursor.getInt(4);
                     notebook.setImages(getImagesByIdNotebook(id));
+                    notebook.setStar(cursor.getInt(5));
                     notebook.setId(id);
                 } catch (Exception e) {
                     Log.e("Get notebook by id", e.getMessage());

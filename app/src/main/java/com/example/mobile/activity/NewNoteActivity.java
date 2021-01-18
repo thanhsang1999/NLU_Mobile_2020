@@ -382,12 +382,16 @@ public class NewNoteActivity extends AppCompatActivity {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),imageUri);
                 lstBitmap.add(bitmap);
                 String path = imageUri.getPath(); // "/mnt/sdcard/FileName.mp3"
-                File file = new File(new URI(path));
-                notebook.getImages().add(file.getAbsolutePath());
+                File fileImage= ImageUltils.readFileFromFolderFiles(this,"nodo/"+Tool.DateToString(new Date()));
+              if(!fileImage.exists()){
+                  fileImage.getParentFile().mkdirs();
+              }
+               ImageUltils.saveBitMapToFile(fileImage, bitmap);
+                notebook.getImages().add(fileImage.getAbsolutePath());
 
 
                 newNoteAdapter.notifyDataSetChanged();
-            } catch (IOException | URISyntaxException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 

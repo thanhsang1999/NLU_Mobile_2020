@@ -98,6 +98,7 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                 "title TEXT," +
                 "content TEXT,"+
                 "id_package integer,"+
+                "star integer,"+
                 "remind TEXT,"+
                 "last_edit TEXT);";
         sqLiteDatabase.execSQL(sqlCreateTableNotebook);
@@ -396,7 +397,8 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
 
                                     put("title", p.getTitle());
                                     put("content", p.getContent());
-
+                                    put("star", p.getStar()+"");
+                                    Log.e("star", p.getStar()+"");
                                     put("last_edit", Tool.DateToString( p.getDateEdit()));
 
                                     put("id_account", account.getId()+"");

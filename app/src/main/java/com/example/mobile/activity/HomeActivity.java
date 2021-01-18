@@ -345,8 +345,8 @@ public class HomeActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // OK
-                                ArrayList<Notebook> notebooks = importantFragment.listNotebook;
-                                importantFragment.adapterImportant.multiSelect=false;
+                                ArrayList<Notebook> notebooks = homeFragment.listNotebook;
+                                homeFragment.adapterHomeRecyclerView.multiSelect=false;
                                 removeNoteAtHomeFragment(notebooks);
                                 homeFragment.adapterHomeRecyclerView.notifyDataSetChanged();
                                 actionMode.finish();
@@ -355,9 +355,9 @@ public class HomeActivity extends AppCompatActivity {
                         builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                importantFragment.adapterImportant.multiSelect=false;
-                                Tool.SetAllUnChecked(importantFragment.listNotebook);
-                                importantFragment.adapterImportant.notifyDataSetChanged();
+                                homeFragment.adapterHomeRecyclerView.multiSelect=false;
+                                Tool.SetAllUnChecked(homeFragment.listNotebook);
+                                homeFragment.adapterHomeRecyclerView .notifyDataSetChanged();
                                 actionMode.finish();
                             }
                         });
@@ -383,6 +383,10 @@ public class HomeActivity extends AppCompatActivity {
                         return true;
                     case R.id.menu_important:
                         //TODO
+
+
+                        updateStarNotebook(homeFragment.listNotebook);
+                        sqlite.sync();
                         homeFragment.adapterHomeRecyclerView.multiSelect=false;
                         Tool.SetAllUnChecked(homeFragment.listNotebook);
                         homeFragment.adapterHomeRecyclerView.notifyDataSetChanged();
@@ -463,7 +467,9 @@ public class HomeActivity extends AppCompatActivity {
                         return true;
                     case R.id.menu_important:
                         //TODO
+                        updateStarNotebookMinus(importantFragment.listNotebook);
                         importantFragment.adapterImportant.multiSelect=false;
+                        sqlite.sync();
                         Tool.SetAllUnChecked(importantFragment.listNotebook);
                         importantFragment.adapterImportant.notifyDataSetChanged();
                         actionMode.finish();
@@ -518,6 +524,28 @@ private void LoadDataFragmentHome(){
                 sqlite.deleteNotebook(item.getId(), true, true);
                 sqlite.sync();
                 notebooks.remove(item);
+            }
+        }
+    }
+    private void updateStarNotebook(ArrayList<Notebook> notebooks) {
+        ArrayList<Notebook> notebooks2 = new ArrayList<>(notebooks);
+        for (Notebook item: notebooks2) {
+            if (item.getChecked()){
+                item.setStar(1);
+                sqlite.updateNotebook(item,item.id_package,true);
+                sqlite.sync();
+
+            }
+        }
+    }
+    private void updateStarNotebookMinus(ArrayList<Notebook> notebooks) {
+        ArrayList<Notebook> notebooks2 = new ArrayList<>(notebooks);
+        for (Notebook item: notebooks2) {
+            if (item.getChecked()){
+                item.setStar(0);
+                sqlite.updateNotebook(item,item.id_package,true);
+                sqlite.sync();
+                importantFragment.listNotebook.remove(item);
             }
         }
     }
