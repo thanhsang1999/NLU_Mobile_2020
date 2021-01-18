@@ -269,4 +269,5 @@ public class LogInActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
+
 }

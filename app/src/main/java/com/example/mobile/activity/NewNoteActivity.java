@@ -461,4 +461,10 @@ public class NewNoteActivity extends AppCompatActivity {
         notebook.getImages().add(currentPhotoPath);
         lstBitmap.add(bitmap1);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.sqLite.close();
+    }
 }

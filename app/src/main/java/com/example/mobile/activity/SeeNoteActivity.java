@@ -61,7 +61,7 @@ public class SeeNoteActivity extends AppCompatActivity {
         editTextContent = findViewById(R.id.editTextContent);
         recyclerView = findViewById(R.id.recyclerViewImage);
 
-        editTextAuthor.setText("Chủ sở hữu: Sang");
+        editTextAuthor.setText("Chủ sở hữu: "+notebook.getAccount().getUsername());
         editTextAuthor.setFocusable(false);
         editTextTitle.setText(notebook.getTitle());
         editTextTitle.setFocusable(false);
@@ -80,9 +80,12 @@ public class SeeNoteActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case android.R.id.home:this.finish();
-            return true;
-            default:return false;
+            case android.R.id.home:
+                
+                this.finish();
+                return true;
+            default:
+                return false;
         }
     }
 }
