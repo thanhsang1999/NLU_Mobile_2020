@@ -11,7 +11,7 @@
  Target Server Version : 100408
  File Encoding         : 65001
 
- Date: 18/01/2021 05:53:34
+ Date: 18/01/2021 14:10:03
 */
 
 SET NAMES utf8mb4;
@@ -23,9 +23,9 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `tblaccessnoteshared`;
 CREATE TABLE `tblaccessnoteshared`  (
   `id` int(11) NOT NULL,
-  `id_account` int(11) NULL DEFAULT NULL,
+  `id_account` int(11) NOT NULL,
   `id_noteshared` int(11) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`, `id_account`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -48,8 +48,8 @@ CREATE TABLE `tblaccount`  (
 -- ----------------------------
 -- Records of tblaccount
 -- ----------------------------
-INSERT INTO `tblaccount` VALUES (1, 'abc123', '123', 'tanhoang99.999@gmail.com', 'aA@123', NULL, NULL, '2021-01-16', NULL);
-INSERT INTO `tblaccount` VALUES (41, 'thiendaopk1@gmail.com', 'Trí Thiện', 'thiendaopk1@gmail.com', NULL, 'facebook', '2755863414664627', '1905-02-06', 'male');
+INSERT INTO `tblaccount` VALUES (1, 'abc123', '12345', 'tanhoang9911.999@gmail.com', 'aA@123', NULL, NULL, '2021-02-18', 'female');
+INSERT INTO `tblaccount` VALUES (41, 'thiendaopk1@gmail.com', 'Trí Thiện1', 'thiendaopk11@gmail.com', NULL, 'facebook', '2755863414664627', '1905-02-06', 'male');
 INSERT INTO `tblaccount` VALUES (44, 'hoang', 'hoang', 'hoang@gmail.com', 'aA@123', NULL, NULL, NULL, NULL);
 
 -- ----------------------------
@@ -60,7 +60,7 @@ CREATE TABLE `tblimage`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_account` int(11) NOT NULL,
   `last_edit` datetime(0) NULL DEFAULT NULL,
-  `image` mediumblob NULL,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `id_package` int(11) NOT NULL,
   `id_notebook` int(11) NOT NULL,
   PRIMARY KEY (`id`, `id_account`) USING BTREE,
@@ -74,9 +74,9 @@ CREATE TABLE `tblimage`  (
 DROP TABLE IF EXISTS `tbllogin`;
 CREATE TABLE `tbllogin`  (
   `id` int(11) NOT NULL,
-  `id_account` int(11) NULL DEFAULT NULL,
+  `id_account` int(11) NOT NULL,
   `id_device` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`, `id_account`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -113,13 +113,13 @@ INSERT INTO `tblnotebook` VALUES (54, 1, '1', '', '2021-01-16 10:24:54', NULL, 1
 DROP TABLE IF EXISTS `tblnoteshared`;
 CREATE TABLE `tblnoteshared`  (
   `id` int(11) NOT NULL,
-  `id_account` int(11) NULL DEFAULT NULL,
+  `id_account` int(11) NOT NULL,
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `last_edit` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `remind` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`, `id_account`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------

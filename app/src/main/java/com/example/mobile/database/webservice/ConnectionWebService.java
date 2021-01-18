@@ -146,7 +146,7 @@ public class ConnectionWebService {
                             Account account = new Account(jsonObject.getInt("Id"),jsonObject.getString("Username"),
                                     jsonObject.getString("Fullname"), jsonObject.getString("Email"), jsonObject.getString("Password")
                             );
-                            account.setDateOfBirth(Tool.StringToDate(jsonObject.getString("DateOfBirth")));
+                            account.setDateOfBirth(Tool.StringToDate(jsonObject.getString("DateOfBirth")+" 00:00:00"));
                             account.setGender(jsonObject.getString("Gender"));
                             String msg = "Đăng nhập thành công.";
                             logInActivity.loading_complete(null);
