@@ -56,6 +56,10 @@ public class NoteShared implements Parcelable {
     }
 
     public void setTitle(String title) {
+
+        if(title==null) {
+            this.title = "";
+        }else
         this.title = title;
     }
 
@@ -64,6 +68,10 @@ public class NoteShared implements Parcelable {
     }
 
     public void setContent(String content) {
+
+        if(content==null) {
+            this.content = "";
+        }else
         this.content = content;
     }
 

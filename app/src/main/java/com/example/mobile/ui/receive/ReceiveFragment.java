@@ -38,11 +38,11 @@ public class ReceiveFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_receive, container, false);
-        //TODO
+        Log.e("Run fragment","Receive");
         initReceive();
         // du lieu ao
         noteSharedDAO = new NoteSharedDAO(this.getActivity());
-        notebooks = noteSharedDAO.getNoteSharedLast(-1);
+        notebooks = noteSharedDAO.getAccessNoteSharedLast(-1);
 
         //set thuoc tinh RecyclerView
         recyclerView.setHasFixedSize(true);
@@ -66,7 +66,7 @@ public class ReceiveFragment extends Fragment {
             @Override
             public void onRefresh() {
                 notebooks.clear();
-                notebooks.addAll(noteSharedDAO.getNoteSharedLast(-1));
+                notebooks.addAll(noteSharedDAO.getAccessNoteSharedLast(-1));
                 adapterReceive.notifyDataSetChanged();
                 swiperefresh.setRefreshing(false);
             }

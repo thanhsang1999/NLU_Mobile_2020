@@ -119,12 +119,13 @@ public class NewNoteActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(NewNoteActivity.this,LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        lstBitmap= ImageUltils.getListBitmapFromListPath(notebook.getImages());
+
         newNoteAdapter = new NewNoteAdapter(NewNoteActivity.this,lstBitmap);
         recyclerView.setAdapter(newNoteAdapter);
     }
 
     private void init() {
+
         editTextTitle = findViewById(R.id.editTextTitle);
         editTextContent = findViewById(R.id.editTextContent);
         Mainlayout = findViewById(R.id.mainLayout);
@@ -139,7 +140,7 @@ public class NewNoteActivity extends AppCompatActivity {
             editTextContent.setText(notebook.getContent());
             Log.e("content",notebook.getContent());
         }
-
+        lstBitmap= ImageUltils.getListBitmapFromListPath(notebook.getImages());
         // set fab
         fabMain =  findViewById(R.id.fabMain);
         fabFile =  findViewById(R.id.fabFile);

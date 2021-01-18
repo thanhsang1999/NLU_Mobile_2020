@@ -1,7 +1,7 @@
 <?php
 	require 'db.php';
 	require 'class_notebook.php';
-	require 'getidaccount.php';
+	
 	
 	
 	$i1 =$_POST['id_account'];

@@ -11,7 +11,7 @@
  Target Server Version : 100408
  File Encoding         : 65001
 
- Date: 18/01/2021 14:10:03
+ Date: 18/01/2021 17:20:29
 */
 
 SET NAMES utf8mb4;
@@ -24,9 +24,19 @@ DROP TABLE IF EXISTS `tblaccessnoteshared`;
 CREATE TABLE `tblaccessnoteshared`  (
   `id` int(11) NOT NULL,
   `id_account` int(11) NOT NULL,
-  `id_noteshared` int(11) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`, `id_account`) USING BTREE
+  `id_noteshared` int(11) NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`, `id_account`, `id_noteshared`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of tblaccessnoteshared
+-- ----------------------------
+INSERT INTO `tblaccessnoteshared` VALUES (13, 41, 13, 'thiendaopk11@gmail.com', 'thiendaopk1@gmail.com');
+INSERT INTO `tblaccessnoteshared` VALUES (14, 1, 13, 'tanhoang9911.999@gmail.com', 'abc123');
+INSERT INTO `tblaccessnoteshared` VALUES (15, 41, 14, 'thiendaopk11@gmail.com', 'thiendaopk1@gmail.com');
+INSERT INTO `tblaccessnoteshared` VALUES (16, 1, 14, 'tanhoang9911.999@gmail.com', 'abc123');
 
 -- ----------------------------
 -- Table structure for tblaccount
@@ -99,7 +109,6 @@ CREATE TABLE `tblnotebook`  (
 -- ----------------------------
 -- Records of tblnotebook
 -- ----------------------------
-INSERT INTO `tblnotebook` VALUES (1, 41, '1', '', '2021-01-17 22:50:12', NULL, 1);
 INSERT INTO `tblnotebook` VALUES (46, 1, '1', '', '2021-01-14 18:12:49', NULL, 15);
 INSERT INTO `tblnotebook` VALUES (47, 1, '2', '', '2021-01-14 18:15:11', NULL, 15);
 INSERT INTO `tblnotebook` VALUES (48, 1, '3', '', '2021-01-14 18:16:04', NULL, 15);
@@ -125,15 +134,12 @@ CREATE TABLE `tblnoteshared`  (
 -- ----------------------------
 -- Records of tblnoteshared
 -- ----------------------------
-INSERT INTO `tblnoteshared` VALUES (72, 41, '', '123', '2021-01-17 20:37:26', NULL, 'thiendaopk1@gmail.com');
-INSERT INTO `tblnoteshared` VALUES (73, 41, '', '123', '2021-01-17 20:42:16', NULL, 'thiendaopk1@gmail.com');
-INSERT INTO `tblnoteshared` VALUES (74, 41, '', '123', '2021-01-17 20:44:00', NULL, 'thiendaopk1@gmail.com');
-INSERT INTO `tblnoteshared` VALUES (75, 41, '', '123', '2021-01-17 20:48:40', NULL, 'thiendaopk1@gmail.com');
-INSERT INTO `tblnoteshared` VALUES (76, 41, '', '123', '2021-01-17 20:55:07', NULL, 'thiendaopk1@gmail.com');
-INSERT INTO `tblnoteshared` VALUES (77, 41, '', '123', '2021-01-17 20:58:04', NULL, 'thiendaopk1@gmail.com');
-INSERT INTO `tblnoteshared` VALUES (78, 41, '', '123', '2021-01-17 21:01:32', NULL, 'thiendaopk1@gmail.com');
-INSERT INTO `tblnoteshared` VALUES (79, 41, '', '123', '2021-01-17 21:01:48', NULL, 'thiendaopk1@gmail.com');
-INSERT INTO `tblnoteshared` VALUES (80, 41, '', '123', '2021-01-17 21:05:55', NULL, 'thiendaopk1@gmail.com');
+INSERT INTO `tblnoteshared` VALUES (9, 41, '', '123', '2021-01-18 09:32:52', NULL, 'thiendaopk1@gmail.com');
+INSERT INTO `tblnoteshared` VALUES (10, 41, '', '123', '2021-01-18 09:41:28', NULL, 'thiendaopk1@gmail.com');
+INSERT INTO `tblnoteshared` VALUES (11, 41, '', '123', '2021-01-18 09:47:02', NULL, 'thiendaopk1@gmail.com');
+INSERT INTO `tblnoteshared` VALUES (12, 41, '', '123', '2021-01-18 09:49:48', NULL, 'thiendaopk1@gmail.com');
+INSERT INTO `tblnoteshared` VALUES (13, 41, '', '123', '2021-01-18 09:52:29', NULL, 'thiendaopk1@gmail.com');
+INSERT INTO `tblnoteshared` VALUES (14, 41, '', '123', '2021-01-18 10:05:31', NULL, 'thiendaopk1@gmail.com');
 
 -- ----------------------------
 -- Table structure for tblpackage

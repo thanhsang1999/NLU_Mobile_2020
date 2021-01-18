@@ -55,19 +55,27 @@ public class Notebook implements Parcelable {
     }
 
     public String getTitle() {
-        if(title==null)return "";
+
         return title;
     }
 
     public void setTitle(String title) {
+        if(title==null) {
+            this.title = "";
+        }else
         this.title = title;
     }
 
     public String getContent() {
+
+
         return content;
     }
 
     public void setContent(String content) {
+        if(content==null) {
+            this.content = "";
+        }else
         this.content = content;
     }
 

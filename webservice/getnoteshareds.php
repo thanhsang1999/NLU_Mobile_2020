@@ -9,7 +9,7 @@
 	
 	
 	
-	$query = "SELECT id, title, content, last_edit,remind,username,id_account FROM tblnoteshared WHERE id_account=?";
+	$query = "SELECT tblnoteshared.id, tblnoteshared.title, tblnoteshared.content, tblnoteshared.last_edit,tblnoteshared.remind,tblnoteshared.username,tblnoteshared.id_account FROM tblnoteshared JOIN tblaccessnoteshared ON tblnoteshared.id = tblaccessnoteshared.id_noteshared WHERE tblaccessnoteshared.id_account=?";
 	$prepare_statement = $connect->prepare($query);
 	$prepare_statement->bind_param("i",$i1) ;
 	$array = array();

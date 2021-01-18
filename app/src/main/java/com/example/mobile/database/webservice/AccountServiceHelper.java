@@ -7,10 +7,9 @@ import android.widget.Toast;
 
 import com.example.mobile.Config;
 import com.example.mobile.activity.HomeActivity;
-import com.example.mobile.activity.LogoActivity;
-import com.example.mobile.activity.WellComeActivity;
 import com.example.mobile.adapter.ShareNoteAdapter;
-import com.example.mobile.model.InfoShare;
+import com.example.mobile.model.AccessNoteShared;
+import com.example.mobile.model.Account;
 import com.example.mobile.webservice.ultils.MyWorker;
 import com.example.mobile.webservice.ultils.PrepareConnectionWebService;
 
@@ -47,7 +46,10 @@ public class AccountServiceHelper extends  ConnectionWebService {
                         JSONArray jsonArray= new JSONArray(myWorker.getResponse());
                         for (int i=0;i<jsonArray.length();i++){
                             JSONObject accountJson=jsonArray.getJSONObject(i);
-                            InfoShare infoShare= new InfoShare(accountJson.getString("Username"), accountJson.getString("Email"));
+                            Account account= new Account(accountJson.getInt("Id"));
+                            account.setUsername(accountJson.getString("Username"));
+                            account.setEmail(accountJson.getString("Email"));
+                            AccessNoteShared infoShare= new AccessNoteShared(account );
                             if(!shareNoteAdapter.getInfoShares().contains(infoShare))
                             shareNoteAdapter.getInfoShares().add(infoShare);
                         }

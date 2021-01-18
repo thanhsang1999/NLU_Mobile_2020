@@ -36,10 +36,11 @@ public class SeeNoteActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         notebook = getIntent().getExtras().getParcelable("notebook");
+         init();
         lstBitmap.add(BitmapFactory.decodeResource(this.getResources(),R.drawable.cat1));
         lstBitmap.add(BitmapFactory.decodeResource(this.getResources(),R.drawable.cat2));
         lstBitmap.add(BitmapFactory.decodeResource(this.getResources(),R.drawable.cat3));
-        init();
+
         recyclerView.setHasFixedSize(true);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(SeeNoteActivity.this,DividerItemDecoration.HORIZONTAL);
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(SeeNoteActivity.this, R.drawable.custom_divider));

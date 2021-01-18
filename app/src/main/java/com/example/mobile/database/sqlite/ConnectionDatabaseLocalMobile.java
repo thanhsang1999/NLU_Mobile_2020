@@ -16,6 +16,7 @@ import com.example.mobile.R;
 import com.example.mobile.activity.HomeActivity;
 import com.example.mobile.activity.LogoActivity;
 import com.example.mobile.activity.WellComeActivity;
+import com.example.mobile.model.AccessNoteShared;
 import com.example.mobile.model.Account;
 import com.example.mobile.model.DateStringConverter;
 import com.example.mobile.model.MyImage;
@@ -126,8 +127,10 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(sqlCreateTableNoteshared);
         String sqlCreateTableAccessshared = "CREATE TABLE IF NOT EXISTS tblaccessnoteshared ("+
                 "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"+
-                "id_note_shared integer," +
-                "id_account TEXT);";
+                "id_noteshared integer," +
+                "username text," +
+                "email text," +
+                "id_account integer);";
         sqLiteDatabase.execSQL(sqlCreateTableAccessshared);
 
 
@@ -453,6 +456,38 @@ public class ConnectionDatabaseLocalMobile extends SQLiteOpenHelper {
                                 case "update":
                                     PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "updatenoteshared.php");
                                     break;
+                                default:
+                                    break;
+                            }
+                            break;
+
+                        case "tblaccessnoteshared":
+                            myWorker.setParams(new HashMap<String,String>(){{
+                                NoteSharedDAO noteDAO= new NoteSharedDAO(ConnectionDatabaseLocalMobile.this.activity);
+                                AccessNoteShared p= noteDAO.getAccessNoteShared(sync.getIdRow());
+                                if(p.getId()==0){
+                                    Log.e("Error","idaccessnoteshared not found");
+                                }
+
+                                put("id", p.getId()+"");
+                                Log.e("Id",""+p.getId());
+                                put("id_noteshared", p.getNoteShared().getId()+"");
+                                Log.e("IdNoteshared",""+p.getId());
+                                put("email", p.getAccount().getEmail());
+                                Log.e("email", p.getAccount().getEmail()+"");
+                                put("id_account", p.getAccount().getId()+"");
+                                Log.e("IdAccount", p.getAccount().getId()+"");
+                                put("username", p.getAccount().getUsername()+"");
+                                Log.e("Username", p.getAccount().getUsername()+"");
+
+
+                            }});
+
+                            switch (keyAction){
+                                case "insert":
+                                    PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "addaccessnoteshared.php");
+                                    break;
+
                                 default:
                                     break;
                             }

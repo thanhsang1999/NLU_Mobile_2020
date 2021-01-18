@@ -10,16 +10,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
-import com.example.mobile.model.InfoShare;
+import com.example.mobile.model.AccessNoteShared;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class ShareNoteAdapter extends RecyclerView.Adapter<ShareNoteAdapter.ViewHolder> {
     Context context;
-    List<InfoShare> infoShares;
+    List<AccessNoteShared> infoShares;
 
-    public ShareNoteAdapter(Context context, List<InfoShare> infoShares) {
+    public ShareNoteAdapter(Context context, List<AccessNoteShared> infoShares) {
         this.context = context;
         this.infoShares = infoShares;
     }
@@ -35,15 +36,15 @@ public class ShareNoteAdapter extends RecyclerView.Adapter<ShareNoteAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ShareNoteAdapter.ViewHolder holder, int position) {
-        InfoShare infoShare = infoShares.get(position);
+        AccessNoteShared infoShare = infoShares.get(position);
         if (position==0){
-            holder.textViewName.setText(infoShare.getName());
-            holder.textViewEmail.setText(infoShare.getEmail());
+            holder.textViewName.setText(infoShare.getAccount().getUsername());
+            holder.textViewEmail.setText(infoShare.getAccount().getEmail());
             holder.imageShareCancel.setImageDrawable(null);
             holder.imageShareCancel.setEnabled(false);
         }else {
-            holder.textViewName.setText(infoShare.getName());
-            holder.textViewEmail.setText(infoShare.getEmail());
+            holder.textViewName.setText(infoShare.getAccount().getUsername());
+            holder.textViewEmail.setText(infoShare.getAccount().getEmail());
         }
     }
 
@@ -69,7 +70,7 @@ public class ShareNoteAdapter extends RecyclerView.Adapter<ShareNoteAdapter.View
         }
     }
 
-    public List<InfoShare> getInfoShares() {
+    public List<AccessNoteShared> getInfoShares() {
         return infoShares;
     }
 }

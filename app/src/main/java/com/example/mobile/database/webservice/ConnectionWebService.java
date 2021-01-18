@@ -22,6 +22,7 @@ import com.example.mobile.database.sqlite.AccountDAO;
 import com.example.mobile.database.sqlite.NoteDAO;
 import com.example.mobile.database.sqlite.NoteSharedDAO;
 import com.example.mobile.database.sqlite.PackageDAO;
+import com.example.mobile.model.AccessNoteShared;
 import com.example.mobile.model.Account;
 import com.example.mobile.model.MyImage;
 import com.example.mobile.model.NoteShared;
@@ -348,6 +349,7 @@ public class ConnectionWebService {
         takeDataPackage();
         takeDataNotebook();
         takeDataMyNoteShared();
+        takeDateAccessNoteShared();
         //takeDataImage();
 
 
@@ -498,6 +500,59 @@ public class ConnectionWebService {
         }});
 
         PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "getnoteshareds.php");
+
+    }
+    public void takeDateAccessNoteShared(){
+        NoteSharedDAO packageDAO= new NoteSharedDAO(ConnectionWebService.this.activity);
+        MyWorker myWorker= new MyWorker();
+        myWorker.setActivity(this.activity);
+        myWorker.setError(()->{
+            String msg = "Kết nối mạng bị lỗi.";
+            Log.e("Error", myWorker.getErrorMessengr());
+
+        });
+        myWorker.setSuccess(()->{
+
+
+            try {
+                Log.e("GetNoteshared", myWorker.getResponse());
+                JSONArray jsonArray = new JSONArray(myWorker.getResponse());
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+
+                    Account account= new Account(jsonObject.getInt("IdAccount"));
+                    account.setUsername(jsonObject.getString("Username"));
+                    account.setEmail(jsonObject.getString("Email"));
+                    AccessNoteShared p = new AccessNoteShared(account);
+                    p.setId(jsonObject.getInt("Id"));
+                    NoteShared noteShared=new NoteShared();
+                    noteShared.setId(jsonObject.getInt("IdNoteShared"));
+                    p.setNoteShared(noteShared);
+                    packageDAO.insertAccessNoteShared(p,false);
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.e("JSONException", e.getMessage());
+            }
+            packageDAO.close();
+
+
+
+        });
+
+
+        myWorker.setParams(new HashMap<String,String>(){{
+
+            Account account= packageDAO.getAccount();
+            Log.e("id", account.getId()+"");
+            put("id", account.getId()+"");
+
+        }});
+
+        PrepareConnectionWebService.pushWebService(myWorker, Config.getURL()+ "getaccessnoteshareds.php");
 
     }
     public void takeDataImage(){
