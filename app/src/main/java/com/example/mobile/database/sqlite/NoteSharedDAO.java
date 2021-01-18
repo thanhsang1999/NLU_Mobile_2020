@@ -240,6 +240,9 @@ public class NoteSharedDAO extends NoteDAO {
 
     public ArrayList<NoteShared> getNoteSharedLast(int limit) {
         Account currentAccount=getAccount();
+        if(currentAccount==null){
+            return new ArrayList<>();
+        }
         String sqlLimit = "";
         if (limit != -1) {
             sqlLimit = " limit " + limit;
@@ -264,11 +267,15 @@ public class NoteSharedDAO extends NoteDAO {
         return notebooks;
     }
     public ArrayList<NoteShared> getAccessNoteSharedLast(int limit) {
+        Account currentAccount=getAccount();
+        if(currentAccount==null){
+            return new ArrayList<>();
+        }
         String sqlLimit = "";
         if (limit != -1) {
             sqlLimit = " limit " + limit;
         }
-        Account currentAccount=this.getAccount();
+
         String query = "SELECT tblnoteshared.id,tblnoteshared.title, tblnoteshared.content,tblnoteshared.last_edit, tblnoteshared.remind, tblnoteshared.id_account, tblnoteshared.username FROM tblnoteshared join tblaccessnoteshared on tblnoteshared.id=tblaccessnoteshared.id_noteshared where tblnoteshared.id_account != "+currentAccount.getId()+" order by tblnoteshared.last_edit desc" + sqlLimit;
         ArrayList<NoteShared> notebooks = new ArrayList<>();
         Cursor cursor = GetData(query);

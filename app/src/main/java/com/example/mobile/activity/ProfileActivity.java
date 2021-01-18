@@ -40,6 +40,14 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        accountDAO=new AccountDAO(this);
+        account=accountDAO.getAccount();
+        if(account==null){
+
+            this.startActivity(new Intent(this, HomeActivity.class));
+            finish();
+            return;
+        }
 
         setContentView(R.layout.activity_profile);
         mathIdElement();
@@ -101,8 +109,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
     public void mathIdElement(){
-        accountDAO=new AccountDAO(this);
-        account=accountDAO.getAccount();
+
         editTextFullName = findViewById(R.id.editTextFullName);
         textViewTitle = findViewById(R.id.textViewTitle);
         editTextEmail = findViewById(R.id.editTextEmail);
