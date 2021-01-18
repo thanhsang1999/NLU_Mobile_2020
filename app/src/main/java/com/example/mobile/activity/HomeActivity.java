@@ -39,6 +39,7 @@ import com.example.mobile.model.ModelLogin;
 import com.example.mobile.model.Notebook;
 import com.example.mobile.model.Tool;
 import com.example.mobile.ui.home.HomeFragment;
+import com.example.mobile.ui.important.ImportantFragment;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
@@ -71,6 +72,8 @@ public class HomeActivity extends AppCompatActivity {
 //    SharedPreferences.Editor editor;
 //    private static final String MY_SHARED_PREFERENCES = "MY_SHARED_PREFERENCES";
     HomeFragment homeFragment;
+    ImportantFragment importantFragment;
+
     NoteDAO sqlite;
 
     @Override
@@ -149,7 +152,7 @@ public class HomeActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_important, R.id.nav_slideshow,R.id.nav_receive)
+                R.id.nav_home, R.id.nav_important, R.id.nav_slideshow,R.id.nav_shared,R.id.nav_receive)
                 .setDrawerLayout(drawer)
                 .build();
 
@@ -342,19 +345,19 @@ public class HomeActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // OK
-                                ArrayList<Notebook> notebooks = homeFragment.listNotebook;
-                                homeFragment.adapterHomeRecyclerView.multiSelect=false;
+                                ArrayList<Notebook> notebooks = importantFragment.listNotebook;
+                                importantFragment.adapterImportant.multiSelect=false;
                                 removeNoteAtHomeFragment(notebooks);
+                                homeFragment.adapterHomeRecyclerView.notifyDataSetChanged();
                                 actionMode.finish();
                             }
                         });
                         builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-//                                ArrayList<Notebook> notebooks = homeFragment.listNotebook;
-//                                Tool.SetAllUnChecked(notebooks);
-                                homeFragment.adapterHomeRecyclerView.multiSelect=false;
-//                                removeNoteAtHomeFragment(notebooks);
+                                importantFragment.adapterImportant.multiSelect=false;
+                                Tool.SetAllUnChecked(importantFragment.listNotebook);
+                                importantFragment.adapterImportant.notifyDataSetChanged();
                                 actionMode.finish();
                             }
                         });
@@ -377,7 +380,13 @@ public class HomeActivity extends AppCompatActivity {
 
 
                         }
-                        mode.finish();
+                        return true;
+                    case R.id.menu_important:
+                        //TODO
+                        homeFragment.adapterHomeRecyclerView.multiSelect=false;
+                        Tool.SetAllUnChecked(homeFragment.listNotebook);
+                        homeFragment.adapterHomeRecyclerView.notifyDataSetChanged();
+                        actionMode.finish();
                         return true;
                     default:
                         return false;
@@ -386,7 +395,89 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
+                Tool.SetAllUnChecked(homeFragment.listNotebook);
+                homeFragment.adapterHomeRecyclerView.notifyDataSetChanged();
+            }
+        });
+    }
+    public void showActionModeImportant(){
+        actionMode = startSupportActionMode(new ActionMode.Callback() {
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                LoadDataFragmentHome();
+                mode.getMenuInflater().inflate(R.menu.menu_item_select2,menu);
+                return true;
+            }
 
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.menu_delete:
+                        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+                        builder.setTitle("Xóa Notebook");
+                        builder.setMessage("Bạn có muốn xóa notebook không ?");
+                        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // OK
+                                ArrayList<Notebook> notebooks = importantFragment.listNotebook;
+                                importantFragment.adapterImportant.multiSelect=false;
+                                removeNoteAtHomeFragment(notebooks);
+                                importantFragment.adapterImportant.notifyDataSetChanged();
+                                actionMode.finish();
+                            }
+                        });
+                        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                importantFragment.adapterImportant.multiSelect=false;
+                                Tool.SetAllUnChecked(importantFragment.listNotebook);
+                                importantFragment.adapterImportant.notifyDataSetChanged();
+                                actionMode.finish();
+                            }
+                        });
+                        builder.show();
+
+                        return true;
+                    case R.id.menu_share:
+                        Fragment fragment= HomeActivity.this.getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+
+
+                        if(fragment instanceof NavHostFragment){
+
+                            fragment=fragment.getChildFragmentManager().getFragments().get(0);
+                        }
+
+                        if(fragment instanceof IFragmentShowNote){
+
+                            IFragmentShowNote iFragmentCanAddNote=(IFragmentShowNote)fragment;
+                            iFragmentCanAddNote.startActivityShareNote();
+
+
+                        }
+                        return true;
+                    case R.id.menu_important:
+                        //TODO
+                        importantFragment.adapterImportant.multiSelect=false;
+                        Tool.SetAllUnChecked(importantFragment.listNotebook);
+                        importantFragment.adapterImportant.notifyDataSetChanged();
+                        actionMode.finish();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+                importantFragment.adapterImportant.multiSelect=false;
+                Tool.SetAllUnChecked(importantFragment.listNotebook);
+                importantFragment.adapterImportant.notifyDataSetChanged();
             }
         });
     }
@@ -404,6 +495,20 @@ private void LoadDataFragmentHome(){
     if(fragment1 instanceof  HomeFragment){
 
         homeFragment =(HomeFragment) fragment1;
+    }
+
+    // fragmentImportant
+    Fragment fragment2 = HomeActivity.this.getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+
+
+    if(fragment2 instanceof NavHostFragment){
+
+        fragment2=fragment2.getChildFragmentManager().getFragments().get(0);
+    }
+
+    if(fragment2 instanceof  ImportantFragment){
+
+        importantFragment =(ImportantFragment) fragment2;
     }
 }
     private void removeNoteAtHomeFragment(ArrayList<Notebook> notebooks) {
@@ -450,14 +555,16 @@ private void LoadDataFragmentHome(){
                 if(currentFragment instanceof IFragmentShowNote){
                     IFragmentShowNote iFragmentCanAddNote=(IFragmentShowNote) currentFragment;
                     iFragmentCanAddNote.updateApdaterAfterShared();
-
-
+                    Tool.SetAllUnChecked(homeFragment.listNotebook);
+                    homeFragment.adapterHomeRecyclerView.notifyDataSetChanged();
+                    actionMode.finish();
                 }
+
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Tool.SetAllUnChecked(homeFragment.listNotebook);
                 homeFragment.adapterHomeRecyclerView.notifyDataSetChanged();
-                actionMode = null;
+                actionMode.finish();
             }
 
         }
@@ -480,6 +587,7 @@ private void LoadDataFragmentHome(){
 
     public final static int NEW_NOTEBOOK=1;
     public final static int SHARE_NOTEBOOK=3;
+    public final static int SHARE_NOTEBOOK_IMPORTANT=4;
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {

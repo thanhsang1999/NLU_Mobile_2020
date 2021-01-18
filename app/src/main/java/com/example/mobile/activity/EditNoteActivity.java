@@ -2,7 +2,6 @@ package com.example.mobile.activity;
 
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -37,7 +36,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
 import com.example.mobile.adapter.NewNoteAdapter;
 import com.example.mobile.database.sqlite.NoteDAO;
-import com.example.mobile.model.Notebook;
+import com.example.mobile.model.NoteShared;
 import com.example.mobile.model.Tool;
 import com.example.mobile.utils.ExactThreadHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -51,14 +50,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class NewNoteActivity extends AppCompatActivity {
+public class EditNoteActivity extends AppCompatActivity {
     EditText editTextTitle,editTextContent;
     ScrollView Mainlayout;
     ConstraintLayout  contentLayout;
     NoteDAO sqLite;
 
     private int mYear, mMonth, mDay, mHour, mMinute;
-    Notebook notebook;
+    NoteShared notebook;
     FloatingActionButton fabMain,fabCamera,fabFile;
     float translationY = 100f;
     boolean isMenuOpen = false;
@@ -67,9 +66,6 @@ public class NewNoteActivity extends AppCompatActivity {
     NewNoteAdapter newNoteAdapter;
     List<Bitmap> lstBitmap;
 
-    int idPackage=0;
-    int idNotebook=0;
-    int index=-1;
     public int PERM_CODE = 111;
     public int REQUEST_CODE_CAMERA = 112;
     public int PERM_CODE_GALLERY = 222;
@@ -79,12 +75,9 @@ public class NewNoteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_note);
+        setContentView(R.layout.activity_edit_note);
         lstBitmap= new ArrayList<>();
-        idPackage=getIntent().getExtras().getInt("idPackage");
-        idNotebook=getIntent().getExtras().getInt("idNotebook");
-        index=getIntent().getExtras().getInt("index");
-        Log.e("new note","index="+index);
+        notebook = getIntent().getExtras().getParcelable("notebook");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -93,27 +86,24 @@ public class NewNoteActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_more_menu));
+//        lstBitmap.add(BitmapFactory.decodeResource(this.getResources(),R.drawable.cat1));
+//        lstBitmap.add(BitmapFactory.decodeResource(this.getResources(),R.drawable.cat2));
+//        lstBitmap.add(BitmapFactory.decodeResource(this.getResources(),R.drawable.cat3));
         init();
         FabOnClick();
-        //datatest images
-
-//        images.add(R.drawable.cat1);
-//        images.add(R.drawable.cat2);
-//        images.add(R.drawable.cat3);
-//        images.add(R.drawable.cat4);
-
         // RecyclerView
         recyclerView.setHasFixedSize(true);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(NewNoteActivity.this,DividerItemDecoration.HORIZONTAL);
-        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(NewNoteActivity.this, R.drawable.custom_divider));
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(EditNoteActivity.this,DividerItemDecoration.HORIZONTAL);
+        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(EditNoteActivity.this, R.drawable.custom_divider));
         recyclerView.addItemDecoration(dividerItemDecoration);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(NewNoteActivity.this,LinearLayoutManager.HORIZONTAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(EditNoteActivity.this,LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        for(byte[] b:notebook.getImages()){
-            lstBitmap.add(Tool.getBitmapFromByte(b));
-        }
-        newNoteAdapter = new NewNoteAdapter(NewNoteActivity.this,lstBitmap);
+//        for(byte[] b:notebook.getImages()){
+//            lstBitmap.add(Tool.getBitmapFromByte(b));
+//        }
+
+        newNoteAdapter = new NewNoteAdapter(EditNoteActivity.this,lstBitmap);
         recyclerView.setAdapter(newNoteAdapter);
     }
 
@@ -124,14 +114,11 @@ public class NewNoteActivity extends AppCompatActivity {
         contentLayout = findViewById(R.id.contentLayout);
         editTextContent.requestFocus();
         sqLite  = new NoteDAO(this);
-        if(idNotebook==0)
-            notebook= new Notebook();
-        else {
-            notebook = sqLite.getNotebook(idNotebook);
-            editTextTitle.setText(notebook.getTitle());
-            editTextContent.setText(notebook.getContent());
-            Log.e("content",notebook.getContent());
-        }
+
+        editTextTitle.setText(notebook.getTitle());
+        editTextContent.setText(notebook.getContent());
+        Log.e("content",notebook.getContent());
+
 
         // set fab
         fabMain =  findViewById(R.id.fabMain);
@@ -168,30 +155,9 @@ public class NewNoteActivity extends AppCompatActivity {
                 notebook.setContent(textContent);
                 notebook.setDateEdit(new Date());
 
-                if (!textContent.equals("")){
-                    if(idNotebook==0){
-                        notebook=sqLite.insertNotebook(notebook,idPackage, true);
-                        sqLite.sync();
-                        Intent returnIntent = new Intent();
-                        returnIntent.putExtra("notebook",notebook);
-                        Log.e("new notea","imageC"+notebook.getImages().size());
-                        returnIntent.putExtra("index",index);
-                        setResult(Activity.RESULT_OK,returnIntent);
-                    }else{
-                        int rs=sqLite.updateNotebook(notebook,idPackage,true);
-                        sqLite.sync();
-
-                        if(rs==1){
-                            Intent returnIntent = new Intent();
-                            returnIntent.putExtra("notebook",notebook);
-                            returnIntent.putExtra("index",index);
-                            setResult(Activity.RESULT_OK,returnIntent);
-                        }
-
-                    }
+                //TODO su kien thay doi insert
 
 
-                }
                 if(notebook.getRemind()!=null){
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -231,7 +197,7 @@ public class NewNoteActivity extends AppCompatActivity {
                                 mMinute = c.get(Calendar.MINUTE);
 
                                 // Launch Time Picker Dialog
-                                TimePickerDialog timePickerDialog = new TimePickerDialog(NewNoteActivity.this,
+                                TimePickerDialog timePickerDialog = new TimePickerDialog(EditNoteActivity.this,
                                         new TimePickerDialog.OnTimeSetListener() {
 
                                             @Override
@@ -318,15 +284,15 @@ public class NewNoteActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void PermissionsCamera(){
 
-            if (checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED
+        if (checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED
                 && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED
-                    && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED
-            ){
-                dispatchTakePictureIntent();
-            }else {
-                String [] Premissions = new String[]{Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                ActivityCompat.requestPermissions(this,Premissions, PERM_CODE);
-            }
+                && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED
+        ){
+            dispatchTakePictureIntent();
+        }else {
+            String [] Premissions = new String[]{Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            ActivityCompat.requestPermissions(this,Premissions, PERM_CODE);
+        }
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void PermissionsGallery(){

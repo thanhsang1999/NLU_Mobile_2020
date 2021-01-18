@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobile.R;
 import com.example.mobile.adapter.NewNoteAdapter;
-import com.example.mobile.model.Notebook;
+import com.example.mobile.model.NoteShared;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class SeeNoteActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     NewNoteAdapter newNoteAdapter;
     EditText editTextAuthor,editTextTitle,editTextContent;
-    Notebook notebook;
+    NoteShared notebook;
     List<Bitmap> lstBitmap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +36,9 @@ public class SeeNoteActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         notebook = getIntent().getExtras().getParcelable("notebook");
+        lstBitmap.add(BitmapFactory.decodeResource(this.getResources(),R.drawable.cat1));
+        lstBitmap.add(BitmapFactory.decodeResource(this.getResources(),R.drawable.cat2));
+        lstBitmap.add(BitmapFactory.decodeResource(this.getResources(),R.drawable.cat3));
         init();
         recyclerView.setHasFixedSize(true);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(SeeNoteActivity.this,DividerItemDecoration.HORIZONTAL);
@@ -46,9 +49,7 @@ public class SeeNoteActivity extends AppCompatActivity {
 //        for(byte[] b:notebook.getImages()){
 //            lstBitmap.add(Tool.getBitmapFromByte(b));
 //        }
-        lstBitmap.add(BitmapFactory.decodeResource(this.getResources(),R.drawable.cat1));
-        lstBitmap.add(BitmapFactory.decodeResource(this.getResources(),R.drawable.cat2));
-        lstBitmap.add(BitmapFactory.decodeResource(this.getResources(),R.drawable.cat3));
+
         newNoteAdapter = new NewNoteAdapter(SeeNoteActivity.this,lstBitmap);
         recyclerView.setAdapter(newNoteAdapter);
     }
@@ -67,6 +68,11 @@ public class SeeNoteActivity extends AppCompatActivity {
         editTextContent.setFocusable(false);
         lstBitmap = new ArrayList<>();
 
+        if (lstBitmap.size()!=0){
+            editTextContent.setMinimumHeight(1180);
+        }else {
+            editTextContent.setMinimumHeight(1780);
+        }
 
     }
 
