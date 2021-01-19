@@ -19,6 +19,7 @@ import com.example.mobile.activity.HomeActivity;
 import com.example.mobile.activity.SeeNoteActivity;
 import com.example.mobile.database.sqlite.NoteDAO;
 import com.example.mobile.database.sqlite.NoteSharedDAO;
+import com.example.mobile.database.webservice.ConnectionWebService;
 import com.example.mobile.model.NoteShared;
 import com.example.mobile.model.Notebook;
 
@@ -66,6 +67,9 @@ public class ReceiveFragment extends Fragment {
             @Override
             public void onRefresh() {
                 notebooks.clear();
+                ConnectionWebService connectionWebService= new ConnectionWebService(ReceiveFragment.this.getActivity());
+                connectionWebService.takeDataMyNoteShared();
+                connectionWebService.takeDateAccessNoteShared();
                 notebooks.addAll(noteSharedDAO.getAccessNoteSharedLast(-1));
                 adapterReceive.notifyDataSetChanged();
                 swiperefresh.setRefreshing(false);
